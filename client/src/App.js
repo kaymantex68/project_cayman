@@ -8,8 +8,16 @@ import RegistrationComplete from './pages/auth/RegistrationComplete'
 import ForgotPassword from './pages/auth/ForgotPassword'
 import Header from './components/nav/Header'
 
+import UserRoute from './routes/UserRoute'
+import AdminRoute from './routes/AdminRoute'
+
+import AdminDashboard from './pages/admin/AdminDashboard'
+import History from './pages/user/History'
+import Password from './pages/user/Password'
+
 import { auth } from './firebase'
-import { useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { currentUser } from './functions/auth'
 
 
 const App = () => {
@@ -21,19 +29,26 @@ const App = () => {
       if (user) {
         // User is signed in.
         const idTokenResult = await user.getIdTokenResult()
-
-        dispatch({
-          type: "LOGGED_IN_USER",
-          payload: {
-            email: user.email,
-            token: idTokenResult.token,
-          }
-        })
-      } else {
-        // No user is signed in.
+        currentUser(idTokenResult.token)
+          .then(res => {
+            // redux
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                email: user.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id
+              }
+            })
+          }).catch()
       }
+      return () => usubscribe()
     });
   }, [])
+
+
   return (
     <>
       <div>
@@ -46,6 +61,11 @@ const App = () => {
           <Route exact path="/register" component={Register} />
           <Route exact path="/register/complete" component={RegistrationComplete} />
           <Route exact path="/forgot/password" component={ForgotPassword} />
+          <UserRoute exact path='/user/history' component={History}/>
+          <UserRoute exact path='/user/password' component={Password}/>
+
+          <AdminRoute exact path='/admin/dashboard' component={AdminDashboard}/>
+
         </Switch>
       </div>
     </>

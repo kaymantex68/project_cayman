@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import { auth, googleAuthProvider } from '../../firebase'
 import { Button } from 'antd'
@@ -7,20 +7,39 @@ import {
     GoogleOutlined
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from 'react-redux'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { createOrUpdateUser} from '../../functions/auth'
+
+
+
+
 
 const Login = ({ history }) => {
     const [email, setEmail] = useState('andrey.s.h.68@yandex.ru')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
-    const {user} = useSelector(state => ({...state}))
+    const { user } = useSelector(state => ({ ...state }))
 
-    useEffect(()=>{
-        if(user && user.token) {
+    useEffect(() => {
+        if (user && user.token) {
             history.push("/")
-        } 
-    },[user])
+        }
+    }, [user, history])
+
+    // redirect depending on user role
+    const roleBasedRedirect = (res) => {
+        if (res.data.role === 'admin') {
+            history.push("/admin/dashboard")
+        }
+        if (res.data.role === 'subscriber') {
+            history.push('/user/history')
+        }
+        if (res.data.role === 'manager') {
+            history.push('/manager/dashboard')
+        }
+    }
+
 
     // login with login and password
     const handleSubmit = async (e) => {
@@ -30,16 +49,27 @@ const Login = ({ history }) => {
             const result = await auth.signInWithEmailAndPassword(email, password)
             const { user } = result
             const idTokenResult = await user.getIdTokenResult()
-            // redux
-            dispatch({
-                type: "LOGGED_IN_USER",
-                payload: {
-                    email: user.email,
-                    token: idTokenResult.token,
-                }
-            })
-            setLoading(false)
-            history.push('/')
+            // console.log('token ',idTokenResult.token)
+            createOrUpdateUser(idTokenResult.token)
+                .then(res => {
+                    // redux
+                    dispatch({
+                        type: "LOGGED_IN_USER",
+                        payload: {
+                            name: res.data.name,
+                            email: user.email,
+                            token: idTokenResult.token,
+                            role: res.data.role,
+                            _id: res.data._id
+                        }
+                    })
+                    setLoading(false)
+                    // history.push('/')
+                    // redirect depending on user role (admin, subscriber)
+                    roleBasedRedirect(res)
+                })
+                .catch()
+
         } catch (err) {
             console.log(err)
             toast.error(err.message)
@@ -54,16 +84,24 @@ const Login = ({ history }) => {
             .then(async (res) => {
                 const { user } = res
                 const idTokenResult = await user.getIdTokenResult()
-                // redux
-                dispatch({
-                    type: "LOGGED_IN_USER",
-                    payload: {
-                        email: user.email,
-                        token: idTokenResult.token,
-                    }
-                })
-                setLoading(false)
-                history.push('/')
+                createOrUpdateUser(idTokenResult.token)
+                    .then(res => {
+                        // redux
+                        dispatch({
+                            type: "LOGGED_IN_USER",
+                            payload: {
+                                name: res.data.name,
+                                email: user.email,
+                                token: idTokenResult.token,
+                                role: res.data.role,
+                                _id: res.data._id
+                            }
+                        })
+                        setLoading(false)
+                        // redirect depending on user role (admin, subscriber)
+                        roleBasedRedirect(res)
+                    })
+                    .catch()
             }).catch(err => {
                 console.log(err)
                 toast.error(err.message)
@@ -127,7 +165,7 @@ const Login = ({ history }) => {
                     >
                         Вход gmail.com
             </Button>
-            <Link to='/forgot/password' className="float-right text-danger">Забыли пароль?</Link>
+                    <Link to='/forgot/password' className="float-right text-danger">Забыли пароль?</Link>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { toast, useToast } from 'react-toastify'
+import { toast} from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { auth } from '../../firebase'
 
@@ -14,7 +14,7 @@ const ForgotPassword = ({history}) => {
         if(user && user.token) {
             history.push("/")
         } 
-    },[user])
+    },[user, history])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
