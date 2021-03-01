@@ -6,7 +6,6 @@ const User = require('../models/user')
 exports.authCheck = async (req, res, next) => {
     try {
         const firebaseUser = await admin.auth().verifyIdToken(req.headers.authtoken)
-        console.log(firebaseUser)
         req.user = firebaseUser
     }
     catch (err) {

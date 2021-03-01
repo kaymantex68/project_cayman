@@ -14,6 +14,8 @@ import AdminRoute from './routes/AdminRoute'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import CreateCategory from './pages/admin/category/CategoryCreate'
 import UpdateCategory from './pages/admin/category/CategoryUpdate'
+import CreateSub from './pages/admin/sub/SubCreate'
+import UpdateSub from './pages/admin/sub/SubUpdate'
 
 import History from './pages/user/History'
 import Password from './pages/user/Password'
@@ -70,6 +72,8 @@ const App = () => {
           <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
           <AdminRoute exact path='/admin/category' component={CreateCategory} />
           <AdminRoute exact path='/admin/category/:slug' component={UpdateCategory} />
+          <AdminRoute exact path='/admin/sub' component={CreateSub} />
+          <AdminRoute exact path='/admin/sub/:_id' component={UpdateSub} />
 
         </Switch>
       </div>

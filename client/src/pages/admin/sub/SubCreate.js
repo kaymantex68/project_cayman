@@ -3,41 +3,52 @@ import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {
+    getSubs,
+    createSub,
+    removeSub,
+} from "../../../functions/sub";
+import {
     getCategories,
-    createCategory,
-    removeCategory,
 } from "../../../functions/category";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import LocalSearch from '../../../components/form/LocalSearch'
-const CategoryCreate = () => {
+
+const SubCreate = () => {
     const [name, setName] = useState("");
     const [turn, setTurn] = useState("");
-    const [categories, setCategories] = useState([]);
+    const [subs, setSubs] = useState([]);
+    const [category, setCategory] = useState('')
+    const [categories, setCategories] = useState([])
     // filter step 1
     const [filter, setFilter] = useState("");
     const [loading, setLoading] = useState(false);
     const { user } = useSelector((state) => ({ ...state }));
+
+    const loadSubCategories = () => {
+        getSubs().then((res) => setSubs(res.data));
+    };
 
     const loadCategories = () => {
         getCategories().then((res) => setCategories(res.data));
     };
 
     useState(() => {
-        loadCategories();
+        loadSubCategories();
+        loadCategories()
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        createCategory({ name, turn }, user.token)
+        createSub({ name, parent: category, turn }, user.token)
             .then((res) => {
                 setLoading(false);
                 toast.success(`Категория ${name} с номером ${turn} создана`);
                 setName("");
                 setTurn("");
-                loadCategories();
+                loadSubCategories();
             })
             .catch((err) => {
                 setLoading(false);
@@ -48,11 +59,11 @@ const CategoryCreate = () => {
     const handleRemove = (slug, name, turn) => {
         if (window.confirm(`Удалить?`)) {
             setLoading(true);
-            removeCategory(slug, user.token)
+            removeSub(slug, user.token)
                 .then((res) => {
                     setLoading(false);
-                    toast.warning(`Категория ${name} с номером ${turn} удалена!`);
-                    loadCategories();
+                    toast.warning(`Sub-категория ${name} с номером ${turn} удалена!`);
+                    loadSubCategories();
                 })
                 .catch((err) => {
                     setLoading(false);
@@ -61,7 +72,7 @@ const CategoryCreate = () => {
         }
     };
 
-    
+
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
@@ -69,7 +80,7 @@ const CategoryCreate = () => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Название новой категории</label>
+                    <label>Название новой Sub-категории</label>
                     <input
                         type="text"
                         className="form-control"
@@ -77,7 +88,7 @@ const CategoryCreate = () => {
                         onChange={(e) => setName(e.target.value)}
                         autoFocus
                         required
-                        placeholder="название категории"
+                        placeholder="название Sub-категории"
                         disabled={loading}
                     />
                     <input
@@ -92,7 +103,8 @@ const CategoryCreate = () => {
                     <br />
                     <button
                         className="btn btn-outline-primary"
-                        disabled={!name || loading}
+                        disabled={!name || !category || !turn || loading}
+                        
                     >
                         Добавить
           </button>
@@ -113,29 +125,47 @@ const CategoryCreate = () => {
                             <LoadingOutlined />
                         </h6>
                     ) : (
-                            <h6>Управление "Категориями"</h6>
+                            <h6>Управление "Sub-категориями"</h6>
                         )}
                     <br />
+                    <div className="form-group">
+                        <label>Родительская категория</label>
+                        <select name="category" className="form-control" onChange={(e) => setCategory(e.target.value)}>
+                            <option>Выберите родительскую категорию (обязательный пункт)</option>
+                            {categories.length > 0 && categories.map(c => {
+                                return <option key={c._id} value={c._id}>{c.name}</option>
+                            })}
+                        </select>
+                    </div>
                     {categoryForm()}
                     <hr />
+                    
                     <LocalSearch filter={filter} setFilter={setFilter} />
-                    {categories.filter(searched(filter)).map((c) => {
+
+                    {subs.filter(searched(filter)).map((s) => {
                         return (
-                            <div class="alert alert-primary " key={c._id}>
-                                {`${c.name}`}
+                            <div class="alert alert-primary " key={s._id}>
+                                {`${s.name}`}
                                 <Link
                                     className="btn btn-sm float-right"
-                                    to={`/admin/category/${c.slug}`}
+                                    to={`/admin/sub/${s._id}`}
                                 >
                                     <EditOutlined />
                                 </Link>
                                 <span
                                     className="btn btn-sm float-right"
-                                    onClick={() => handleRemove(c.slug, c.name, c.turn)}
+                                    onClick={() => handleRemove(s.slug, s.name, s.turn)}
                                 >
                                     <DeleteOutlined className="text-danger" />
                                 </span>
-                                <span className="float-right btn btn-sm ">{`${c.turn}`}</span>
+                                <span className="float-right btn btn-sm ">{`${s.turn}`}</span>
+                                <span className="float-right btn btn-sm ">
+                                    {
+                                        categories.length > 0 && s.parent && categories.find(cat => {
+                                            return cat._id === s.parent
+                                        }).name
+                                    }
+                                </span>
                             </div>
                         );
                     })}
@@ -145,4 +175,4 @@ const CategoryCreate = () => {
     );
 };
 
-export default CategoryCreate;
+export default SubCreate;

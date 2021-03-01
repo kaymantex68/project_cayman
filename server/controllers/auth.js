@@ -6,7 +6,7 @@ exports.createOrUpdateUser = async (req,res)=>{
 
     if (user) {
         res.json(user)
-        console.log('пользователь обновлен ', user)
+        // console.log('пользователь обновлен ', user)
     }
     else {
         const newUser =await new User({
@@ -15,7 +15,7 @@ exports.createOrUpdateUser = async (req,res)=>{
             picture
         }).save()
         res.json(newUser)
-        console.log('создан новый пользователь ', newUser)
+        // console.log('создан новый пользователь ', newUser)
     }
 }
 
@@ -24,7 +24,7 @@ exports.currentUser = async( req, res)=>{
     await User.findOne({email}).exec((err, user)=>{
         if(err) throw new Error(err)
         res.json(user)
-        console.log('пользователь найден')
+        // console.log('пользователь найден')
     })
    
 }

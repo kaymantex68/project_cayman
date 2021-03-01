@@ -62,7 +62,7 @@ const AdminNav = () => {
             </SubMenu>
             <SubMenu key="category" icon={<BarsOutlined />} title="Структура каталога">
                 <Menu.Item key="category_1"><Link to="/admin/category">Категории</Link></Menu.Item>
-                <Menu.Item key="sub_category_1">Sub-категории</Menu.Item>
+                <Menu.Item key="sub_category_1"><Link to="/admin/sub">Sub-категории</Link></Menu.Item>
                 <Menu.Item key="brands">Брэнды</Menu.Item>
 
             </SubMenu>
