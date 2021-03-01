@@ -6,11 +6,13 @@ import {
     getCategories,
     createCategory,
     removeCategory,
+    updateCategory,
 } from "../../../functions/category";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined,CheckSquareOutlined } from "@ant-design/icons";
 import LocalSearch from '../../../components/form/LocalSearch'
+
 const CategoryCreate = () => {
     const [name, setName] = useState("");
     const [turn, setTurn] = useState("");
@@ -27,6 +29,7 @@ const CategoryCreate = () => {
     useState(() => {
         loadCategories();
     }, []);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -61,7 +64,20 @@ const CategoryCreate = () => {
         }
     };
 
-    
+    const handleActive =(c)=>{
+        setLoading(true)
+        updateCategory(c.slug, { name: c.name, turn: c.turn, active: !c.active }, user.token)
+        .then(res => {
+            setLoading(false)
+            // toast.success(`Категория ${c.name} с номером ${c.turn} переключена`)
+            loadCategories();
+        })
+        .catch(err => {
+            setLoading(false)
+            if (err.response.status === 400) toast.error(err.response.data)
+        })
+        
+    }
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
@@ -134,6 +150,12 @@ const CategoryCreate = () => {
                                     onClick={() => handleRemove(c.slug, c.name, c.turn)}
                                 >
                                     <DeleteOutlined className="text-danger" />
+                                </span>
+                                <span
+                                    className="btn btn-sm float-right"
+                                    onClick={() => handleActive(c)}
+                                >
+                                    <CheckSquareOutlined className={c.active? "text-success" : "text-danger"} />
                                 </span>
                                 <span className="float-right btn btn-sm ">{`${c.turn}`}</span>
                             </div>

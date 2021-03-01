@@ -30,7 +30,9 @@ const NavMenu = () => {
             <SubMenu key="SubMenu" title="Каталог">
                 {categories.map(c => {
                     return (
-                        <SubMenu key={c._id} title={c.name} style={{ width: "auto" }}></SubMenu>
+                        <>
+                            {c.active ? <SubMenu key={c._id} title={c.name} style={{ width: "auto" }}></SubMenu> : null}
+                        </>
                     )
                 })}
                 {/* <SubMenu key="IP" title="IP камеры" style={{ width: "auto" }}>

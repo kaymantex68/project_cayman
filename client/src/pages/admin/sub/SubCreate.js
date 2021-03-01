@@ -104,7 +104,7 @@ const SubCreate = () => {
                     <button
                         className="btn btn-outline-primary"
                         disabled={!name || !category || !turn || loading}
-                        
+
                     >
                         Добавить
           </button>
@@ -112,6 +112,8 @@ const SubCreate = () => {
             </form>
         );
     };
+
+
 
     return (
         <div className="container-fluid" style={{ minHeight: "1250px" }}>
@@ -125,8 +127,8 @@ const SubCreate = () => {
                             <LoadingOutlined />
                         </h6>
                     ) : (
-                            <h6>Управление "Sub-категориями"</h6>
-                        )}
+                        <h6>Управление "Sub-категориями"</h6>
+                    )}
                     <br />
                     <div className="form-group">
                         <label>Родительская категория</label>
@@ -139,10 +141,14 @@ const SubCreate = () => {
                     </div>
                     {categoryForm()}
                     <hr />
-                    
+
                     <LocalSearch filter={filter} setFilter={setFilter} />
 
                     {subs.filter(searched(filter)).map((s) => {
+                        let filterCategory = categories.find(cat => {
+                            return cat._id === s.parent
+                        })
+                        filterCategory ? console.log(filterCategory) : console.log('(категория отсутствует)')
                         return (
                             <div class="alert alert-primary " key={s._id}>
                                 {`${s.name}`}
@@ -161,9 +167,7 @@ const SubCreate = () => {
                                 <span className="float-right btn btn-sm ">{`${s.turn}`}</span>
                                 <span className="float-right btn btn-sm ">
                                     {
-                                        categories.length > 0 && s.parent && categories.find(cat => {
-                                            return cat._id === s.parent
-                                        }).name
+                                        filterCategory ? filterCategory.name : '(категория отсутствует)'
                                     }
                                 </span>
                             </div>

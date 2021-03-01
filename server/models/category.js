@@ -17,7 +17,11 @@ const categorySchema= new mongoose.Schema({
     turn: {
         type: Number,
         required: true,
-    }
+    },
+    active: {
+        type: Boolean,
+        default: false,
+    },
 },{timestamps: true})
 
 module.exports = mongoose.model('Category',categorySchema)

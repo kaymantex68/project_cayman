@@ -100,6 +100,7 @@ const SubUpdate = ({history, match }) => {
                     <div className="form-group">
                         <label>Родительская категория</label>
                         <select name="category" className="form-control"  onChange={(e) => setParent(e.target.value)}>
+                            <option>выберите категорию</option>
                             {categories.length > 0 && categories.map(c => {
                                 return <option key={c._id} value={c._id} selected={c._id===parent}>{c.name}</option>
                             })}
