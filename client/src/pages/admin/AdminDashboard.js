@@ -3,7 +3,7 @@ import AdminNav from '../../components/nav/AdminNav'
 // import product, to be deleted
 import { product } from '../../json/product'
 import axios from 'axios'
-
+import {getCategories} from '../../functions/category'
 
 
 const AdminDashboard = () => {
@@ -18,7 +18,7 @@ const AdminDashboard = () => {
 
 
 
-// {console.log(JSON.parse(JSON.stringify(product)))}   
+
 return (
     <div className='container-fluid' style={{ minHeight: '1250px' }}>
         <div className="row" >

@@ -12,6 +12,9 @@ import UserRoute from './routes/UserRoute'
 import AdminRoute from './routes/AdminRoute'
 
 import AdminDashboard from './pages/admin/AdminDashboard'
+import CreateCategory from './pages/admin/category/CategoryCreate'
+import UpdateCategory from './pages/admin/category/CategoryUpdate'
+
 import History from './pages/user/History'
 import Password from './pages/user/Password'
 
@@ -61,10 +64,12 @@ const App = () => {
           <Route exact path="/register" component={Register} />
           <Route exact path="/register/complete" component={RegistrationComplete} />
           <Route exact path="/forgot/password" component={ForgotPassword} />
-          <UserRoute exact path='/user/history' component={History}/>
-          <UserRoute exact path='/user/password' component={Password}/>
+          <UserRoute exact path='/user/history' component={History} />
+          <UserRoute exact path='/user/password' component={Password} />
 
-          <AdminRoute exact path='/admin/dashboard' component={AdminDashboard}/>
+          <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
+          <AdminRoute exact path='/admin/category' component={CreateCategory} />
+          <AdminRoute exact path='/admin/category/:slug' component={UpdateCategory} />
 
         </Switch>
       </div>

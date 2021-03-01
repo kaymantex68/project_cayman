@@ -1,12 +1,14 @@
 import React from "react";
-import { Menu } from "antd";
+import { Menu, Button } from "antd";
 import { Link } from "react-router-dom";
 import {
     BarsOutlined,
     SolutionOutlined,
     PieChartOutlined,
     HomeOutlined,
-    BarcodeOutlined
+    BarcodeOutlined,
+    MenuUnfoldOutlined,
+    MenuFoldOutlined
 } from "@ant-design/icons";
 
 const { SubMenu } = Menu;
@@ -15,7 +17,12 @@ const { SubMenu } = Menu;
 const rootSubmenuKeys = ["sub1", "sub2", "sub4"];
 
 const AdminNav = () => {
+    const [collapse, setCollapse] = React.useState(false)
     const [openKeys, setOpenKeys] = React.useState(["sub1"]);
+
+    const toggleCollapsed = () => {
+        setCollapse(!collapse)
+      };
 
     const onOpenChange = (keys) => {
         const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
@@ -27,11 +34,16 @@ const AdminNav = () => {
     };
 
     return (
+        <div style={{ width: 256 }}>
+        {/* <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
+          {React.createElement(collapse ? MenuUnfoldOutlined : MenuFoldOutlined)}
+        </Button> */}
         <Menu
             mode="inline"
             openKeys={openKeys}
             onOpenChange={onOpenChange}
             style={{ width: 256 }}
+            inlineCollapsed={collapse}
         >
             <Menu.Item key="hist" icon={<HomeOutlined />}>
                 <Link to="/admin/dashboard">Личный кабинет</Link>
@@ -49,10 +61,10 @@ const AdminNav = () => {
                 </Menu.Item>
             </SubMenu>
             <SubMenu key="category" icon={<BarsOutlined />} title="Структура каталога">
-                <Menu.Item key="5">Категории</Menu.Item>
-                <Menu.Item key="6">Sub-категории</Menu.Item>
-                <Menu.Item key="7">Брэнды</Menu.Item>
-                
+                <Menu.Item key="category_1"><Link to="/admin/category">Категории</Link></Menu.Item>
+                <Menu.Item key="sub_category_1">Sub-категории</Menu.Item>
+                <Menu.Item key="brands">Брэнды</Menu.Item>
+
             </SubMenu>
             <SubMenu key="prod" icon={<BarcodeOutlined />} title="Товары">
                 <Menu.Item key="9">Редактирование</Menu.Item>
@@ -64,6 +76,7 @@ const AdminNav = () => {
                 <Menu.Item key="16">Option 12</Menu.Item>
             </SubMenu>
         </Menu>
+        </div>
     );
 };
 

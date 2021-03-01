@@ -66,7 +66,12 @@ const Header = () => {
                     className='float-right'
                 >
                     <Menu.ItemGroup>
-                        <Item key="setting:1">Личный кабинет</Item>
+                        {user && user.role === 'admin'
+                            && <Item key="adminDashboard"><Link to='/admin/dashboard'>АдминПанель</Link></Item>}
+                        {user && user.role === 'subscriber'
+                            && <Item key="adminDashboard"><Link to='/user/history'>Личный кабинет</Link></Item>}
+                            {user && user.role === 'manager'
+                            && <Item key="adminDashboard"><Link to='/manager/dashboard'>Кабинет менеджера</Link></Item>}
                         <Item icon={<LogoutOutlined />} onClick={logout}>Выход</Item>
                     </Menu.ItemGroup>
                 </SubMenu>
