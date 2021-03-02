@@ -6,13 +6,14 @@ import {
     getSubs,
     createSub,
     removeSub,
+    updateSub
 } from "../../../functions/sub";
 import {
     getCategories,
 } from "../../../functions/category";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined,CheckSquareOutlined } from "@ant-design/icons";
 import LocalSearch from '../../../components/form/LocalSearch'
 
 const SubCreate = () => {
@@ -71,6 +72,20 @@ const SubCreate = () => {
                 });
         }
     };
+
+    const handleActive =(s)=>{
+        setLoading(true)
+        updateSub(s._id, { name: s.name, turn: s.turn, parent: s.parent, active: !s.active }, user.token)
+        .then(res => {
+            setLoading(false)
+            // toast.success(`Категория ${c.name} с номером ${c.turn} переключена`)
+            loadSubCategories();
+        })
+        .catch(err => {
+            setLoading(false)
+            if (err.response.status === 400) toast.error(err.response.data)
+        })     
+    }
 
 
 
@@ -148,7 +163,7 @@ const SubCreate = () => {
                         let filterCategory = categories.find(cat => {
                             return cat._id === s.parent
                         })
-                        filterCategory ? console.log(filterCategory) : console.log('(категория отсутствует)')
+                        // filterCategory ? console.log(filterCategory) : console.log('(категория отсутствует)')
                         return (
                             <div class="alert alert-primary " key={s._id}>
                                 {`${s.name}`}
@@ -165,6 +180,12 @@ const SubCreate = () => {
                                     <DeleteOutlined className="text-danger" />
                                 </span>
                                 <span className="float-right btn btn-sm ">{`${s.turn}`}</span>
+                                <span
+                                    className="btn btn-sm float-right"
+                                    onClick={() => handleActive(s)}
+                                >
+                                    <CheckSquareOutlined className={s.active? "text-success" : "text-danger"} />
+                                </span>
                                 <span className="float-right btn btn-sm ">
                                     {
                                         filterCategory ? filterCategory.name : '(категория отсутствует)'

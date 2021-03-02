@@ -26,10 +26,11 @@ exports.read = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const { name, parent, turn } = req.body
+        const { name, parent, turn,active } = req.body
+        console.log('-------------------------', req.body)
         const result = await Sub.findOneAndUpdate(
             { _id: req.params._id },
-            { name, slug: slugify(name), parent, turn },
+            { name, slug: slugify(name), parent, turn, active },
             { new: true })
         res.json(result)
     } catch (err) {

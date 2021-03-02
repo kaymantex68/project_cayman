@@ -75,8 +75,7 @@ const CategoryCreate = () => {
         .catch(err => {
             setLoading(false)
             if (err.response.status === 400) toast.error(err.response.data)
-        })
-        
+        })     
     }
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);

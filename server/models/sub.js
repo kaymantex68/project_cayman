@@ -25,6 +25,10 @@ const SubSchema = new mongoose.Schema(
             required: true,
             ref: "Category"
         },
+        active: {
+            type: Boolean,
+            default: false
+        }
     },
     {
         timestamps: true,
