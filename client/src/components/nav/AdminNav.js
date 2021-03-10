@@ -34,7 +34,7 @@ const AdminNav = () => {
     };
 
     return (
-        <div style={{ width: 256 }}>
+        <div style={{ width: 256, padding: "0", margin: "0" }}>
         {/* <Button type="primary" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
           {React.createElement(collapse ? MenuUnfoldOutlined : MenuFoldOutlined)}
         </Button> */}

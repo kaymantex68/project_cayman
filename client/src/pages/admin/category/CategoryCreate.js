@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import AdminNav from "../../../components/nav/AdminNav";
+// import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {
@@ -10,8 +10,9 @@ import {
 } from "../../../functions/category";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { EditOutlined, DeleteOutlined,CheckSquareOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
 import LocalSearch from '../../../components/form/LocalSearch'
+import AdminNavigation from '../../../components/nav/AdminNavigation'
 
 const CategoryCreate = () => {
     const [name, setName] = useState("");
@@ -64,18 +65,18 @@ const CategoryCreate = () => {
         }
     };
 
-    const handleActive =(c)=>{
+    const handleActive = (c) => {
         setLoading(true)
         updateCategory(c.slug, { name: c.name, turn: c.turn, active: !c.active }, user.token)
-        .then(res => {
-            setLoading(false)
-            // toast.success(`Категория ${c.name} с номером ${c.turn} переключена`)
-            loadCategories();
-        })
-        .catch(err => {
-            setLoading(false)
-            if (err.response.status === 400) toast.error(err.response.data)
-        })     
+            .then(res => {
+                setLoading(false)
+                // toast.success(`Категория ${c.name} с номером ${c.turn} переключена`)
+                loadCategories();
+            })
+            .catch(err => {
+                setLoading(false)
+                if (err.response.status === 400) toast.error(err.response.data)
+            })
     }
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
@@ -116,53 +117,50 @@ const CategoryCreate = () => {
         );
     };
 
-    return (
-        <div className="container-fluid" style={{ minHeight: "1250px" }}>
-            <div className="row">
-                <div className="colmd-2" style={{ minHeight: "1250px" }}>
-                    <AdminNav />
-                </div>
-                <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
-                    {loading ? (
-                        <h6>
-                            <LoadingOutlined />
-                        </h6>
-                    ) : (
-                            <h6>Управление "Категориями"</h6>
-                        )}
-                    <br />
-                    {categoryForm()}
-                    <hr />
-                    <LocalSearch filter={filter} setFilter={setFilter} />
-                    {categories.filter(searched(filter)).map((c) => {
-                        return (
-                            <div class="alert alert-primary " key={c._id}>
-                                {`${c.name}`}
-                                <Link
-                                    className="btn btn-sm float-right"
-                                    to={`/admin/category/${c.slug}`}
-                                >
-                                    <EditOutlined />
-                                </Link>
-                                <span
-                                    className="btn btn-sm float-right"
-                                    onClick={() => handleRemove(c.slug, c.name, c.turn)}
-                                >
-                                    <DeleteOutlined className="text-danger" />
-                                </span>
-                                <span
-                                    className="btn btn-sm float-right"
-                                    onClick={() => handleActive(c)}
-                                >
-                                    <CheckSquareOutlined className={c.active? "text-success" : "text-danger"} />
-                                </span>
-                                <span className="float-right btn btn-sm ">{`${c.turn}`}</span>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
+    const ReturnCategory = () => (
+        <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
+            {/* {loading ? (
+                <h6>
+                    <LoadingOutlined />
+                </h6>
+            ) : (
+                <h6>Управление "Категориями"</h6>
+            )} */}
+            <br />
+            {categoryForm()}
+            <hr />
+            <LocalSearch filter={filter} setFilter={setFilter} />
+            {categories.filter(searched(filter)).map((c) => {
+                return (
+                    <div class="alert alert-primary " key={c._id}>
+                        {`${c.name}`}
+                        <Link
+                            className="btn btn-sm float-right"
+                            to={`/admin/category/${c.slug}`}
+                        >
+                            <EditOutlined />
+                        </Link>
+                        <span
+                            className="btn btn-sm float-right"
+                            onClick={() => handleRemove(c.slug, c.name, c.turn)}
+                        >
+                            <DeleteOutlined className="text-danger" />
+                        </span>
+                        <span
+                            className="btn btn-sm float-right"
+                            onClick={() => handleActive(c)}
+                        >
+                            <CheckSquareOutlined className={c.active ? "text-success" : "text-danger"} />
+                        </span>
+                        <span className="float-right btn btn-sm ">{`${c.turn}`}</span>
+                    </div>
+                );
+            })}
         </div>
+    )
+
+    return (
+                    <AdminNavigation name={'Категории'} children={ReturnCategory()}  />
     );
 };
 

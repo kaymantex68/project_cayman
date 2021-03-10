@@ -4,7 +4,7 @@ import AdminNav from '../../components/nav/AdminNav'
 import { product } from '../../json/product'
 import axios from 'axios'
 import {getCategories} from '../../functions/category'
-
+import AdminNavigation from '../../components/nav/AdminNavigation'
 
 const AdminDashboard = () => {
 // here we create data for Product database
@@ -20,16 +20,7 @@ const AdminDashboard = () => {
 
 
 return (
-    <div className='container-fluid' style={{ minHeight: '1250px' }}>
-        <div className="row" >
-            <div className="colmd-2" style={{ minHeight: '1250px' }}>
-                <AdminNav />
-            </div>
-            <div className='col' style={{ backgroundColor: 'GhostWhite' }}>
-                Панель Администратора
-                </div>
-        </div>
-    </div>
+    <AdminNavigation name="АдминПанель"/>
 )
 }
 

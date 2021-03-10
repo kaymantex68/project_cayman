@@ -15,6 +15,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined,CheckSquareOutlined } from "@ant-design/icons";
 import LocalSearch from '../../../components/form/LocalSearch'
+import AdminNavigation from '../../../components/nav/AdminNavigation'
 
 const SubCreate = () => {
     const [name, setName] = useState("");
@@ -128,23 +129,8 @@ const SubCreate = () => {
         );
     };
 
-
-
-    return (
-        <div className="container-fluid" style={{ minHeight: "1250px" }}>
-            <div className="row">
-                <div className="colmd-2" style={{ minHeight: "1250px" }}>
-                    <AdminNav />
-                </div>
-                <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
-                    {loading ? (
-                        <h6>
-                            <LoadingOutlined />
-                        </h6>
-                    ) : (
-                        <h6>Управление "Sub-категориями"</h6>
-                    )}
-                    <br />
+    const ReturnSubCategory=()=>(
+        <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
                     <div className="form-group">
                         <label>Родительская категория</label>
                         <select name="category" className="form-control" onChange={(e) => setCategory(e.target.value)}>
@@ -195,8 +181,11 @@ const SubCreate = () => {
                         );
                     })}
                 </div>
-            </div>
-        </div>
+    )
+
+
+    return (
+        <AdminNavigation name="Sub-категории" children={ReturnSubCategory()}/>  
     );
 };
 

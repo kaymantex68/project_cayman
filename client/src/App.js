@@ -25,6 +25,8 @@ import { useDispatch } from 'react-redux'
 import { currentUser } from './functions/auth'
 
 
+import AdminNavigation from './components/nav/AdminNavigation'
+
 const App = () => {
   const dispatch = useDispatch()
 
@@ -74,6 +76,8 @@ const App = () => {
           <AdminRoute exact path='/admin/category/:slug' component={UpdateCategory} />
           <AdminRoute exact path='/admin/sub' component={CreateSub} />
           <AdminRoute exact path='/admin/sub/:_id' component={UpdateSub} />
+
+          <Route exact path="/page/test" component={AdminNavigation} />
 
         </Switch>
       </div>

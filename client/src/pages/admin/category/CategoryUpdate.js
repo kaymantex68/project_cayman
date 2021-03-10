@@ -6,9 +6,9 @@ import { getCategory, updateCategory } from '../../../functions/category'
 import { LoadingOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import AdminNavigation from '../../../components/nav/AdminNavigation'
 
-
-const CategoryUpdate = ({history, match }) => {
+const CategoryUpdate = ({ history, match }) => {
     const [name, setName] = useState('')
     const [turn, setTurn] = useState('')
     const [categories, setCategories] = useState([])
@@ -49,7 +49,7 @@ const CategoryUpdate = ({history, match }) => {
     const updateCategoryForm = () => {
         return (
             <form onSubmit={handleSubmit}>
-                <div className="form-group">
+                <div className="form-group p-2">
                     <label>Новое название категории</label>
                     <input
                         type="text"
@@ -81,18 +81,11 @@ const CategoryUpdate = ({history, match }) => {
     }
 
     return (
-        <div className="container-fluid" style={{ minHeight: "1250px" }}>
-            <div className="row">
-                <div className="colmd-2" style={{ minHeight: "1250px" }}>
-                    <AdminNav />
-                </div>
-                <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
-                    {loading ? <h6><LoadingOutlined /></h6> : <h6>Обновление категории</h6>}
-                    <br />
-                    {updateCategoryForm()}
-                </div>
-            </div>
-        </div>
+
+        <AdminNavigation name={'Обновление категории'} children={updateCategoryForm()} />
+
+
+
     );
 };
 

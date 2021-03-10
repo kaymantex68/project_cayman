@@ -2,19 +2,19 @@ import React, { useState, useEffect, useCallback } from "react";
 import AdminNav from "../../../components/nav/AdminNav";
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
-import { getCategories} from '../../../functions/category'
-import { getSub, updateSub} from '../../../functions/sub'
+import { getCategories } from '../../../functions/category'
+import { getSub, updateSub } from '../../../functions/sub'
 import { LoadingOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import AdminNavigation from '../../../components/nav/AdminNavigation'
 
-
-const SubUpdate = ({history, match }) => {
+const SubUpdate = ({ history, match }) => {
     const [name, setName] = useState('')
     const [turn, setTurn] = useState('')
-    const [parent, setParent]=useState('')
+    const [parent, setParent] = useState('')
     const [categories, setCategories] = useState([])
-    const [sub, setSub]=useState('')
+    const [sub, setSub] = useState('')
 
 
     const [loading, setLoading] = useState(false)
@@ -24,7 +24,7 @@ const SubUpdate = ({history, match }) => {
         getCategories().then((res) => setCategories(res.data));
     };
 
-    
+
     useEffect(() => {
         loadCategories()
         getSub(match.params._id)
@@ -88,28 +88,24 @@ const SubUpdate = ({history, match }) => {
             </form>
         )
     }
-    return (
-        <div className="container-fluid" style={{ minHeight: "1250px" }}>
-            <div className="row">
-                <div className="colmd-2" style={{ minHeight: "1250px" }}>
-                    <AdminNav />
-                </div>
-                <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
-                    {loading ? <h6><LoadingOutlined /></h6> : <h6>Обновление Sub-категории</h6>}
-                    <br />
-                    <div className="form-group">
-                        <label>Родительская категория</label>
-                        <select name="category" className="form-control"  onChange={(e) => setParent(e.target.value)}>
-                            <option>выберите категорию</option>
-                            {categories.length > 0 && categories.map(c => {
-                                return <option key={c._id} value={c._id} selected={c._id===parent}>{c.name}</option>
-                            })}
-                        </select>
-                    </div>
-                    {updateCategoryForm()}
-                </div>
+
+    const ReturnUpdateSubForm = () => (
+        <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
+            <div className="form-group">
+                <label>Родительская категория</label>
+                <select name="category" className="form-control" onChange={(e) => setParent(e.target.value)}>
+                    <option>выберите категорию</option>
+                    {categories.length > 0 && categories.map(c => {
+                        return <option key={c._id} value={c._id} selected={c._id === parent}>{c.name}</option>
+                    })}
+                </select>
             </div>
+            {updateCategoryForm()}
         </div>
+    )
+
+    return (
+        <AdminNavigation name="Обновить Sub-категорию" children={ReturnUpdateSubForm()} />
     );
 };
 
