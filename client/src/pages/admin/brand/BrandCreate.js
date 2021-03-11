@@ -1,66 +1,66 @@
 import React, { useState, useEffect, useCallback } from "react";
-// import AdminNav from "../../../components/nav/AdminNav";
+
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {
   getBrands,
   createBrand,
   removeBrand,
-  updateBrand,
+  updateBrand
 } from "../../../functions/brand";
-import { getSubs } from "../../../functions/sub";
-import { getCategories } from "../../../functions/category";
+import {
+  getCategories,
+} from "../../../functions/category";
+import {
+  getSubs,
+} from "../../../functions/sub";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  CheckSquareOutlined,
-} from "@ant-design/icons";
-import LocalSearch from "../../../components/form/LocalSearch";
-import AdminNavigation from "../../../components/nav/AdminNavigation";
+import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
+import LocalSearch from '../../../components/form/LocalSearch'
+import AdminNavigation from '../../../components/nav/AdminNavigation'
+
 
 const BrandCreate = () => {
   const [name, setName] = useState("");
   const [turn, setTurn] = useState("");
-  const [parent, setParent] = useState("");
-  const [brands, setBrands] = useState([]);
-  const [sub, setSub] = useState([]);
   const [subs, setSubs] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [sub, setSub] = useState('')
+  const [categories, setCategories] = useState([])
+  const [brands, setBrands] = useState([])
   // filter step 1
   const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
 
-  const loadBrands = () => {
-    getBrands().then((res) => setBrands(res.data));
+  const loadSubCategories = () => {
+    getSubs().then((res) => setSubs(res.data));
   };
 
-  // const loadSubs = () => {
-  //   getSubs().then((res) => setSubs(res.data));
-  // };
+  const loadCategories = () => {
+    getCategories().then((res) => setCategories(res.data));
+  };
 
-  // const loadCategories = () => {
-  //   getCategories().then((res) => setCategories(res.data));
-  // };
+  const loadBrands = () => {
+    getBrands().then((res) => setBrands(res.data));
+  }
 
-  useEffect(() => {
+  useState(() => {
+    // loadSubCategories();
+    // loadCategories();
+    // loadBrands()
     getCategories().then((res) => {
       setCategories(res.data)
-      getSubs().then((res) => { 
+      getSubs().then((res) => {
         setSubs(res.data)
-        getBrands().then((res) => {
+        getBrands().then((res) => { 
           setBrands(res.data)
-          console.log('GOOD')
+          console.log('load good')
         });
       });
-    });
+    }
+    );
   }, []);
-
-  console.log('category', categories)
-  console.log('subs', subs)
-  console.log('brand', brands)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -96,31 +96,30 @@ const BrandCreate = () => {
   };
 
   const handleActive = (b) => {
-    setLoading(true);
-    console.log('b', b.active)
-    updateBrand(
-      b._id,
+    setLoading(true)
+    updateBrand(b._id,
       { name: b.name, turn: b.turn, parent: b.parent, active: !b.active },
-      user.token
-    )
-      .then((res) => {
-        setLoading(false);
+      user.token)
+      .then(res => {
+        setLoading(false)
         // toast.success(`Категория ${c.name} с номером ${c.turn} переключена`)
         loadBrands();
       })
-      .catch((err) => {
-        setLoading(false);
-        if (err.response.status === 400) toast.error(err.response.data);
-      });
-  };
+      .catch(err => {
+        setLoading(false)
+        if (err.response.status === 400) toast.error(err.response.data)
+      })
+  }
 
-  const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
+
+
+  const searched = (filter) => (b) => b.name.toLowerCase().includes(filter);
 
   const brandForm = () => {
     return (
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Название нового брэнда</label>
+          <label>Название нового Брэнда</label>
           <input
             type="text"
             className="form-control"
@@ -143,7 +142,8 @@ const BrandCreate = () => {
           <br />
           <button
             className="btn btn-outline-primary"
-            disabled={!name || loading}
+            disabled={!name || !sub || !turn || loading}
+
           >
             Добавить
           </button>
@@ -152,48 +152,43 @@ const BrandCreate = () => {
     );
   };
 
-  const comparisonCategorydAndSub = (s, c) => {
-    const result = c.filter((cat) => {
-      return cat._id === s.parent;
-    });
-    if (result.length > 0) return result[0].name
-    return 'ошибка'
-  };
+  const findSubInCategory = (_sub, _categories) => {
+    return _categories.find(_c => {
+      return _c._id === _sub.parent
+    })
+      ? _categories.find(_c => {
+        return _c._id === _sub.parent
+      }).name
+      : 'категория не найдена'
+  }
 
-  console.log("name", name);
-  console.log("turn", turn);
-  console.log("parent", parent);
+
 
   const ReturnBrand = () => (
     <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
       <div className="form-group">
-        <label>Родительская Sub-категория</label>
-        <select
-          name="sub"
-          className="form-control"
-          onChange={(e) => setSub(e.target.value)}
-        >
-          <option>
-            Выберите родительскую Sub-категорию (обязательный пункт)
-          </option>
-          {subs.length > 0 &&
-            subs.map((s) => {
-              return (
-                <option key={s._id} value={s._id}>
-                  {`${s.name} (${comparisonCategorydAndSub(s, categories)})`}
-                </option>
-              );
-            })}
+        <label>Родительская sub-категория</label>
+        <select name="subcategory" className="form-control" onChange={(e) => setSub(e.target.value)}>
+          <option>Выберите родительскую sub-категорию (обязательный пункт)</option>
+          {subs.length > 0 && subs.map(s => {
+            return (
+              <option key={s._id} value={s._id}>
+                {`${s.name} (${findSubInCategory(s, categories)})`}
+              </option>
+            )
+          })}
         </select>
       </div>
-      <br />
       {brandForm()}
       <hr />
+
       <LocalSearch filter={filter} setFilter={setFilter} />
+
       {brands.filter(searched(filter)).map((b) => {
-        let filterSub = subs.find(sub => {
-          return sub._id === b.parent
+        let filterSubs = subs.find(_sub => {
+          return _sub._id === b.parent
         })
+
         return (
           <div class="alert alert-primary " key={b._id}>
             {`${b.name}`}
@@ -209,32 +204,32 @@ const BrandCreate = () => {
             >
               <DeleteOutlined className="text-danger" />
             </span>
+            <span className="float-right btn btn-sm ">{`${b.turn}`}</span>
             <span
               className="btn btn-sm float-right"
               onClick={() => handleActive(b)}
             >
-              <CheckSquareOutlined
-                className={b.active ? "text-success" : "text-danger"}
-              />
+              <CheckSquareOutlined className={b.active ? "text-success" : "text-danger"} />
             </span>
             <span className="float-right btn btn-sm ">
               {
-                filterSub ? filterSub.name : '(sub-категория отсутствует)'
+                filterSubs ? filterSubs.name : '(категория отсутствует)'
               }
             </span>
             <span className="float-right btn btn-sm ">
-              {
-                 comparisonCategorydAndSub(filterSub, categories)
-              }
+              {/* {console.log('filterSubs', filterSubs)} */}
+              {findSubInCategory(filterSubs, categories)}
             </span>
-            <span className="float-right btn btn-sm ">{`${b.turn}`}</span>
           </div>
         );
       })}
     </div>
-  );
+  )
 
-  return <AdminNavigation name={"Брэнды"} children={ReturnBrand()} />;
+
+  return (
+    <AdminNavigation name="Брэнд" children={ReturnBrand()} />
+  );
 };
 
 export default BrandCreate;
