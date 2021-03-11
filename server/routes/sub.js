@@ -13,6 +13,6 @@ router.post("/sub", authCheck, adminCheck, create)
 router.get("/subs", list)
 router.get("/sub/:_id", read)
 router.put("/sub/:_id", authCheck, adminCheck, update)
-router.delete("/sub/:slug", authCheck, adminCheck, remove)
+router.delete("/sub/:_id", authCheck, adminCheck, remove)
 
 module.exports=router

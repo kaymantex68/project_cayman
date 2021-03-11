@@ -27,7 +27,7 @@ const SubSchema = new mongoose.Schema(
         },
         active: {
             type: Boolean,
-            default: false
+            default: true
         }
     },
     {

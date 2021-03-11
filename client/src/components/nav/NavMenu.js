@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
-import { getCategories } from '../../functions/category'
+import { getCategories } from "../../functions/category";
+import { getSubs } from "../../functions/sub";
+import { getBrands} from '../../functions/brand'
 // import {
 //     MailOutlined,
 //     AppstoreOutlined,
@@ -14,26 +16,74 @@ function handleClick(e) {
 }
 
 const NavMenu = () => {
-    const [categories, setCategories] = useState([])
+    const [categories, setCategories] = useState([]);
+    const [subs, setSubs] = useState([]);
+    const [brands, setBrands]= useState([])
 
     useState(() => {
-        getCategories().then(res => {
-            setCategories(res.data)
-        })
-    }, [])
+        getCategories().then((res) => {
+            setCategories(res.data);
+            getSubs().then((res) => {
+                setSubs(res.data);
+                getBrands().then(res=>{
+                    setBrands(res.data)
+                })
+            });
+        });
+    }, []);
 
+    console.log("categories", categories);
+    console.log("subs", subs);
+    console.log('brands', brands)
 
-    console.log('categories', categories)
     return (
         <Menu onClick={handleClick} mode="horizontal">
-
             <SubMenu key="SubMenu" title="Каталог">
-                {categories.map(c => {
+                {/* add category to menu */}
+                {categories.map((c) => {
                     return (
                         <>
-                            {c.active ? <SubMenu key={c._id} title={c.name} style={{ width: "auto" }}></SubMenu> : null}
+                            {c.active ? (
+                                <SubMenu
+                                    key={c._id}
+                                    title={c.name}
+                                    style={{ width: "auto" }}
+                                >
+                                    {/* add sub-category to menu */}
+                                    {
+                                        subs.map(s => {
+                                            return (
+                                                <>
+                                                    {
+                                                        s.active && c._id === s.parent ?
+                                                            <SubMenu
+                                                                key={s._id}
+                                                                title={s.name}
+                                                                style={{ width: "auto" }}
+                                                            >
+                                                                {brands.map(b=>{
+                                                                    return (
+                                                                        <>
+                                                                        {
+                                                                        b.active && s._id === b.parent 
+                                                                        ? <Menu.Item key={b._id}>{b.name}</Menu.Item>
+                                                                        : null
+                                                                        }
+                                                                        </>
+                                                                    )
+                                                                })}
+                                                            </SubMenu>
+                                                            : null
+
+                                                    }
+                                                </>
+                                            )
+                                        })
+                                    }
+                                </SubMenu>
+                            ) : null}
                         </>
-                    )
+                    );
                 })}
                 {/* <SubMenu key="IP" title="IP камеры" style={{ width: "auto" }}>
                         <SubMenu key="IPoutdoor" title="IP камеры уличные" style={{ width: "auto" }}>
@@ -56,7 +106,6 @@ const NavMenu = () => {
                             <Menu.Item key="14">HiWatch</Menu.Item>
                         </SubMenu>
                     </SubMenu> */}
-
             </SubMenu>
         </Menu>
     );

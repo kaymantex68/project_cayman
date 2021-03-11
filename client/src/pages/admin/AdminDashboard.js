@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import AdminNav from '../../components/nav/AdminNav'
 // import product, to be deleted
 import { product } from '../../json/product'
 import axios from 'axios'

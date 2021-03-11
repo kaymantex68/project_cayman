@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import AdminNav from "../../../components/nav/AdminNav";
+
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { getCategory, updateCategory } from '../../../functions/category'
@@ -11,6 +11,7 @@ import AdminNavigation from '../../../components/nav/AdminNavigation'
 const CategoryUpdate = ({ history, match }) => {
     const [name, setName] = useState('')
     const [turn, setTurn] = useState('')
+    const [active, setActive]=useState(false)
     const [categories, setCategories] = useState([])
 
     const [loading, setLoading] = useState(false)
@@ -22,6 +23,7 @@ const CategoryUpdate = ({ history, match }) => {
             .then(res => {
                 setName(res.data.category.name)
                 setTurn(res.data.category.turn)
+                setActive(res.data.category.active)
             })
 
     }, [])
@@ -33,7 +35,7 @@ const CategoryUpdate = ({ history, match }) => {
         e.preventDefault()
         setLoading(true)
         console.log(match.params.slug)
-        updateCategory(match.params.slug, { name, turn }, user.token)
+        updateCategory(match.params.slug, { name, turn, active }, user.token)
             .then(res => {
                 setLoading(false)
                 toast.success(`Категория ${name} с номером ${turn} обновлена`)

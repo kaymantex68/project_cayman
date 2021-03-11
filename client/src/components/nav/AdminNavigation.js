@@ -49,7 +49,7 @@ const AdminNavigation = (props) => {
                     <SubMenu key="category" icon={<PieChartOutlined />} title="Структура каталога">
                         <Menu.Item key="category_1"><Link to="/admin/category">Категории</Link></Menu.Item>
                         <Menu.Item key="sub_category_1"><Link to="/admin/sub">Sub-категории</Link></Menu.Item>
-                        <Menu.Item key="brands">Брэнды</Menu.Item>
+                        <Menu.Item key="brands"><Link to="/admin/brand">Брэнды</Link></Menu.Item>
                     </SubMenu>
                     <Menu.Item key="9" icon={<FileOutlined />}>
                         Files

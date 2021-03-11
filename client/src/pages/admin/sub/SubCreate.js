@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import AdminNav from "../../../components/nav/AdminNav";
+
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {
@@ -58,10 +58,10 @@ const SubCreate = () => {
             });
     };
 
-    const handleRemove = (slug, name, turn) => {
+    const handleRemove = (_id, name, turn) => {
         if (window.confirm(`Удалить?`)) {
             setLoading(true);
-            removeSub(slug, user.token)
+            removeSub(_id, user.token)
                 .then((res) => {
                     setLoading(false);
                     toast.warning(`Sub-категория ${name} с номером ${turn} удалена!`);
@@ -161,7 +161,7 @@ const SubCreate = () => {
                                 </Link>
                                 <span
                                     className="btn btn-sm float-right"
-                                    onClick={() => handleRemove(s.slug, s.name, s.turn)}
+                                    onClick={() => handleRemove(s._id, s.name, s.turn)}
                                 >
                                     <DeleteOutlined className="text-danger" />
                                 </span>

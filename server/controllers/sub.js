@@ -41,7 +41,7 @@ exports.update = async (req, res) => {
 
 exports.remove = async (req, res) => {
     try {
-        const result = await Sub.findOneAndDelete({ slug: req.params.slug })
+        const result = await Sub.findOneAndDelete({ _id: req.params._id })
         res.json(result)
     } catch (err) {
         console.log('Ошибка удаления Sub-категории --------->', err)
