@@ -131,7 +131,7 @@ const CategoryCreate = () => {
             <LocalSearch filter={filter} setFilter={setFilter} />
             {categories.filter(searched(filter)).map((c) => {
                 return (
-                    <div class="alert alert-primary " key={c._id}>
+                    <div className="alert alert-primary " key={c._id}>
                         {`${c.name}`}
                         <Link
                             className="btn btn-sm float-right"

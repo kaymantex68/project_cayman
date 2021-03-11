@@ -21,12 +21,14 @@ const SubCreate = () => {
     const [name, setName] = useState("");
     const [turn, setTurn] = useState("");
     const [subs, setSubs] = useState([]);
-    const [category, setCategory] = useState('')
+    const [category, setCategory] = useState('all')
     const [categories, setCategories] = useState([])
     // filter step 1
     const [filter, setFilter] = useState("");
     const [loading, setLoading] = useState(false);
     const { user } = useSelector((state) => ({ ...state }));
+
+    console.log('parrent category', category)
 
     const loadSubCategories = () => {
         getSubs().then((res) => setSubs(res.data));
@@ -90,7 +92,12 @@ const SubCreate = () => {
 
 
 
-    const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
+    const searched = (filter) => (c) => {
+        if (c.parent === category)  return c.name.toLowerCase().includes(filter)
+    
+        if (category === 'all') return c.name.toLowerCase().includes(filter)
+        
+    };
 
     const categoryForm = () => {
         return (
@@ -134,7 +141,7 @@ const SubCreate = () => {
                     <div className="form-group">
                         <label>Родительская категория</label>
                         <select name="category" className="form-control" onChange={(e) => setCategory(e.target.value)}>
-                            <option>Выберите родительскую категорию (обязательный пункт)</option>
+                            <option value="all">Выберите родительскую категорию (обязательный пункт)</option>
                             {categories.length > 0 && categories.map(c => {
                                 return <option key={c._id} value={c._id}>{c.name}</option>
                             })}
@@ -151,7 +158,7 @@ const SubCreate = () => {
                         })
                         // filterCategory ? console.log(filterCategory) : console.log('(категория отсутствует)')
                         return (
-                            <div class="alert alert-primary " key={s._id}>
+                            <div className="alert alert-primary " key={s._id}>
                                 {`${s.name}`}
                                 <Link
                                     className="btn btn-sm float-right"

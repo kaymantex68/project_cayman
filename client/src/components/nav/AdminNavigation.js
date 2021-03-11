@@ -19,7 +19,6 @@ const AdminNavigation = (props) => {
     const [collapsed, setCollapsed] = useState(false);
 
     const onCollapse = () => {
-        console.log(collapsed);
         setCollapsed(!collapsed);
     };
 

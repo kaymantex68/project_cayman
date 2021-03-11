@@ -25,7 +25,7 @@ const BrandCreate = () => {
   const [name, setName] = useState("");
   const [turn, setTurn] = useState("");
   const [subs, setSubs] = useState([]);
-  const [sub, setSub] = useState('')
+  const [sub, setSub] = useState('all')
   const [categories, setCategories] = useState([])
   const [brands, setBrands] = useState([])
   // filter step 1
@@ -55,7 +55,6 @@ const BrandCreate = () => {
         setSubs(res.data)
         getBrands().then((res) => { 
           setBrands(res.data)
-          console.log('load good')
         });
       });
     }
@@ -113,7 +112,10 @@ const BrandCreate = () => {
 
 
 
-  const searched = (filter) => (b) => b.name.toLowerCase().includes(filter);
+  const searched = (filter) => (b) => {
+    if (b.parent === sub)  return b.name.toLowerCase().includes(filter)
+    if (sub === 'all') return b.name.toLowerCase().includes(filter)
+  }
 
   const brandForm = () => {
     return (
@@ -169,7 +171,7 @@ const BrandCreate = () => {
       <div className="form-group">
         <label>Родительская sub-категория</label>
         <select name="subcategory" className="form-control" onChange={(e) => setSub(e.target.value)}>
-          <option>Выберите родительскую sub-категорию (обязательный пункт)</option>
+          <option value="all">Выберите родительскую sub-категорию (обязательный пункт)</option>
           {subs.length > 0 && subs.map(s => {
             return (
               <option key={s._id} value={s._id}>
@@ -190,7 +192,7 @@ const BrandCreate = () => {
         })
 
         return (
-          <div class="alert alert-primary " key={b._id}>
+          <div className="alert alert-primary " key={b._id}>
             {`${b.name}`}
             <Link
               className="btn btn-sm float-right"
@@ -217,7 +219,6 @@ const BrandCreate = () => {
               }
             </span>
             <span className="float-right btn btn-sm ">
-              {/* {console.log('filterSubs', filterSubs)} */}
               {findSubInCategory(filterSubs, categories)}
             </span>
           </div>
