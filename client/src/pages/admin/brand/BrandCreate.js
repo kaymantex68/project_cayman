@@ -19,36 +19,27 @@ import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
 import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
-
+import UploadBrandImage from '../../../components/form/UploadBrandPicture'
 
 const BrandCreate = () => {
+
   const [name, setName] = useState("");
   const [turn, setTurn] = useState("");
   const [subs, setSubs] = useState([]);
   const [sub, setSub] = useState('all')
   const [categories, setCategories] = useState([])
   const [brands, setBrands] = useState([])
-  // filter step 1
-  const [filter, setFilter] = useState("");
   const [loading, setLoading] = useState(false);
+  // filter 
+  const [filter, setFilter] = useState("");
+  // selector
   const { user } = useSelector((state) => ({ ...state }));
-
-  const loadSubCategories = () => {
-    getSubs().then((res) => setSubs(res.data));
-  };
-
-  const loadCategories = () => {
-    getCategories().then((res) => setCategories(res.data));
-  };
 
   const loadBrands = () => {
     getBrands().then((res) => setBrands(res.data));
   }
-
+  // get categories, subs and brands
   useState(() => {
-    // loadSubCategories();
-    // loadCategories();
-    // loadBrands()
     getCategories().then((res) => {
       setCategories(res.data)
       getSubs().then((res) => {
@@ -60,7 +51,7 @@ const BrandCreate = () => {
     }
     );
   }, []);
-
+  // send form data
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -77,7 +68,7 @@ const BrandCreate = () => {
         if (err.response.status === 400) toast.error(err.response.data);
       });
   };
-
+  // delete brand
   const handleRemove = (_id, name, turn) => {
     if (window.confirm(`Удалить?`)) {
       setLoading(true);
@@ -93,7 +84,7 @@ const BrandCreate = () => {
         });
     }
   };
-
+  // active or disactive brand
   const handleActive = (b) => {
     setLoading(true)
     updateBrand(b._id,
@@ -109,18 +100,17 @@ const BrandCreate = () => {
         if (err.response.status === 400) toast.error(err.response.data)
       })
   }
-
-
-
+  // filter (searched)
   const searched = (filter) => (b) => {
     if (b.parent === sub)  return b.name.toLowerCase().includes(filter)
     if (sub === 'all') return b.name.toLowerCase().includes(filter)
   }
-
+  // brand form return
   const brandForm = () => {
     return (
       <form onSubmit={handleSubmit}>
         <div className="form-group">
+          <UploadBrandImage />
           <label>Название нового Брэнда</label>
           <input
             type="text"
@@ -145,7 +135,6 @@ const BrandCreate = () => {
           <button
             className="btn btn-outline-primary"
             disabled={!name || !sub || !turn || loading}
-
           >
             Добавить
           </button>
@@ -153,7 +142,7 @@ const BrandCreate = () => {
       </form>
     );
   };
-
+  // compare and finde parent
   const findSubInCategory = (_sub, _categories) => {
     return _categories.find(_c => {
       return _c._id === _sub.parent
@@ -163,9 +152,7 @@ const BrandCreate = () => {
       }).name
       : 'категория не найдена'
   }
-
-
-
+  // main function
   const ReturnBrand = () => (
     <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
       <div className="form-group">
@@ -183,9 +170,8 @@ const BrandCreate = () => {
       </div>
       {brandForm()}
       <hr />
-
       <LocalSearch filter={filter} setFilter={setFilter} />
-
+      {/* filter */}
       {brands.filter(searched(filter)).map((b) => {
         let filterSubs = subs.find(_sub => {
           return _sub._id === b.parent
@@ -229,6 +215,7 @@ const BrandCreate = () => {
 
 
   return (
+    // put retrn into admin sidebar
     <AdminNavigation name="Брэнд" children={ReturnBrand()} />
   );
 };
