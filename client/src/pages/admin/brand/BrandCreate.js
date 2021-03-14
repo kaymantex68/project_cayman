@@ -143,7 +143,7 @@ const BrandCreate = () => {
       </form>
     );
   };
-  // compare and finde parent
+  // compare and find parent
   const findSubInCategory = (_sub, _categories) => {
     return _categories.find(_c => {
       return _c._id === _sub.parent
@@ -217,7 +217,7 @@ const BrandCreate = () => {
 
   return (
     // put retrn into admin sidebar
-    <AdminNavigation name="Брэнд" children={ReturnBrand()} />
+    <AdminNavigation name="Brand" children={ReturnBrand()} />
   );
 };
 

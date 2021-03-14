@@ -6,11 +6,12 @@ const router = express.Router()
 const { authCheck, adminCheck } = require('../middlewares/auth')
 
 // import controllers
-const { uploadImage, create } = require('../controllers/uploadImages')
+const { uploadImage, create, getImageInfo } = require('../controllers/uploadImages')
 
 
 router.post("/brandImage", authCheck, adminCheck, uploadImage)
 router.post("/brandImage/data", authCheck, adminCheck, create)
+router.get('/brandImage/:name', getImageInfo)
 // router.get("/subs", list)
 // router.get("/sub/:_id", read)
 // router.put("/sub/:_id", authCheck, adminCheck, update)

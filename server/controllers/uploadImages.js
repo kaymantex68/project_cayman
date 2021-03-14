@@ -44,9 +44,9 @@ exports.uploadImage = async (req, res) => {
         
         const slug = req.headers.name
         console.log('-------------file-------------')
-        const fileName = `${process.env.URI_BRAND_PICTURE}/${slug}.${req.files.image.mimetype.split('/')[1]}`
+        const fileName = `${slug}.${req.files.image.mimetype.split('/')[1]}`
         await fs.writeFile(
-            fileName,
+            `${process.env.URI_BRAND_PICTURE}/${fileName}`,
             req.files.image.data,
             "binary",
             (err) => {
@@ -71,3 +71,13 @@ exports.uploadImage = async (req, res) => {
     }
 }
 //-------------------------------------------------------- save brand picture end
+
+
+exports.getImageInfo = async (req, res)=>{
+    try{
+        const brandInfo = await BrandPicture.findOne({name: req.params.name}).exec()
+        res.json(brandInfo)
+    }catch(err){
+        console.log('-------------get brand picture info error-------------')
+    }
+}
