@@ -4,10 +4,14 @@ const { ObjectId } = mongoose.Schema;
 
 const brandPictureSchema = new mongoose.Schema(
     {
-        title: {
+        name: {
             type: String,
         },
         slug: {
+            type: String,
+            lowercase:true,
+        },
+        fileName: {
             type: String,
         },
         uri: {

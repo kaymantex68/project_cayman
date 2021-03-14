@@ -110,7 +110,6 @@ const BrandCreate = () => {
     return (
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <UploadBrandImage />
           <label>Название нового Брэнда</label>
           <input
             type="text"
@@ -131,10 +130,12 @@ const BrandCreate = () => {
             placeholder="порядковый номер в навигационной панели (число)"
             disabled={loading}
           />
+          <br/>
+          <UploadBrandImage name={name}  disabled={!name || !turn || sub ==='all' || loading}/>
           <br />
           <button
             className="btn btn-outline-primary"
-            disabled={!name || !sub || !turn || loading}
+            disabled={!name || sub === 'all' || !turn || loading}
           >
             Добавить
           </button>
