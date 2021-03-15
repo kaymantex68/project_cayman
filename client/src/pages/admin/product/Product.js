@@ -26,6 +26,11 @@ const Product = () => {
     const [description, setDescription] = useState('')
     const [sale, setSale] = useState(false)
     const [stock, setStock] = useState(false)
+    const [params, setParams] = useState({
+        1: ['',''],
+        2: ['',''],
+    })
+    const [number, setNumber] = useState(null)
     const [coast, setCoast] = useState('')
     const [oldCoast, setOldCoast] = useState('')
 
@@ -42,7 +47,17 @@ const Product = () => {
     console.log('brandSlug:', brandSlug)
     console.log('description:', description)
     console.log('sale:', sale)
+    console.log('stock:', stock)
+    console.log('coast:', coast)
+    console.log('oldCoast:', oldCoast)
+    console.log('params', params)
 
+    useState(() => {
+        setNumber(Object.keys(params).length + 1)
+    }, [])
+
+    console.log('params:', params)
+    console.log('lenght', number)
     const loadCategories = () => {
         getCategories().then((res) => setCategories(res.data));
     };
@@ -106,6 +121,37 @@ const Product = () => {
                 setLoading(false)
                 if (err.response.status === 400) toast.error(err.response.data)
             })
+    }
+
+    const handleChange1 = (e) => {
+        let arr = [...params[e.target.name]]
+        arr[0] = e.target.value
+        setParams({ ...params, [e.target.name]: arr})
+    }
+
+    const handleChange2 = (e) => {
+        let arr = [...params[e.target.name]]
+        arr[1] = e.target.value
+        setParams({ ...params, [e.target.name]: arr })
+    }
+
+    const handleAdd = (e) => {
+        e.preventDefault()
+        setNumber(number + 1)
+        setParams({ ...params, [number]: '' })
+    }
+
+    const handleDelete = (e) => {
+        e.preventDefault()
+        if (e.target.name !== '1' && e.target.name !== '2') {
+            let NewObject = { ...params }
+            delete NewObject[e.target.name]
+            setParams({ ...NewObject })
+        }
+        else {
+            console.log('это поле нельзя удалить')
+        }
+
     }
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
@@ -183,9 +229,36 @@ const Product = () => {
                             disabled={loading}
                         />
                     </div>
-                    <br/>
+                    <br />
+                    <label style={{ fontWeight: 'bold' }}>Характеристики товара</label>
+                    <div className="container-fluid">
+                    {params &&
+                        Object.keys(params).map(key => {
+                            return (
+                                <div class="input-group-prepend">
+                                    <span className="input-group-text">{key}</span>
+                                    <input name={key} placeholder="параметр" className="form-control mr-4 ml-2" value={params[key][0]} onChange={handleChange1} />
+                                    <input name={key} placeholder="значение" className="form-control mr-4" value={params[key][1]} onChange={handleChange2} />
+                                    <button
+                                        type="button"
+                                        name={key}
+                                        className="btn btn-outline-danger btn-sm ml-1"
+                                        onClick={handleDelete}
+                                    >удалить поле</button>
+                                </div>
+                            )
+                        })
+                    }
+                    </div>
+                    <br />
                     <button
-                        className="btn btn-outline-primary"
+                        type="button"
+                        className="btn btn-outline-success btn-sm"
+                        onClick={handleAdd}>добавить поле</button>
+                    <hr />
+                    <button
+                        type="button"
+                        className="btn btn-outline-primary btn-sm p-1 "
                         disabled={!name || loading}
                     >
                         Добавить
