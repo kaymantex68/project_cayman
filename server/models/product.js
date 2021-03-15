@@ -4,14 +4,17 @@ const { ObjectId } = mongoose.Schema
 // const ProductSchema = new mongoose.Schema({}, { strict: false });
 
 const productSchema = new mongoose.Schema({
-    title: {
+    name: {
         type: String,
+        require: true,
     },
     slug: {
         type: String,
+        require:true,
+        unique: true,
     },
     brand: {
-        type: ObjectId,
+        type: String,
     },
     brandSlug: {
         type: String, 
@@ -30,12 +33,15 @@ const productSchema = new mongoose.Schema({
     },
     sale: {
         type: Boolean,
+        default: false,
     },
     discount: {
         type: Number,
+        default: false,
     },
     promotion:{
         type: Boolean,
+        default: false,
     },
     youtube: {
         type: String,

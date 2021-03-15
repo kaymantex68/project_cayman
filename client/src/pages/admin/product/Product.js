@@ -16,6 +16,7 @@ import _ from 'lodash'
 import slugify from 'react-slugify'
 import UploadBrandImage from '../../../components/form/UploadBrandPicture'
 import { Input, Checkbox } from 'antd';
+import { createProduct } from '../../../functions/product'
 const { TextArea } = Input;
 
 
@@ -25,10 +26,11 @@ const Product = () => {
     const [brandSlug, setBrandSlug] = useState('')
     const [description, setDescription] = useState('')
     const [sale, setSale] = useState(false)
-    const [stock, setStock] = useState(false)
+    const [discount, setDiscount] = useState('')
+    const [promotion, setPromotion] = useState(false)
     const [params, setParams] = useState({
-        1: ['',''],
-        2: ['',''],
+        1: ['', ''],
+        2: ['', ''],
     })
     const [number, setNumber] = useState(null)
     const [coast, setCoast] = useState('')
@@ -36,28 +38,29 @@ const Product = () => {
 
     const [brands, setBrands] = useState([])
     const [categories, setCategories] = useState([]);
-    // filter step 1
+
     const [filter, setFilter] = useState("");
     const [loading, setLoading] = useState(false);
+
     const { user } = useSelector((state) => ({ ...state }));
 
 
-    console.log('name: ', name)
-    console.log('brand: ', brand)
-    console.log('brandSlug:', brandSlug)
-    console.log('description:', description)
-    console.log('sale:', sale)
-    console.log('stock:', stock)
-    console.log('coast:', coast)
-    console.log('oldCoast:', oldCoast)
-    console.log('params', params)
+    // console.log('name: ', name)
+    // console.log('brand: ', brand)
+    // console.log('brandSlug:', brandSlug)
+    // console.log('description:', description)
+    // console.log('sale:', sale)
+    // console.log('discount:', discount)
+    // console.log('promotion:', promotion)
+    // console.log('coast:', coast)
+    // console.log('oldCoast:', oldCoast)
+    // console.log('params', params)
 
     useState(() => {
         setNumber(Object.keys(params).length + 1)
     }, [])
 
-    console.log('params:', params)
-    console.log('lenght', number)
+    
     const loadCategories = () => {
         getCategories().then((res) => setCategories(res.data));
     };
@@ -70,6 +73,7 @@ const Product = () => {
                 setBrands(uniq)
             })
             .catch(err => {
+                toast.error(err.data.message)
                 console.warn('err', err)
             })
     }, []);
@@ -77,20 +81,17 @@ const Product = () => {
 
 
     const handleSubmit = (e) => {
-        // e.preventDefault();
-        // setLoading(true);
-        // createCategory({ name, turn }, user.token)
-        //     .then((res) => {
-        //         setLoading(false);
-        //         toast.success(`Категория ${name} с номером ${turn} создана`);
-        //         setName("");
-        //         setTurn("");
-        //         loadCategories();
-        //     })
-        //     .catch((err) => {
-        //         setLoading(false);
-        //         if (err.response.status === 400) toast.error(err.response.data);
-        //     });
+        e.preventDefault();
+        setLoading(true);
+        createProduct({ name, brand, description, params, coast, oldCoast, sale, promotion, discount }, user.token)
+            .then(res => {
+                setLoading(false)
+                toast.success(`Новый товар "${name}" создан`)
+            })
+            .catch(err => {
+                if (err.response.status === 400) toast.error(err.response.data);
+                setLoading(false)
+            })
     };
 
     const handleRemove = (slug, name, turn) => {
@@ -126,7 +127,7 @@ const Product = () => {
     const handleChange1 = (e) => {
         let arr = [...params[e.target.name]]
         arr[0] = e.target.value
-        setParams({ ...params, [e.target.name]: arr})
+        setParams({ ...params, [e.target.name]: arr })
     }
 
     const handleChange2 = (e) => {
@@ -149,7 +150,7 @@ const Product = () => {
             setParams({ ...NewObject })
         }
         else {
-            console.log('это поле нельзя удалить')
+            toast.warning('Поле 1 и 2 являются обязательными. Их нельзя удалить!')
         }
 
     }
@@ -204,7 +205,7 @@ const Product = () => {
                     <div className="form-group">
                         <label style={{ fontWeight: 'bold' }}>Акция</label>
                         <br />
-                        <Checkbox onChange={e => setStock(e.target.checked)} />
+                        <Checkbox onChange={e => setPromotion(e.target.checked)} />
                     </div>
                     <br />
                     <div className="form-group">
@@ -232,23 +233,23 @@ const Product = () => {
                     <br />
                     <label style={{ fontWeight: 'bold' }}>Характеристики товара</label>
                     <div className="container-fluid">
-                    {params &&
-                        Object.keys(params).map(key => {
-                            return (
-                                <div class="input-group-prepend">
-                                    <span className="input-group-text">{key}</span>
-                                    <input name={key} placeholder="параметр" className="form-control mr-4 ml-2" value={params[key][0]} onChange={handleChange1} />
-                                    <input name={key} placeholder="значение" className="form-control mr-4" value={params[key][1]} onChange={handleChange2} />
-                                    <button
-                                        type="button"
-                                        name={key}
-                                        className="btn btn-outline-danger btn-sm ml-1"
-                                        onClick={handleDelete}
-                                    >удалить поле</button>
-                                </div>
-                            )
-                        })
-                    }
+                        {params &&
+                            Object.keys(params).map(key => {
+                                return (
+                                    <div class="input-group-prepend">
+                                        <span className="input-group-text">{key}</span>
+                                        <input name={key} placeholder="параметр" className="form-control mr-4 ml-2" value={params[key][0]} onChange={handleChange1} />
+                                        <input name={key} placeholder="значение" className="form-control mr-4" value={params[key][1]} onChange={handleChange2} />
+                                        <button
+                                            type="button"
+                                            name={key}
+                                            className="btn btn-outline-danger btn-sm ml-1"
+                                            onClick={handleDelete}
+                                        >удалить поле</button>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                     <br />
                     <button
@@ -260,6 +261,7 @@ const Product = () => {
                         type="button"
                         className="btn btn-outline-primary btn-sm p-1 "
                         disabled={!name || loading}
+                        onClick={handleSubmit}
                     >
                         Добавить
           </button>
