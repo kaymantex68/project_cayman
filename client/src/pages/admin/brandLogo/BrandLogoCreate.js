@@ -43,6 +43,7 @@ const BrandLogoCreate = () => {
             })
     }
 
+    console.log('env', process.env.REACT_IMAGES_BRAND)
     useEffect(() => {
         name && getBrandPictureInfo(name)
             .then(res => {
@@ -87,7 +88,7 @@ const BrandLogoCreate = () => {
             <>
                 <div className="row">
                     {pictureOk && (
-                        <img src={`/images/brand/${fileName}`} style={{ maxWidth: "150px", paddingLeft: "20px" }} />
+                        <img src={`${process.env.REACT_APP_IMAGES_BRAND}/${fileName}`} style={{ maxWidth: "150px", paddingLeft: "20px" }} />
                     )}
                 </div>
                 <label className="btn btn-primary p-0" disabled={!name || loading}>
@@ -134,7 +135,7 @@ const BrandLogoCreate = () => {
             </form>
         );
     };
-
+    
     const ReturnBrand = () => (
         <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
             {brandForm()}
@@ -142,10 +143,9 @@ const BrandLogoCreate = () => {
             {loading
             ? <h4>загрузка</h4>
             : logos.map(l => (
-                <img src={`/images/brand/${l.fileName}`} style={{ maxWidth: "100px", margin: "10px" }} />
+                <img key={l._id} src={`${process.env.REACT_APP_IMAGES_BRAND}/${l.fileName}`} style={{ maxWidth: "100px", margin: "10px" }} />
             ))
             }
-            
         </div>
     );
 

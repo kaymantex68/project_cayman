@@ -45,7 +45,7 @@ const UploadBrandImage = ({ name, disabled }) => {
         <>
             <div className="row">
                 {pictureOk &&
-                    <img src={`/images/brand/${fileName}`} style={{ maxWidth: "150px", paddingLeft: "20px" }} />
+                    <img src={`${process.env.REACT_APP_IMAGES_BRAND}/${fileName}`} style={{ maxWidth: "150px", paddingLeft: "20px" }} />
                 }
             </div>
             <br />

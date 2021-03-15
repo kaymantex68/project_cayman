@@ -8,7 +8,9 @@ import {
     UserOutlined,
     HomeOutlined,
     SolutionOutlined,
-   
+    VideoCameraOutlined,
+    VideoCameraAddOutlined
+
 } from "@ant-design/icons";
 import { Link } from 'react-router-dom'
 
@@ -29,9 +31,9 @@ const AdminNavigation = (props) => {
                 collapsible
                 collapsed={collapsed}
                 onCollapse={onCollapse}
-                style={{ backgroundColor: "white"}}
+                style={{ backgroundColor: "white" }}
             >
-                <div className="logo" style={{ Width: "300px" }}/>
+                <div className="logo" style={{ Width: "300px" }} />
 
                 <Menu theme="light" defaultSelectedKeys={["1"]} mode="inline" >
                     <Menu.Item key="hist" icon={<HomeOutlined />}>
@@ -51,9 +53,15 @@ const AdminNavigation = (props) => {
                         <Menu.Item key="brands"><Link to="/admin/brand">Brand</Link></Menu.Item>
                         <Menu.Item key="brandPicture"><Link to="/admin/brandPicture">Brand-лого</Link></Menu.Item>
                     </SubMenu>
+                    <SubMenu key="products" icon={<VideoCameraOutlined />} title="Товары">
+                        <Menu.Item key="product" icon={<VideoCameraAddOutlined />}>
+                        <Link to="/admin/product">Новый товар</Link>
+                    </Menu.Item>
+                    </SubMenu>
+
                     <Menu.Item key="9" icon={<FileOutlined />}>
                         Files
-          </Menu.Item>
+                    </Menu.Item>
                 </Menu>
 
             </Sider>
@@ -64,11 +72,11 @@ const AdminNavigation = (props) => {
                     className="site-layout-background pl-2"
                     style={{ padding: 0, backgroundColor: "white" }}
                 >
-                    {props.name? <span style={{fontSize: "1.2rem"}}>{props.name}</span>: null}
-        </Header>
+                    {props.name ? <span style={{ fontSize: "1.2rem" }}>{props.name}</span> : null}
+                </Header>
                 <Content style={{ margin: "0 0px" }} className="p-2">
-                    {props.children? props.children : null }
-                    </Content>
+                    {props.children ? props.children : null}
+                </Content>
             </Layout>
         </Layout>
     );
