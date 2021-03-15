@@ -7,10 +7,6 @@ require("dotenv").config();
 // create a list in data base
 exports.create = async (req, res) => {
     try {
-        console.log('|')
-        console.log('|')
-        console.log('|')
-        console.log('|')
         console.log('-------------brand name-------------')
         console.log(req.body)
         console.log('-------------brand name-------------')
@@ -26,12 +22,9 @@ exports.create = async (req, res) => {
             console.log('-------------result-------------')
             console.log(newResult)
             console.log('-------------result-------------')
+            res.json(newResult)
         }
     } catch (err) {
-        console.log('|')
-        console.log('|')
-        console.log('|')
-        console.log('|')
         console.log('-------------create brand picture error-------------')
         console.log(err)
         console.log('-------------create brand picture error-------------')
@@ -41,8 +34,9 @@ exports.create = async (req, res) => {
 // create file in folder and update a list to data base
 exports.uploadImage = async (req, res) => {
     try {
-        
         const slug = req.headers.name
+        console.log('-------------file-------------')
+        console.log(req.files.image.data)
         console.log('-------------file-------------')
         const fileName = `${slug}.${req.files.image.mimetype.split('/')[1]}`
         await fs.writeFile(
@@ -60,10 +54,6 @@ exports.uploadImage = async (req, res) => {
         }
         return res.json({ message: 'upload complete' })
     } catch (err) {
-        console.log('|')
-        console.log('|')
-        console.log('|')
-        console.log('|')
         console.log('-------------upload error start-------------')
         console.log(err)
         console.log('-------------upload error end-------------')
@@ -80,4 +70,11 @@ exports.getImageInfo = async (req, res)=>{
     }catch(err){
         console.log('-------------get brand picture info error-------------')
     }
+}
+
+exports.list = async (req, res) => {
+    const result = await BrandPicture.find({})
+        .sort({ parent: 1 })
+        .exec()
+    res.json(result)
 }

@@ -6,24 +6,22 @@ import { Avatar, Badge } from 'antd'
 const UploadBrandImage = ({ name, disabled }) => {
     const [file, setFile] = useState(null)
     const { user } = useSelector(state => ({ ...state }))
-    const [pictureOk, setPictureOk]=useState(false)
-    const[fileName,setFileName]=useState('')
+    const [pictureOk, setPictureOk] = useState(false)
+    const [fileName, setFileName] = useState('')
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log('change')
         name && getBrandPictureInfo(name)
-        .then(res=>{
-            if(res.data) {
-                setFileName(res.data.fileName)
-                setPictureOk(true)
-            } else{
-                setFileName('')
-                setPictureOk(false)
-            }
-        })
-    },[name])
-
-    console.log(fileName, pictureOk)
+            .then(res => {
+                if (res.data) {
+                    setFileName(res.data.fileName)
+                    setPictureOk(true)
+                } else {
+                    setFileName('')
+                    setPictureOk(false)
+                }
+            })
+    }, [name])
 
     const uploadFile = (e) => {
         let file = e.target.files[0]
@@ -46,27 +44,10 @@ const UploadBrandImage = ({ name, disabled }) => {
     return (
         <>
             <div className="row">
-                {pictureOk && 
-                    <Avatar
-                        shape="square"
-                        src={`/images/brand/${fileName}`}
-                        size={100}
-                        className="ml-3"
-                    />
+                {pictureOk &&
+                    <img src={`/images/brand/${fileName}`} style={{ maxWidth: "150px", paddingLeft: "20px" }} />
                 }
             </div>
-            <label
-                className="btn btn-primary "
-                disabled={disabled}>
-                Загрузить изображение
-            <input
-                    type="file"
-                    hidden
-                    accept="image/*"
-                    onChange={uploadFile}
-                    disabled={disabled}
-                />
-            </label>
             <br />
         </>
     )

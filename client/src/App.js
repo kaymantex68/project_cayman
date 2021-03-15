@@ -18,6 +18,8 @@ import CreateSub from './pages/admin/sub/SubCreate'
 import UpdateSub from './pages/admin/sub/SubUpdate'
 import CreateBrand from './pages/admin/brand/BrandCreate'
 
+import BrandLogoCreate from './pages/admin/brandLogo/BrandLogoCreate'
+
 import History from './pages/user/History'
 import Password from './pages/user/Password'
 
@@ -81,6 +83,7 @@ const App = () => {
           <AdminRoute exact path='/admin/sub/:_id' component={UpdateSub} />
           <AdminRoute exact path='/admin/brand' component={BrandCreate} />
           <AdminRoute exact path='/admin/brand/:_id' component={BrandUpdate} />
+          <AdminRoute exact path='/admin/brandPicture' component={BrandLogoCreate} />
 
           <Route exact path="/page/test" component={AdminNavigation} />
 
