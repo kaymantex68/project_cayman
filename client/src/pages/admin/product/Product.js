@@ -87,6 +87,7 @@ const Product = () => {
             .then(res => {
                 setLoading(false)
                 toast.success(`Новый товар "${name}" создан`)
+                setLoading(false);
             })
             .catch(err => {
                 if (err.response.status === 400) toast.error(err.response.data);
