@@ -21,7 +21,7 @@ import CreateBrand from './pages/admin/brand/BrandCreate'
 import BrandLogoCreate from './pages/admin/brandLogo/BrandLogoCreate'
 import NewProduct from './pages/admin/product/NewProduct'
 import Products from './pages/admin/product/Products'
-
+import UpdateProduct from './pages/admin/product/UpdateProduct'
 import History from './pages/user/History'
 import Password from './pages/user/Password'
 
@@ -86,7 +86,8 @@ const App = () => {
           <AdminRoute exact path='/admin/brand' component={BrandCreate} />
           <AdminRoute exact path='/admin/brand/:_id' component={BrandUpdate} />
           <AdminRoute exact path='/admin/brandPicture' component={BrandLogoCreate} />
-          <AdminRoute exact path='/admin/product/new' component={NewProduct} />
+          <AdminRoute exact path='/admin/product' component={NewProduct} />
+          <AdminRoute exact path='/admin/product/:slug' component={UpdateProduct} />
           <AdminRoute exact path='/admin/products' component={Products} />
 
           <Route exact path="/page/test" component={AdminNavigation} />

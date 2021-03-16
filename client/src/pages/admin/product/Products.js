@@ -90,7 +90,7 @@ const Products = () => {
                 }
                 actions={[
                     <SettingOutlined key="setting" onClick={handleClick} />,
-                    <EditOutlined key="edit" />,
+                    <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" /></Link>,
                     <EllipsisOutlined key="ellipsis" />,
                 ]}
             >        
