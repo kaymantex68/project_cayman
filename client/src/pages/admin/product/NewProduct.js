@@ -20,7 +20,7 @@ import { createProduct } from '../../../functions/product'
 const { TextArea } = Input;
 
 
-const Product = () => {
+const NewProduct = () => {
     const [name, setName] = useState("");
     const [brand, setBrand] = useState('')
     const [brandSlug, setBrandSlug] = useState('')
@@ -91,6 +91,7 @@ const Product = () => {
             })
             .catch(err => {
                 if (err.response.status === 400) toast.error(err.response.data);
+                if (err.response.status === 401) toast.error(err.response.data);
                 setLoading(false)
             })
     };
@@ -107,6 +108,7 @@ const Product = () => {
                 .catch((err) => {
                     setLoading(false);
                     if (err.response.status === 400) toast.error(err.response.data);
+                  
                 });
         }
     };
@@ -318,4 +320,4 @@ const Product = () => {
     );
 };
 
-export default Product;
+export default NewProduct;

@@ -9,7 +9,7 @@ import {
     HomeOutlined,
     SolutionOutlined,
     VideoCameraOutlined,
-    VideoCameraAddOutlined
+    VideoCameraAddOutlined,
 
 } from "@ant-design/icons";
 import { Link } from 'react-router-dom'
@@ -55,8 +55,11 @@ const AdminNavigation = (props) => {
                     </SubMenu>
                     <SubMenu key="products" icon={<VideoCameraOutlined />} title="Товары">
                         <Menu.Item key="product" icon={<VideoCameraAddOutlined />}>
-                        <Link to="/admin/product">Новый товар</Link>
-                    </Menu.Item>
+                            <Link to="/admin/product/new">Новый товар</Link>
+                        </Menu.Item>
+                        <Menu.Item key="product" icon={<VideoCameraOutlined />}>
+                            <Link to="/admin/products">Товары</Link>
+                        </Menu.Item>
                     </SubMenu>
 
                     <Menu.Item key="9" icon={<FileOutlined />}>
@@ -67,12 +70,14 @@ const AdminNavigation = (props) => {
             </Sider>
 
             {/* content */}
-            <Layout className="site-layout">
+            <Layout
+                className="site-layout"
+                style={{ padding: 0, backgroundColor: "white" }}>
                 <Header
                     className="site-layout-background pl-2"
                     style={{ padding: 0, backgroundColor: "white" }}
                 >
-                    {props.name ? <span style={{ fontSize: "1.2rem" }}>{props.name}</span> : null}
+                    {props.name ? <span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{props.name}</span> : null}
                 </Header>
                 <Content style={{ margin: "0 0px" }} className="p-2">
                     {props.children ? props.children : null}

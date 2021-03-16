@@ -10,14 +10,24 @@ const productSchema = new mongoose.Schema({
     },
     slug: {
         type: String,
-        require:true,
+        require: true,
         unique: true,
     },
     brand: {
         type: String,
     },
     brandSlug: {
-        type: String, 
+        type: String,
+    },
+    category: {
+        type: ObjectId,
+        // required: true,
+        ref: "Category"
+    },
+    sub: {
+        type: ObjectId,
+        // required: true,
+        ref: "Sub"
     },
     description: {
         type: String,
@@ -25,10 +35,13 @@ const productSchema = new mongoose.Schema({
     params: {
         type: Object,
     },
+    inStock: {
+        type: String,
+    },
     coast: {
         type: Number,
     },
-    oldCoast:{
+    oldCoast: {
         type: Number,
     },
     sale: {
@@ -39,7 +52,7 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: false,
     },
-    promotion:{
+    promotion: {
         type: Boolean,
         default: false,
     },
@@ -49,9 +62,9 @@ const productSchema = new mongoose.Schema({
     youtubeTutorial: {
         type: String,
     },
-    documents:{
+    documents: {
         type: Object
     }
-}, {timestamps: true})
+}, { timestamps: true })
 
 module.exports = mongoose.model('Product', productSchema)

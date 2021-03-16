@@ -28,3 +28,15 @@ exports.create = async (req, res) => {
         res.status(400).send('Ошибка создания нового товара')
     }
 }
+
+exports.list = async(req, res)=>{
+    try{
+        const products = await Product.find({})
+        .sort({brand: 1})
+        .exec()
+        res.json(products)
+    }catch(err){
+        console.log('Ошибка чтения товаров --------->', err)
+        res.status(400).send('Ошибка чтения товаров')
+    }
+}

@@ -9,7 +9,7 @@ exports.authCheck = async (req, res, next) => {
         req.user = firebaseUser
     }
     catch (err) {
-        res.status(401).json({ message: "ошибка записи или неверный token" })
+        res.status(401).send("Ошибка записи или неверный token! Перезагрузите страницу!" )
     }
     next()
 }
@@ -18,9 +18,7 @@ exports.adminCheck = async (req, res, next) => {
         const {email}= req.user
         const adminUser = await User.findOne({ email }).exec()
         if (adminUser.role !== 'admin') {
-            res.json({
-                err: 'Права администратора не доступны'
-            })
+            res.status(401).send("Права Администратора недоступны!!!" )
         } else {
             next()
         }

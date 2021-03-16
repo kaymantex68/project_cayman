@@ -9,6 +9,7 @@ const UploadBrandImage = ({ name, disabled }) => {
     const [pictureOk, setPictureOk] = useState(false)
     const [fileName, setFileName] = useState('')
 
+    
     useEffect(() => {
         console.log('change')
         name && getBrandPictureInfo(name)
