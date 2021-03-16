@@ -48,19 +48,19 @@ const UpdateProduct = ({ match }) => {
 
     // console.log('match', match.params.slug)
 
-    console.log('name: ', name)
-    console.log('brand: ', brand)
-    console.log('brandSlug:', brandSlug)
-    console.log('category', category)
-    console.log('sub', sub)
-    console.log('description:', description)
-    console.log('sale:', sale)
-    console.log('discount:', discount)
-    console.log('promotion:', promotion)
-    console.log('coast:', coast)
-    console.log('oldCoast:', oldCoast)
+    // console.log('name: ', name)
+    // console.log('brand: ', brand)
+    // console.log('brandSlug:', brandSlug)
+    // console.log('category', category)
+    // console.log('sub', sub)
+    // console.log('description:', description)
+    // console.log('sale:', sale)
+    // console.log('discount:', discount)
+    // console.log('promotion:', promotion)
+    // console.log('coast:', coast)
+    // console.log('oldCoast:', oldCoast)
     console.log('params', params)
-
+    console.log('number', number)
     // console.log('product', product)
     useState(() => {
         getProduct(match.params.slug)
@@ -77,13 +77,20 @@ const UpdateProduct = ({ match }) => {
                 setParams(res.data.params)
                 setCoast(res.data.coast)
                 setOldCoast(res.data.oldCoast)
-                setNumber(Object.keys(params).length + 1)
+                setNumber(Object.keys(res.data.params).length + 1)
                 getCategories()
                     .then((res) => {
                         setCategories(res.data)
                         getSubs()
                             .then(res => {
                                 setSubs(res.data)
+                                getBrands()
+                                    .then(res => {
+                                        const uniq = [...new Set(Object.keys(res.data).map(key => res.data[key].name))]
+                                        setBrands(uniq)
+                                        
+                                    })
+                                
                             })
                     });
             })
@@ -92,36 +99,19 @@ const UpdateProduct = ({ match }) => {
             })
     }, [])
 
-
-    const loadCategories = () => {
-        getCategories().then((res) => setCategories(res.data));
-    };
-
-    useState(() => {
-        // loadCategories();
-        getBrands()
-            .then(res => {
-                const uniq = [...new Set(Object.keys(res.data).map(key => res.data[key].name))]
-                setBrands(uniq)
-            })
-            .catch(err => {
-                toast.error(err.data.message)
-                console.warn('err', err)
-            })
-    }, []);
-
-
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
         updateProduct(product._id,
-            { name, brand, category,sub, description, params, coast, oldCoast, sale, promotion, discount }
+            { name, brand, category, sub, description, params, coast, oldCoast, sale, promotion, discount }
             , user.token)
             .then(res => {
                 setLoading(false)
-                toast.success(`Новый товар "${name}" создан`)
+                toast.success(`Товар "${name}" обновлен`)
                 setLoading(false);
+                window.location.reload();
             })
             .catch(err => {
                 if (err.response.status === 400) toast.error(err.response.data);
@@ -132,19 +122,7 @@ const UpdateProduct = ({ match }) => {
 
 
 
-    const handleActive = (c) => {
-        setLoading(true)
-        updateCategory(c.slug, { name: c.name, turn: c.turn, active: !c.active }, user.token)
-            .then(res => {
-                setLoading(false)
-                // toast.success(`Категория ${c.name} с номером ${c.turn} переключена`)
-                loadCategories();
-            })
-            .catch(err => {
-                setLoading(false)
-                if (err.response.status === 400) toast.error(err.response.data)
-            })
-    }
+    
 
     const handleChange1 = (e) => {
         let arr = [...params[e.target.name]]
@@ -191,6 +169,7 @@ const UpdateProduct = ({ match }) => {
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
     const productForm = () => {
+        
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -232,7 +211,6 @@ const UpdateProduct = ({ match }) => {
                             }}>
                             {/* <option value="all" >Выберите категорию (обязательный пункт)</option> */}
                             {categories.length > 0 && categories.map((c, index) => {
-                                console.log(c)
                                 return (
                                     <option key={index} value={c._id} selected={c._id === category}>
                                         {`${c.name}`}
@@ -250,7 +228,6 @@ const UpdateProduct = ({ match }) => {
                             }}>
                             {/* <option value="all" >Выберите категорию (обязательный пункт)</option> */}
                             {subs.length > 0 && subs.map((s, index) => {
-                                console.log(s)
                                 return (
                                     <option key={index} value={s._id} selected={s._id === sub}>
                                         {`${s.name} (${findSubInCategory(s, categories)})`}

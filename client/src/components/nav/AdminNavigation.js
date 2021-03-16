@@ -54,7 +54,7 @@ const AdminNavigation = (props) => {
                         <Menu.Item key="brandPicture"><Link to="/admin/brandPicture">Brand-лого</Link></Menu.Item>
                     </SubMenu>
                     <SubMenu key="products" icon={<VideoCameraOutlined />} title="Товары">
-                        <Menu.Item key="product" icon={<VideoCameraAddOutlined />}>
+                        <Menu.Item key="newproduct" icon={<VideoCameraAddOutlined />}>
                             <Link to="/admin/product">Новый товар</Link>
                         </Menu.Item>
                         <Menu.Item key="product" icon={<VideoCameraOutlined />}>

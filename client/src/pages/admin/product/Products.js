@@ -5,7 +5,7 @@ import {
     getCategories,
 } from "../../../functions/category";
 import { getBrandPictures } from '../../../functions/uploadImages'
-import { getSubs} from '../../../functions/sub'
+import { getSubs } from '../../../functions/sub'
 import { ConsoleSqlOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import {
@@ -30,10 +30,10 @@ const { Meta } = Card;
 const Products = () => {
     const [products, setProducts] = useState([])
     const [brandPictures, setBrandPictures] = useState([])
-    const [categories, setCategories]=useState([])
-    const [subs, setSubs]=useState([])
+    const [categories, setCategories] = useState([])
+    const [subs, setSubs] = useState([])
     const [filter, setFilter] = useState("");
-    
+
     const [loading, setLoading] = useState(false)
 
 
@@ -51,15 +51,14 @@ const Products = () => {
                     .then(res => {
                         setBrandPictures(res.data)
                         getCategories()
-                        .then(res=>{
-                            setCategories(res.data)
-                            getSubs()
-                            .then(res=>{
-                                console.log('---------------------',res.data)
-                                setSubs(res.data)
-                                setLoading(false)
+                            .then(res => {
+                                setCategories(res.data)
+                                getSubs()
+                                    .then(res => {
+                                        setSubs(res.data)
+                                        setLoading(false)
+                                    })
                             })
-                        })
                     })
             })
             .catch(err => {
@@ -73,7 +72,7 @@ const Products = () => {
     }
 
 
-    
+
 
     const ProductCard = (p) => {
         const path = brandPictures.find(b => b.slug === p.brandSlug)
@@ -93,30 +92,35 @@ const Products = () => {
                     <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" /></Link>,
                     <EllipsisOutlined key="ellipsis" />,
                 ]}
-            >        
+            >
                 <Meta
-                    // style={{fontSize: "0.8rem"}}
+                    style={{fontSize: "0.8rem", fontWeight:"bold", color: "black"}}
                     title={p.name}
-                    description={category && sub && `${category.name} ${sub.name}`}
+                    description={category && sub && `${category.name}  (${sub.name})`}
                 />
-                <br/>
-                {path && <img src={`${process.env.REACT_APP_IMAGES_BRAND}/${path.fileName}`} style={{ maxWidth: "50px" }} />}
+                <br />
+                {path &&
+                    <div style={{width:"100px", height: "50px", display: "flex", alignItems: "center", justifyContent: "flex-start"}}>
+                        <img src={`${process.env.REACT_APP_IMAGES_BRAND}/${path.fileName}`} style={{ maxWidth: "100px", maxHeight: "50px" }} />
+                    </div>}
             </Card>
         )
     }
 
-    const searched = (filter) => (c) => c.name.toLowerCase().includes(filter) ;
+    const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
     const ReturnProducts = () => (
         <div className=" justify-content-center" style={{ backgroundColor: "White" }}>
             <LocalSearch filter={filter} setFilter={setFilter} />
-            <hr/>
+            <hr />
             <div className="row justify-content-center">
                 {
                     products.length > 0 &&
                     products.filter(searched(filter)).map((p) => {
                         return (
-                            ProductCard(p)
+                            <div key={p._id}>
+                                {ProductCard(p)}
+                            </div>
                         )
 
                     })
