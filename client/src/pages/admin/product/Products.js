@@ -18,7 +18,7 @@ import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
 import _ from 'lodash'
 import slugify from 'react-slugify'
-import UploadBrandImage from '../../../components/form/UploadBrandPicture'
+import UploadBrandImage from '../../../components/form/ShowBrandPicture'
 import { Card, Avatar } from 'antd';
 import { createProduct, getProducts } from '../../../functions/product'
 

@@ -20,7 +20,7 @@ import {
 } from "@ant-design/icons";
 import LocalSearch from "../../../components/form/LocalSearch";
 import AdminNavigation from "../../../components/nav/AdminNavigation";
-import UploadBrandImage from "../../../components/form/UploadBrandPicture";
+import UploadBrandImage from "../../../components/form/ShowBrandPicture";
 import { Avatar, Badge } from 'antd'
 
 const BrandLogoCreate = () => {

@@ -15,7 +15,7 @@ import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
 import _ from 'lodash'
 import slugify from 'react-slugify'
-import UploadBrandImage from '../../../components/form/UploadBrandPicture'
+import UploadBrandImage from '../../../components/form/ShowBrandPicture'
 import { Input, Checkbox } from 'antd';
 import { createProduct, getProduct, updateProduct } from '../../../functions/product'
 const { TextArea } = Input;
