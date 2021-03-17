@@ -11,7 +11,9 @@ import { Link } from "react-router-dom";
 import {
     SettingOutlined,
     EditOutlined,
-    EllipsisOutlined
+    EllipsisOutlined,
+    CopyOutlined,
+    CheckSquareOutlined
 } from "@ant-design/icons";
 import { getBrands } from '../../../functions/brand'
 import LocalSearch from '../../../components/form/LocalSearch'
@@ -78,29 +80,35 @@ const Products = () => {
         const path = brandPictures.find(b => b.slug === p.brandSlug)
         const category = categories.find(c => c._id === p.category)
         const sub = subs.find(s => s._id === p.sub)
+        let pathImage = ''
+        if (p.images.length > 0) pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${p.images[0]}`
+        else pathImage = "https://images.neventum.com/2016/62/cayman-logo-alta-01_e776b18a.jpg"
         return (
             <Card
                 style={{ width: 250, margin: "5px", fontSize: "0.8rem" }}
                 cover={
-                    <img
-                        alt="example"
-                        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                    />
+                    <div style={{ width: "250px", height: "150px", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        <img
+                            style={{ maxWidth: "250px", maxHeight:"145px" }}
+                            alt="example"
+                            src={pathImage}
+                        />
+                    </div>
                 }
                 actions={[
-                    <SettingOutlined key="setting" onClick={handleClick} />,
-                    <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" /></Link>,
-                    <EllipsisOutlined key="ellipsis" />,
+                    <CopyOutlined key="setting" onClick={handleClick} className="text-primary"/>,
+                    <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" className="text-success"/></Link>,
+                    <CheckSquareOutlined key="ellipsis" className="text-danger"/>,
                 ]}
             >
                 <Meta
-                    style={{fontSize: "0.8rem", fontWeight:"bold", color: "black"}}
+                    style={{ fontSize: "0.8rem", fontWeight: "bold", color: "black" }}
                     title={p.name}
                     description={category && sub && `${category.name}  (${sub.name})`}
                 />
                 <br />
                 {path &&
-                    <div style={{width:"100px", height: "50px", display: "flex", alignItems: "center", justifyContent: "flex-start"}}>
+                    <div style={{ width: "100px", height: "50px", display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
                         <img src={`${process.env.REACT_APP_IMAGES_BRAND}/${path.fileName}`} style={{ maxWidth: "100px", maxHeight: "50px" }} />
                     </div>}
             </Card>

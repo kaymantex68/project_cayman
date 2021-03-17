@@ -56,6 +56,12 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    defaultImage: {
+        type: String,
+    }, 
+    images: {
+        type: Array,
+    },
     youtube: {
         type: String,
     },

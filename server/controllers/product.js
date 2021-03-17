@@ -1,5 +1,6 @@
 const Product = require('../models/product')
 const slugify = require('slugify')
+const fs = require('fs')
 
 exports.create = async (req, res) => {
     try {
@@ -8,14 +9,14 @@ exports.create = async (req, res) => {
         console.log('-------------------------------')
         const { name, brand, category, sub, description, params, coast, oldCoast, sale, discount, promotion } = req.body
         console.log('type', typeof (brand))
-        console.log('slug', slugify(brand,{lower: true}))
+        console.log('slug', slugify(brand, { lower: true }))
         const product = await new Product({
             name,
-            slug: slugify(name,{lower: true}),
+            slug: slugify(name, { lower: true }),
             brand,
             category,
             sub,
-            brandSlug: await slugify(brand,{lower: true}),
+            brandSlug: await slugify(brand, { lower: true }),
             description,
             params,
             coast,
@@ -31,24 +32,23 @@ exports.create = async (req, res) => {
     }
 }
 
-exports.list = async(req, res)=>{
-    try{
+exports.list = async (req, res) => {
+    try {
         const products = await Product.find({})
-        .sort({brand: 1})
-        .exec()
+            .sort({ brand: 1 })
+            .exec()
         res.json(products)
-    }catch(err){
+    } catch (err) {
         console.log('Ошибка чтения товаров --------->', err)
         res.status(400).send('Ошибка чтения товаров')
     }
 }
 
-exports.read= async(req, res)=>{
-    // console.log(req.params.slug)
-    try{
-        const product = await Product.findOne({slug: req.params.slug}).exec()
+exports.read = async (req, res) => {
+    try {
+        const product = await Product.findOne({ slug: req.params.slug }).exec()
         res.json(product)
-    }catch(err){
+    } catch (err) {
         console.log('Ошибка чтения товара --------->', err)
         res.status(400).send('Ошибка чтения товара')
     }
@@ -57,17 +57,17 @@ exports.read= async(req, res)=>{
 exports.update = async (req, res) => {
     try {
         console.log('-------------------------------')
-        console.log('body',req.body)
-        console.log('params',req.params._id)
+        console.log('body', req.body)
+        console.log('params', req.params._id)
         console.log('-------------------------------')
         const { name, brand, category, sub, description, params, coast, oldCoast, sale, discount, promotion } = req.body
-        const product = await Product.findOneAndUpdate({_id: req.params._id},{
+        const product = await Product.findOneAndUpdate({ _id: req.params._id }, {
             name,
-            slug: slugify(name,{lower: true}),
+            slug: slugify(name, { lower: true }),
             brand,
             category,
             sub,
-            brandSlug: await slugify(brand,{lower: true}),
+            brandSlug: await slugify(brand, { lower: true }),
             description,
             params,
             coast,
@@ -76,11 +76,83 @@ exports.update = async (req, res) => {
             promotion,
             discount
         },
-        {new: true})
+            { new: true })
         console.log('new: ', product)
         res.json(product)
     } catch (err) {
         console.log('Ошибка создания товара --------->', err)
         res.status(400).send('Ошибка создания нового товара')
+    }
+}
+// upload image
+exports.upload = async (req, res) => {
+    try {
+        const message = {}
+        const brand = req.headers.brand
+        const slug = req.headers.slug
+        let fileName = `${brand}-${slug}-${Date.now()}.${req.files.image.mimetype.split('/')[1]}`
+        message.fileName = fileName
+        // uploading file
+        await fs.writeFile(
+            `${process.env.URI_PRODUCT_PICTURE}/${fileName}`,
+            req.files.image.data,
+            "binary",
+            (err, data) => {
+                if (err) {
+                    message.err = err
+                    return res.json(message)
+                }
+            })
+        const result = await Product.findOneAndUpdate(
+            { slug: slug },
+            {
+                "$push": {
+                    "images": fileName
+                }
+            },
+            { new: true }
+        )
+        if (result) {
+            message.result = result
+            message.complete = 'Ok'
+            return res.json(message)
+        }
+        res.json(message)
+    } catch (err) {
+        console.log('Ошибка создания загрузки изображения --------->', err)
+        // res.status(400).send('Ошибка загрузки изображения товара')
+        res.status(400).json(message)
+    }
+}
+
+exports.removeImage = async (req, res) => {
+    try {
+        const message={}
+        const { slug, fileName } = req.body
+        const result = await Product.findOneAndUpdate(
+            { slug: slug },
+            {
+                "$pull": {
+                    "images": fileName
+                }
+            },
+            {new: true}
+        )
+        if(result) {
+            message.result=result
+            await fs.unlink(`${process.env.URI_PRODUCT_PICTURE}/${fileName}`,
+            (err)=>{
+                if (err) {
+                    message.err = err
+                    return res.json(message)
+                }
+            })
+        }
+        message.complete='Ok'
+        res.json(result)
+    } catch (err) {
+        console.log('Ошибка удаления изображения --------->', err)
+        // res.status(400).send('Ошибка загрузки изображения товара')
+        res.status(400).json(message)
     }
 }

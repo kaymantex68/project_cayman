@@ -137,7 +137,7 @@ const SubCreate = () => {
     };
 
     const ReturnSubCategory=()=>(
-        <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
+        <div className="col md-5" style={{ backgroundColor: "white" }}>
                     <div className="form-group">
                         <label>Родительская категория</label>
                         <select name="category" className="form-control" onChange={(e) => setCategory(e.target.value)}>

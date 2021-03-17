@@ -92,7 +92,7 @@ const SubUpdate = ({ history, match }) => {
     }
 
     const ReturnUpdateSubForm = () => (
-        <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
+        <div className="col md-5" style={{ backgroundColor: "white" }}>
             <div className="form-group">
                 <label>Родительская категория</label>
                 <select name="category" className="form-control" onChange={(e) => setParent(e.target.value)}>

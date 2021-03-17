@@ -115,7 +115,6 @@ exports.uploadProductImage = async (req, res) => {
                     message.message2 = 'create folder 2 complete'
                 }
                 fs.writeFile(
-                    // `${process.env.URI_PRODUCT_PICTURE}/${brand}/${slug}/${fileName}`,
                     `${process.env.URI_PRODUCT_PICTURE}/${brand}/${slug}/${fileName}`,
                     req.files.image.data,
                     "binary",
@@ -128,15 +127,25 @@ exports.uploadProductImage = async (req, res) => {
                             console.log('-----create file complete-----', data)
                             message.message3 = `create file complete ${fileName}`
                             // write data to data base
-                            const result = await new ProductPicture({name: slug, fileName, brand }).save()
+                            const result = await ProductPicture.findOneAndUpdate({name: slug},
+                                {"$push":{
+                                    "fileName": fileName
+                                }},
+                                {new: true})
                             if (result) {
                                 console.log('-----create data complete-----', result)
                                 message.message4 = `create data complete`
                                 message.result=result
                             } else {
-                                console.log('-----create data error-----')
-                                message.message4 = `create data error`
-                                
+                                const newResult = await new ProductPicture({name: slug, fileName:[fileName], brand }).save()
+                                if (newResult) {
+                                    console.log('-----create data complete-----', result)
+                                    message.message4 = `create data complete`
+                                    message.result=newResult
+                                } else {
+                                    console.log('-----create data error-----')
+                                    message.message4 = `create data error`
+                                }
                             }
                             return res.json(message)
                         }

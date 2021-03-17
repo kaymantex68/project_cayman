@@ -18,7 +18,7 @@ const productPictureSchema = new mongoose.Schema(
             lowercase:true,
         },
         fileName: {
-            type: String,
+            type: Array,
         },
         uri: {
             type: String
