@@ -61,7 +61,7 @@ const SubUpdate = ({ history, match }) => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Новое название категории</label>
+                    <label style={{fontWeight:"bold"}}>Новое название категории</label>
                     <input
                         type="text"
                         className="form-control"
@@ -94,7 +94,7 @@ const SubUpdate = ({ history, match }) => {
     const ReturnUpdateSubForm = () => (
         <div className="col md-5" style={{ backgroundColor: "white" }}>
             <div className="form-group">
-                <label>Родительская категория</label>
+                <label style={{fontWeight:"bold"}}>Родительская категория</label>
                 <select name="category" className="form-control" onChange={(e) => setParent(e.target.value)}>
                     <option>выберите категорию</option>
                     {categories.length > 0 && categories.map(c => {

@@ -70,6 +70,10 @@ const productSchema = new mongoose.Schema({
     },
     documents: {
         type: Object
+    },
+    active:{
+        type: Boolean,
+        default: true,
     }
 }, { timestamps: true })
 

@@ -110,7 +110,7 @@ const BrandLogoCreate = () => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Название нового Brand</label>
+                    <label style={{fontWeight: "bold"}}>Название нового Brand</label>
                     <input
                         type="text"
                         className="form-control"
@@ -118,7 +118,7 @@ const BrandLogoCreate = () => {
                         onChange={(e) => setName(e.target.value)}
                         autoFocus
                         required
-                        placeholder="название брэнда"
+                        placeholder="название brand"
                         disabled={loading}
                     />
                     <br />
@@ -153,7 +153,7 @@ const BrandLogoCreate = () => {
 
     return (
         // put retrn into admin sidebar
-        <AdminNavigation name="Brand" children={ReturnBrand()} />
+        <AdminNavigation name="Brand logo" children={ReturnBrand()} />
     );
 };
 

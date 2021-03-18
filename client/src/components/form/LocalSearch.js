@@ -13,6 +13,7 @@ const LocalSearch = ({ filter, setFilter }) => {
                 value={filter}
                 onChange={handleFilterChange}
                 className="form-control mb-4"
+                style={{backgrounColor: "grey"}}
             />
         </div>
     );

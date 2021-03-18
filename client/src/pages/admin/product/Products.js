@@ -106,10 +106,10 @@ const Products = () => {
         const sub = subs.find(s => s._id === p.sub)
         let pathImage = ''
         if (p.images.length > 0) pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${p.images[0]}`
-        else pathImage = "https://images.neventum.com/2016/62/cayman-logo-alta-01_e776b18a.jpg"
+        else pathImage = "/images/product/default.png"
         return (
             <Card
-                style={{ width: 250, margin: "5px", fontSize: "0.8rem" }}
+                style={{ width: 250, margin: "5px", fontSize: "0.8rem", boxShadow: "0 3px 2px rgba(0,0,0,0.1)" }}
                 cover={
                     <div style={{ width: "250px", height: "150px", display: "flex", alignItems: "center", justifyContent: "center"}}>
                         <img
@@ -123,7 +123,7 @@ const Products = () => {
                     <CopyOutlined key="setting" onClick={handleClick} className="text-primary"/>,
                     <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" className="text-success"/></Link>,
                     <DeleteOutlined key="ellipsis" className="text-danger" onClick={()=>handleRemove(p)}/>,
-                    <CheckSquareOutlined key="ellipsis" className="text-danger"/>,
+                    <CheckSquareOutlined key="ellipsis" className={p.active? "text-success" : "text-danger"}/>,
                 ]}
             >
                 <Meta
@@ -147,7 +147,7 @@ const Products = () => {
     const ReturnProducts = () => (
         <div className=" justify-content-center" style={{ backgroundColor: "White" }}>
             <LocalSearch filter={filter} setFilter={setFilter} />
-            <hr />
+            
             <div className="row justify-content-center">
                 {
                     products.length > 0 &&

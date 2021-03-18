@@ -9,6 +9,7 @@ import { ConsoleSqlOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import AdminNavigation from "../../../components/nav/AdminNavigation";
+import Loading from '../../../components/form/LoadingIcon'
 
 const BrandUpdate = ({ history, match }) => {
     const [name, setName] = useState("");
@@ -65,7 +66,7 @@ const BrandUpdate = ({ history, match }) => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group p-2">
-                    <label>Новое название категории</label>
+                    <label style={{fontWeight:"bold"}}>Новое название категории</label>
                     <input
                         type="text"
                         className="form-control"
@@ -108,7 +109,7 @@ const BrandUpdate = ({ history, match }) => {
     const ReturnUpdateSubForm = () => (
         <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
             <div className="form-group">
-                <label>Родительская Sub-категория</label>
+                <label style={{fontWeight:"bold"}}>Родительская Sub-категория</label>
                 <select name="sub-category" className="form-control" onChange={(e) => setParent(e.target.value)}>
                     <option>выберите Sub-категорию</option>
                     {subs.length > 0 && subs.map(s => {
@@ -124,7 +125,7 @@ const BrandUpdate = ({ history, match }) => {
 
 
     return (
-        <AdminNavigation name={"Обновление брэнда"} children={ReturnUpdateSubForm()} />
+        <AdminNavigation name={"Обновление брэнда"} children={loading? <Loading/> :ReturnUpdateSubForm()} />
     );
 };
 

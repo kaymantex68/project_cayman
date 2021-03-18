@@ -7,6 +7,7 @@ import {
     removeCategory,
     updateCategory,
 } from "../../../functions/category";
+import Loading from '../../../components/form/LoadingIcon'
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
@@ -84,7 +85,7 @@ const CategoryCreate = () => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Название новой категории</label>
+                    <label style={{ fontWeight: "bold" }}>Название новой категории</label>
                     <input
                         type="text"
                         className="form-control"
@@ -110,7 +111,7 @@ const CategoryCreate = () => {
                         disabled={!name || loading}
                     >
                         Добавить
-          </button>
+                    </button>
                 </div>
             </form>
         );
@@ -159,7 +160,7 @@ const CategoryCreate = () => {
     )
 
     return (
-                    <AdminNavigation name={'Категории'} children={ReturnCategory()}  />
+        <AdminNavigation name={'Категории'} children={loading ? <Loading /> : ReturnCategory()} />
     );
 };
 

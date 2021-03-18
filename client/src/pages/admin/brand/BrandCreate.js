@@ -20,6 +20,7 @@ import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/i
 import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
 import UploadBrandImage from '../../../components/form/ShowBrandPicture'
+import Loading from '../../../components/form/LoadingIcon'
 
 const BrandCreate = () => {
 
@@ -110,7 +111,7 @@ const BrandCreate = () => {
     return (
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Название нового Брэнда</label>
+          <label style={{fontWeight:"bold"}}>Название нового Брэнда</label>
           <input
             type="text"
             className="form-control"
@@ -157,7 +158,7 @@ const BrandCreate = () => {
   const ReturnBrand = () => (
     <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
       <div className="form-group">
-        <label>Родительская sub-категория</label>
+        <label style={{fontWeight:"bold"}}>Родительская sub-категория</label>
         <select name="subcategory" className="form-control" onChange={(e) => setSub(e.target.value)}>
           <option value="all">Выберите родительскую sub-категорию (обязательный пункт)</option>
           {subs.length > 0 && subs.map(s => {
@@ -217,7 +218,7 @@ const BrandCreate = () => {
 
   return (
     // put retrn into admin sidebar
-    <AdminNavigation name="Brand" children={ReturnBrand()} />
+    <AdminNavigation name="Brand" children={loading? <Loading/> :ReturnBrand()} />
   );
 };
 

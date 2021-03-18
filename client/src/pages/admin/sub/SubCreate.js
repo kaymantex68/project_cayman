@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined,CheckSquareOutlined } from "@ant-design/icons";
 import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
-
+import Loading from '../../../components/form/LoadingIcon'
 const SubCreate = () => {
     const [name, setName] = useState("");
     const [turn, setTurn] = useState("");
@@ -103,7 +103,7 @@ const SubCreate = () => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>Название новой Sub-категории</label>
+                    <label style={{fontWeight:"bold"}}>Название новой Sub-категории</label>
                     <input
                         type="text"
                         className="form-control"
@@ -139,7 +139,7 @@ const SubCreate = () => {
     const ReturnSubCategory=()=>(
         <div className="col md-5" style={{ backgroundColor: "white" }}>
                     <div className="form-group">
-                        <label>Родительская категория</label>
+                        <label style={{fontWeight:"bold"}}>Родительская категория</label>
                         <select name="category" className="form-control" onChange={(e) => setCategory(e.target.value)}>
                             <option value="all">Выберите родительскую категорию (обязательный пункт)</option>
                             {categories.length > 0 && categories.map(c => {
@@ -192,7 +192,7 @@ const SubCreate = () => {
 
 
     return (
-        <AdminNavigation name="Sub-категории" children={ReturnSubCategory()}/>  
+        <AdminNavigation name="Sub-категории" children={loading? <Loading/> : ReturnSubCategory()}/>  
     );
 };
 

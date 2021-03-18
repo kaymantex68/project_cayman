@@ -202,20 +202,27 @@ const UpdateProduct = ({ match }) => {
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
+    
+
     const uploadFiles = (e) => {
-        // setFiles(e.target.files[0])
-        console.log(e.target.files[0])
-        let formData = new FormData()
-        formData.append('image', e.target.files[0])
-        formData.append('name', 'file')
-        console.log(formData)
-        uploadImage(formData, slug, brandSlug, user.token)
-            .then(res => {
-                console.log('complete upload',res.data)
-                setLoading(false)
-                loadImage()
-            })
-            .catch(err=>console.log(err))
+        const files = e.target.files
+        if (files) {
+            for (let i = 0; i < files.length; i++) {
+                console.log(files[i])
+                let formData = new FormData()
+                formData.append('image', files[i])
+                formData.append('name', 'file')
+                console.log(formData)
+                uploadImage(formData, slug, brandSlug, user.token)
+                    .then(res => {
+                        console.log('complete upload', res.data)
+                        setLoading(false)
+                        loadImage()
+                    })
+                    .catch(err => console.log(err))
+            }
+        }
+
     }
 
     const UploadFile = () => {
@@ -249,6 +256,7 @@ const UpdateProduct = ({ match }) => {
                     <input
                         type="file"
                         hidden
+                        multiple
                         accept="image/*"
                         onChange={uploadFiles}
                         disabled={!name || loading}
@@ -439,7 +447,7 @@ const UpdateProduct = ({ match }) => {
     )
 
     return (
-        <AdminNavigation name={'Новый товар'} children={loading ? <Loading /> : ReturnProduct()} />
+        <AdminNavigation name={'Обновление товара'} children={loading ? <Loading /> : ReturnProduct()} />
     );
 };
 
