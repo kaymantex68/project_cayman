@@ -14,7 +14,7 @@ import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/i
 import { getBrands } from '../../../functions/brand'
 import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
-import _ from 'lodash'
+import _, { stubFalse } from 'lodash'
 import slugify from 'react-slugify'
 import UploadBrandImage from '../../../components/form/ShowBrandPicture'
 import { Input, Checkbox, Avatar, Badge } from 'antd';
@@ -22,7 +22,7 @@ import { createProduct, getProduct, updateProduct, removeFile, uploadImage } fro
 const { TextArea } = Input;
 
 
-const UpdateProduct = ({ match }) => {
+const UpdateProduct = ({ match, history }) => {
     const [product, setProduct] = useState(null)
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("")
@@ -39,6 +39,8 @@ const UpdateProduct = ({ match }) => {
     const [number, setNumber] = useState(null)
     const [coast, setCoast] = useState('')
     const [oldCoast, setOldCoast] = useState('')
+    const [active, setActive]=useState(null)
+
 
     const [files, setFiles] = useState(null)
 
@@ -85,6 +87,7 @@ const UpdateProduct = ({ match }) => {
                 setParams(res.data.params)
                 setCoast(res.data.coast)
                 setOldCoast(res.data.oldCoast)
+                setActive(res.data.active)
                 setNumber(Object.keys(res.data.params).length + 1)
                 setLoading(false)
             })
@@ -110,6 +113,7 @@ const UpdateProduct = ({ match }) => {
                 setParams(res.data.params)
                 setCoast(res.data.coast)
                 setOldCoast(res.data.oldCoast)
+                setActive(res.data.active)
                 setNumber(Object.keys(res.data.params).length + 1)
                 getCategories()
                     .then((res) => {
@@ -145,7 +149,8 @@ const UpdateProduct = ({ match }) => {
                 setLoading(false)
                 toast.success(`Товар "${name}" обновлен`)
                 setLoading(false);
-                window.location.reload();
+                // window.location.reload();
+                history.push('/admin/products')
             })
             .catch(err => {
                 if (err.response.status === 400) toast.error(err.response.data);

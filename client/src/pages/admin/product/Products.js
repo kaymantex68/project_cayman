@@ -22,7 +22,7 @@ import _, { stubTrue } from 'lodash'
 import slugify from 'react-slugify'
 import UploadBrandImage from '../../../components/form/ShowBrandPicture'
 import { Card, Avatar } from 'antd';
-import { createProduct, getProducts, removeProduct } from '../../../functions/product'
+import { createProduct, getProducts, removeProduct,updateProduct } from '../../../functions/product'
 import Loading from '../../../components/form/LoadingIcon'
 
 const { Meta } = Card;
@@ -97,7 +97,21 @@ const Products = () => {
     }
     }
 
-
+    const handleActive = (p) => {
+        setLoading(true)
+        console.log('p',p)
+        console.log('active',p.active)
+        updateProduct(p._id, { ...p, active: !p.active }, user.token)
+            .then(res => {
+                loadingProducts();
+                setLoading(false)
+                toast.success(`Товар ${p.name} переключен`)
+            })
+            .catch(err => {
+                setLoading(false)
+                if (err.response.status === 400) toast.error(err.response.data)
+            })
+    }
 
 
     const ProductCard = (p) => {
@@ -123,7 +137,7 @@ const Products = () => {
                     <CopyOutlined key="setting" onClick={handleClick} className="text-primary"/>,
                     <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" className="text-success"/></Link>,
                     <DeleteOutlined key="ellipsis" className="text-danger" onClick={()=>handleRemove(p)}/>,
-                    <CheckSquareOutlined key="ellipsis" className={p.active? "text-success" : "text-danger"}/>,
+                    <CheckSquareOutlined key="ellipsis" className={p.active? "text-success" : "text-danger"} onClick={()=>handleActive(p)}/>,
                 ]}
             >
                 <Meta
