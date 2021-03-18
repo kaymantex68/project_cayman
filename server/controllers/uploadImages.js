@@ -163,7 +163,7 @@ exports.uploadProductImage = async (req, res) => {
 exports.deleteProductImage= async(req, res)=>{
     try{
         let message={}
-        const result = await ProductPicture.findOneAndDelete({fileName: req.params.fileName})
+        const result = await ProductPicture.findOneAndUpdate({fileName: req.params.fileName})
         if (result){
             const path = `${process.env.URI_PRODUCT_PICTURE}/${result.brand}/${result.name}/${result.fileName}`
             message.result={result}

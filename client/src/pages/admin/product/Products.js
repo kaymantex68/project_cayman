@@ -6,24 +6,24 @@ import {
 } from "../../../functions/category";
 import { getBrandPictures } from '../../../functions/uploadImages'
 import { getSubs } from '../../../functions/sub'
-import { ConsoleSqlOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import {
     SettingOutlined,
     EditOutlined,
     EllipsisOutlined,
     CopyOutlined,
-    CheckSquareOutlined
+    CheckSquareOutlined,
+    DeleteOutlined,
 } from "@ant-design/icons";
 import { getBrands } from '../../../functions/brand'
 import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
-import _ from 'lodash'
+import _, { stubTrue } from 'lodash'
 import slugify from 'react-slugify'
 import UploadBrandImage from '../../../components/form/ShowBrandPicture'
 import { Card, Avatar } from 'antd';
-import { createProduct, getProducts } from '../../../functions/product'
-
+import { createProduct, getProducts, removeProduct } from '../../../functions/product'
+import Loading from '../../../components/form/LoadingIcon'
 
 const { Meta } = Card;
 
@@ -38,11 +38,16 @@ const Products = () => {
 
     const [loading, setLoading] = useState(false)
 
+    const {user}= useSelector(state=>({...state}))
 
     // console.log('products:', products)
     // console.log('brand pictures:', brandPictures)
     // console.log('categories:', categories)
     // console.log('subs:', subs)
+
+    const loadingProducts=()=>{
+        getProducts().then((res)=>setProducts(res.data))
+    }
 
     useState(() => {
         setLoading(true)
@@ -73,6 +78,25 @@ const Products = () => {
         console.log('we here')
     }
 
+    const handleRemove=(p)=>{
+        if (window.confirm(`Удалить?`)) {
+            setLoading(true)
+        removeProduct(p._id,user.token)
+        .then(res=>{
+            loadingProducts()
+            setLoading(false)
+            toast.error(`Товар ${p.name} удален!`);
+            
+        })
+        .catch((err) => {
+            setLoading(false);
+            if (err.response.status === 400) toast.error(err.response.data);
+        });
+        
+        console.log('id',p._id)
+    }
+    }
+
 
 
 
@@ -89,7 +113,7 @@ const Products = () => {
                 cover={
                     <div style={{ width: "250px", height: "150px", display: "flex", alignItems: "center", justifyContent: "center"}}>
                         <img
-                            style={{ maxWidth: "250px", maxHeight:"145px" }}
+                            style={{ maxWidth: "200px", maxHeight:"140px" }}
                             alt="example"
                             src={pathImage}
                         />
@@ -98,6 +122,7 @@ const Products = () => {
                 actions={[
                     <CopyOutlined key="setting" onClick={handleClick} className="text-primary"/>,
                     <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" className="text-success"/></Link>,
+                    <DeleteOutlined key="ellipsis" className="text-danger" onClick={()=>handleRemove(p)}/>,
                     <CheckSquareOutlined key="ellipsis" className="text-danger"/>,
                 ]}
             >
@@ -116,6 +141,8 @@ const Products = () => {
     }
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
+
+    
 
     const ReturnProducts = () => (
         <div className=" justify-content-center" style={{ backgroundColor: "White" }}>
@@ -140,7 +167,7 @@ const Products = () => {
     )
 
     return (
-        <AdminNavigation name={'Товары'} children={ReturnProducts()} />
+        <AdminNavigation name={'Товары'} children={loading? Loading() : ReturnProducts()} />
     );
 };
 

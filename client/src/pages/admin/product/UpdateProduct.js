@@ -7,6 +7,7 @@ import {
     updateCategory,
 } from "../../../functions/category";
 import { getSubs } from '../../../functions/sub'
+import Loading from '../../../components/form/LoadingIcon'
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
@@ -16,26 +17,30 @@ import AdminNavigation from '../../../components/nav/AdminNavigation'
 import _ from 'lodash'
 import slugify from 'react-slugify'
 import UploadBrandImage from '../../../components/form/ShowBrandPicture'
-import { Input, Checkbox } from 'antd';
-import { createProduct, getProduct, updateProduct } from '../../../functions/product'
+import { Input, Checkbox, Avatar, Badge } from 'antd';
+import { createProduct, getProduct, updateProduct, removeFile, uploadImage } from '../../../functions/product'
 const { TextArea } = Input;
 
 
 const UpdateProduct = ({ match }) => {
     const [product, setProduct] = useState(null)
     const [name, setName] = useState("");
+    const [slug, setSlug] = useState("")
     const [brand, setBrand] = useState('')
     const [category, setCategory] = useState('')
     const [sub, setSub] = useState('')
     const [brandSlug, setBrandSlug] = useState('')
     const [description, setDescription] = useState('')
     const [sale, setSale] = useState(false)
+    const [images, setImages] = useState([])
     const [discount, setDiscount] = useState('')
     const [promotion, setPromotion] = useState(false)
     const [params, setParams] = useState({})
     const [number, setNumber] = useState(null)
     const [coast, setCoast] = useState('')
     const [oldCoast, setOldCoast] = useState('')
+
+    const [files, setFiles] = useState(null)
 
     const [brands, setBrands] = useState([])
     const [categories, setCategories] = useState([]);
@@ -59,17 +64,45 @@ const UpdateProduct = ({ match }) => {
     // console.log('promotion:', promotion)
     // console.log('coast:', coast)
     // console.log('oldCoast:', oldCoast)
-    console.log('params', params)
-    console.log('number', number)
-    // console.log('product', product)
-    useState(() => {
+    // console.log('params', params)
+    // console.log('number', number)
+    const loadImage = () => {
+        setLoading(true)
         getProduct(match.params.slug)
             .then(res => {
                 setProduct(res.data)
                 setName(res.data.name)
+                setSlug(res.data.slug)
                 setBrand(res.data.brand)
+                setBrandSlug(res.data.brandSlug)
                 setCategory(res.data.category)
                 setSub(res.data.sub)
+                setImages(res.data.images)
+                setDescription(res.data.description)
+                setSale(res.data.sale)
+                setDiscount(res.data.discount)
+                setPromotion(res.data.promotion)
+                setParams(res.data.params)
+                setCoast(res.data.coast)
+                setOldCoast(res.data.oldCoast)
+                setNumber(Object.keys(res.data.params).length + 1)
+                setLoading(false)
+            })
+    }
+
+    // console.log('product', product)
+    useState(() => {
+        setLoading(true)
+        getProduct(match.params.slug)
+            .then(res => {
+                setProduct(res.data)
+                setName(res.data.name)
+                setSlug(res.data.slug)
+                setBrand(res.data.brand)
+                setBrandSlug(res.data.brandSlug)
+                setCategory(res.data.category)
+                setSub(res.data.sub)
+                setImages(res.data.images)
                 setDescription(res.data.description)
                 setSale(res.data.sale)
                 setDiscount(res.data.discount)
@@ -88,18 +121,19 @@ const UpdateProduct = ({ match }) => {
                                     .then(res => {
                                         const uniq = [...new Set(Object.keys(res.data).map(key => res.data[key].name))]
                                         setBrands(uniq)
-                                        
+                                        setLoading(false)
                                     })
-                                
+
                             })
                     });
             })
             .catch(err => {
+                setLoading(false)
                 console.log('err: ', err)
             })
     }, [])
 
-    
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -122,7 +156,7 @@ const UpdateProduct = ({ match }) => {
 
 
 
-    
+
 
     const handleChange1 = (e) => {
         let arr = [...params[e.target.name]]
@@ -168,8 +202,74 @@ const UpdateProduct = ({ match }) => {
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
+    const uploadFiles = (e) => {
+        // setFiles(e.target.files[0])
+        console.log(e.target.files[0])
+        let formData = new FormData()
+        formData.append('image', e.target.files[0])
+        formData.append('name', 'file')
+        console.log(formData)
+        uploadImage(formData, slug, brandSlug, user.token)
+            .then(res => {
+                console.log('complete upload',res.data)
+                setLoading(false)
+                loadImage()
+            })
+            .catch(err=>console.log(err))
+    }
+
+    const UploadFile = () => {
+
+        return (
+            <>
+                <div className="row">
+                    {images && images.length > 0
+                        ? images.map(image => (
+                            <Badge
+                                key={image.public_id}
+                                count="X"
+                                onClick={() => { removeImage(image) }}
+                                style={{ cursor: "pointer" }}
+                                className="m-3"
+                            >
+                                <img
+                                    alt={image}
+                                    style={{ height: "100px" }}
+                                    key={image}
+                                    src={`${process.env.REACT_APP_IMAGES_PRODUCTS}/${image}`}
+                                    className="m-3"
+                                />
+                            </Badge>
+                        ))
+                        : <h7 className="m-3 text-danger">нет изображений</h7>
+                    }
+                </div>
+                <label className="btn btn-primary p-0" disabled={!name || loading}>
+                    Загрузить изображение
+                    <input
+                        type="file"
+                        hidden
+                        accept="image/*"
+                        onChange={uploadFiles}
+                        disabled={!name || loading}
+                    />
+                </label>
+            </>
+        )
+    }
+
+    const removeImage = (image) => {
+        setLoading(true)
+        removeFile(slug, image, user.token)
+            .then(res => {
+                console.log(res)
+                setLoading(false)
+                loadImage()
+            })
+    }
+
     const productForm = () => {
-        
+
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -202,6 +302,12 @@ const UpdateProduct = ({ match }) => {
                             })}
                         </select>
                     </div>
+                    <div className="form-group">
+                        <br />
+                        <label style={{ fontWeight: 'bold' }}>Изображения</label>
+                        {UploadFile()}
+                    </div>
+
                     <div className="form-group">
                         <br />
                         <label style={{ fontWeight: 'bold' }}>Категория</label>
@@ -310,14 +416,14 @@ const UpdateProduct = ({ match }) => {
                         onClick={handleSubmit}
                     >
                         Обновить
-          </button>
+                    </button>
                 </div>
             </form>
         );
     };
 
     const ReturnProduct = () => (
-        <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
+        <div className="col md-5" style={{ backgroundColor: "white" }}>
             {/* {loading ? (
                 <h6>
                     <LoadingOutlined />
@@ -333,7 +439,7 @@ const UpdateProduct = ({ match }) => {
     )
 
     return (
-        <AdminNavigation name={'Новый товар'} children={ReturnProduct()} />
+        <AdminNavigation name={'Новый товар'} children={loading ? <Loading /> : ReturnProduct()} />
     );
 };
 

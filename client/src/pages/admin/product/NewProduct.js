@@ -20,7 +20,7 @@ import { createProduct } from '../../../functions/product'
 const { TextArea } = Input;
 
 
-const NewProduct = () => {
+const NewProduct = ({history}) => {
     const [name, setName] = useState("");
     const [brand, setBrand] = useState('')
     const [brandSlug, setBrandSlug] = useState('')
@@ -88,6 +88,7 @@ const NewProduct = () => {
                 setLoading(false)
                 toast.success(`Новый товар "${name}" создан`)
                 setLoading(false);
+                history.push("/admin/products")
             })
             .catch(err => {
                 if (err.response.status === 400) toast.error(err.response.data);

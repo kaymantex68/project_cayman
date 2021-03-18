@@ -25,7 +25,7 @@ const AdminNavigation = (props) => {
     };
 
     return (
-        <Layout style={{ minHeight: "100vh" }}>
+        <Layout style={{ minHeight: "100vh"}}>
             <Sider
                 width='250'
                 collapsible
@@ -33,7 +33,7 @@ const AdminNavigation = (props) => {
                 onCollapse={onCollapse}
                 style={{ backgroundColor: "white" }}
             >
-                <div className="logo" style={{ Width: "300px" }} />
+                <div className="logo" style={{ Width: "300px"  }} />
 
                 <Menu theme="light" defaultSelectedKeys={["1"]} mode="inline" >
                     <Menu.Item key="hist" icon={<HomeOutlined />}>

@@ -135,19 +135,21 @@ const BrandLogoCreate = () => {
             </form>
         );
     };
-    
-    const ReturnBrand = () => (
-        <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
+
+    const ReturnBrand = () => {
+        return (
+        <div className="col md-5" style={{ backgroundColor: "white" }}>
             {brandForm()}
             <hr />
             {loading
-            ? <h4>загрузка</h4>
-            : logos.map(l => (
-                <img key={l._id} src={`${process.env.REACT_APP_IMAGES_BRAND}/${l.fileName}`} style={{ maxWidth: "100px", margin: "10px" }} />
-            ))
+                ? <h4>загрузка</h4>
+                : logos.map(l => (
+                    <img key={l._id} alt='logo' src={`${process.env.REACT_APP_IMAGES_BRAND}/${l.fileName}`} style={{ maxWidth: "100px", margin: "10px" }} />
+                ))
             }
         </div>
-    );
+        )
+    };
 
     return (
         // put retrn into admin sidebar
