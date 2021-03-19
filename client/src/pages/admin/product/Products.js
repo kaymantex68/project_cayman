@@ -134,7 +134,7 @@ const Products = () => {
                     </div>
                 }
                 actions={[
-                    <CopyOutlined key="setting" onClick={handleClick} className="text-primary"/>,
+                    <Link to={`/admin/copy/${p.slug}`}><CopyOutlined key="setting"  className="text-primary"/></Link>,
                     <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" className="text-success"/></Link>,
                     <DeleteOutlined key="ellipsis" className="text-danger" onClick={()=>handleRemove(p)}/>,
                     <CheckSquareOutlined key="ellipsis" className={p.active? "text-success" : "text-danger"} onClick={()=>handleActive(p)}/>,

@@ -22,7 +22,7 @@ import { createProduct, getProduct, updateProduct, removeFile, uploadImage } fro
 const { TextArea } = Input;
 
 
-const UpdateProduct = ({ match, history }) => {
+const CopyProduct = ({ match, history }) => {
     const [product, setProduct] = useState(null)
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("")
@@ -39,7 +39,7 @@ const UpdateProduct = ({ match, history }) => {
     const [number, setNumber] = useState(null)
     const [coast, setCoast] = useState('')
     const [oldCoast, setOldCoast] = useState('')
-    const [active, setActive]=useState(null)
+    const [active, setActive] = useState(null)
 
 
     const [files, setFiles] = useState(null)
@@ -55,43 +55,20 @@ const UpdateProduct = ({ match, history }) => {
 
     // console.log('match', match.params.slug)
 
-    // console.log('name: ', name)
-    // console.log('brand: ', brand)
-    // console.log('brandSlug:', brandSlug)
-    // console.log('category', category)
-    // console.log('sub', sub)
-    // console.log('description:', description)
-    // console.log('sale:', sale)
-    // console.log('discount:', discount)
-    // console.log('promotion:', promotion)
-    // console.log('coast:', coast)
-    // console.log('oldCoast:', oldCoast)
-    // console.log('params', params)
-    // console.log('number', number)
-    const loadImage = () => {
-        setLoading(true)
-        getProduct(match.params.slug)
-            .then(res => {
-                setProduct(res.data)
-                setName(res.data.name)
-                setSlug(res.data.slug)
-                setBrand(res.data.brand)
-                setBrandSlug(res.data.brandSlug)
-                setCategory(res.data.category)
-                setSub(res.data.sub)
-                setImages(res.data.images)
-                setDescription(res.data.description)
-                setSale(res.data.sale)
-                setDiscount(res.data.discount)
-                setPromotion(res.data.promotion)
-                setParams(res.data.params)
-                setCoast(res.data.coast)
-                setOldCoast(res.data.oldCoast)
-                setActive(res.data.active)
-                setNumber(Object.keys(res.data.params).length + 1)
-                setLoading(false)
-            })
-    }
+    console.log('name: ', name)
+    console.log('brand: ', brand)
+    console.log('brandSlug:', brandSlug)
+    console.log('category', category)
+    console.log('sub', sub)
+    console.log('description:', description)
+    console.log('sale:', sale)
+    console.log('discount:', discount)
+    console.log('promotion:', promotion)
+    console.log('coast:', coast)
+    console.log('oldCoast:', oldCoast)
+    console.log('params', params)
+    console.log('number', number)
+
 
     // console.log('product', product)
     useState(() => {
@@ -99,7 +76,7 @@ const UpdateProduct = ({ match, history }) => {
         getProduct(match.params.slug)
             .then(res => {
                 setProduct(res.data)
-                setName(res.data.name)
+                setName('')
                 setSlug(res.data.slug)
                 setBrand(res.data.brand)
                 setBrandSlug(res.data.brandSlug)
@@ -139,17 +116,31 @@ const UpdateProduct = ({ match, history }) => {
 
 
 
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        updateProduct(product._id,
-            { name, brand, category, sub, description, params, coast, oldCoast, sale, promotion, discount, active }
-            , user.token)
+        createProduct(
+            {
+                name,
+                brand,
+                description,
+                category,
+                sub,
+                params,
+                coast,
+                oldCoast,
+                sale,
+                promotion,
+                discount,
+                active,
+                images
+            }, user.token)
             .then(res => {
                 setLoading(false)
-                toast.success(`Товар "${name}" обновлен`)
+                toast.success(`Новый товар "${name}" создан`)
                 setLoading(false);
-                // window.location.reload();
                 history.push('/admin/products')
             })
             .catch(err => {
@@ -207,69 +198,11 @@ const UpdateProduct = ({ match, history }) => {
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
-    
 
-    const uploadFiles = (e) => {
-        const files = e.target.files
-        if (files) {
-            for (let i = 0; i < files.length; i++) {
-                console.log(files[i])
-                let formData = new FormData()
-                formData.append('image', files[i])
-                formData.append('name', 'file')
-                console.log(formData)
-                uploadImage(formData, slug, brandSlug, user.token)
-                    .then(res => {
-                        console.log('complete upload', res.data)
-                        setLoading(false)
-                        loadImage()
-                    })
-                    .catch(err => console.log(err))
-            }
-        }
 
-    }
 
-    const UploadFile = () => {
 
-        return (
-            <>
-                <div className="row">
-                    {images && images.length > 0
-                        ? images.map(image => (
-                            <Badge
-                                key={image.public_id}
-                                count="X"
-                                onClick={() => { removeImage(image) }}
-                                style={{ cursor: "pointer" }}
-                                className="m-3"
-                            >
-                                <img
-                                    alt={image}
-                                    style={{ height: "100px" }}
-                                    key={image}
-                                    src={`${process.env.REACT_APP_IMAGES_PRODUCTS}/${image}`}
-                                    className="m-3"
-                                />
-                            </Badge>
-                        ))
-                        : <h7 className="m-3 text-danger">нет изображений</h7>
-                    }
-                </div>
-                <label className="btn btn-primary p-0" disabled={!name || loading}>
-                    Загрузить изображение
-                    <input
-                        type="file"
-                        hidden
-                        multiple
-                        accept="image/*"
-                        onChange={uploadFiles}
-                        disabled={!name || loading}
-                    />
-                </label>
-            </>
-        )
-    }
+
 
     const removeImage = (image) => {
         setLoading(true)
@@ -277,7 +210,7 @@ const UpdateProduct = ({ match, history }) => {
             .then(res => {
                 console.log(res)
                 setLoading(false)
-                loadImage()
+
             })
     }
 
@@ -315,11 +248,7 @@ const UpdateProduct = ({ match, history }) => {
                             })}
                         </select>
                     </div>
-                    <div className="form-group">
-                        <br />
-                        <label style={{ fontWeight: 'bold' }}>Изображения</label>
-                        {UploadFile()}
-                    </div>
+
 
                     <div className="form-group">
                         <br />
@@ -428,7 +357,7 @@ const UpdateProduct = ({ match, history }) => {
                         disabled={!name || loading}
                         onClick={handleSubmit}
                     >
-                        Обновить
+                        Сохранить
                     </button>
                 </div>
             </form>
@@ -452,8 +381,8 @@ const UpdateProduct = ({ match, history }) => {
     )
 
     return (
-        <AdminNavigation name={'Обновление товара'} children={loading ? <Loading /> : ReturnProduct()} />
+        <AdminNavigation name={'Скопировать товар'} children={loading ? <Loading /> : ReturnProduct()} />
     );
 };
 
-export default UpdateProduct;
+export default CopyProduct;

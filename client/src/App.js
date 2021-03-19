@@ -16,12 +16,13 @@ import CreateCategory from './pages/admin/category/CategoryCreate'
 import UpdateCategory from './pages/admin/category/CategoryUpdate'
 import CreateSub from './pages/admin/sub/SubCreate'
 import UpdateSub from './pages/admin/sub/SubUpdate'
-import CreateBrand from './pages/admin/brand/BrandCreate'
+
 
 import BrandLogoCreate from './pages/admin/brandLogo/BrandLogoCreate'
 import NewProduct from './pages/admin/product/NewProduct'
 import Products from './pages/admin/product/Products'
 import UpdateProduct from './pages/admin/product/UpdateProduct'
+import ProductCopy from './pages/admin/product/CopyProduct'
 import History from './pages/user/History'
 import Password from './pages/user/Password'
 
@@ -89,7 +90,7 @@ const App = () => {
           <AdminRoute exact path='/admin/product' component={NewProduct} />
           <AdminRoute exact path='/admin/product/:slug' component={UpdateProduct} />
           <AdminRoute exact path='/admin/products' component={Products} />
-
+          <AdminRoute exact path='/admin/copy/:slug' component={ProductCopy} />
           <Route exact path="/page/test" component={AdminNavigation} />
 
         </Switch>

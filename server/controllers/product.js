@@ -6,12 +6,14 @@ const { schedulingPolicy } = require('cluster')
 
 exports.create = async (req, res) => {
     try {
-        console.log('-------------------------------')
-        console.log(req.body)
-        console.log('-------------------------------')
-        const { name, brand, category, sub, description, params, coast, oldCoast, sale, discount, promotion } = req.body
-        console.log('type', typeof (brand))
-        console.log('slug', slugify(brand, { lower: true }))
+        // console.log('-------------------------------')
+        // console.log(req.body)
+        // console.log('-------------------------------')
+        const { name, brand, category, sub, description, params, coast, oldCoast, sale, discount, promotion, active,images } = req.body
+        // console.log('type', typeof (brand))
+        // console.log('slug', slugify(brand, { lower: true }))
+        console.log('category----->', category)
+        console.log('sub------>', sub)
         const product = await new Product({
             name,
             slug: slugify(name, { lower: true }),
@@ -25,7 +27,9 @@ exports.create = async (req, res) => {
             oldCoast,
             sale,
             promotion,
-            discount
+            discount,
+            images,
+            active
         }).save()
         res.json(product)
     } catch (err) {
