@@ -82,7 +82,7 @@ const CopyProduct = ({ match, history }) => {
                 setBrandSlug(res.data.brandSlug)
                 setCategory(res.data.category)
                 setSub(res.data.sub)
-                setImages(res.data.images)
+                setImages([])
                 setDescription(res.data.description)
                 setSale(res.data.sale)
                 setDiscount(res.data.discount)

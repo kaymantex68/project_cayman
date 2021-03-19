@@ -63,7 +63,7 @@ const AdminNavigation = (props) => {
                     </SubMenu>
 
                     <Menu.Item key="9" style={{color:'white'}} icon={<FileOutlined />}>
-                        Files
+                    <Link to="/admin/optimization">Оптимизация базы</Link>
                     </Menu.Item>
                 </Menu>
 

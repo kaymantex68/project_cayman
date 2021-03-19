@@ -6,6 +6,7 @@ import {
     removeCategory,
     updateCategory,
 } from "../../../functions/category";
+import {getSubs} from '../../../functions/sub'
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
@@ -24,6 +25,8 @@ const NewProduct = ({history}) => {
     const [name, setName] = useState("");
     const [brand, setBrand] = useState('')
     const [brandSlug, setBrandSlug] = useState('')
+    const [category, setCategory] = useState('')
+    const [sub, setSub] = useState('')
     const [description, setDescription] = useState('')
     const [sale, setSale] = useState(false)
     const [discount, setDiscount] = useState('')
@@ -38,6 +41,7 @@ const NewProduct = ({history}) => {
 
     const [brands, setBrands] = useState([])
     const [categories, setCategories] = useState([]);
+    const [subs, setSubs] = useState([]);
 
     const [filter, setFilter] = useState("");
     const [loading, setLoading] = useState(false);
@@ -45,16 +49,18 @@ const NewProduct = ({history}) => {
     const { user } = useSelector((state) => ({ ...state }));
 
 
-    // console.log('name: ', name)
-    // console.log('brand: ', brand)
-    // console.log('brandSlug:', brandSlug)
-    // console.log('description:', description)
-    // console.log('sale:', sale)
-    // console.log('discount:', discount)
-    // console.log('promotion:', promotion)
-    // console.log('coast:', coast)
-    // console.log('oldCoast:', oldCoast)
-    // console.log('params', params)
+    console.log('name: ', name)
+    console.log('brand: ', brand)
+    console.log('brandSlug:', brandSlug)
+    console.log('category: ', category)
+    console.log('sub: ', sub)
+    console.log('description:', description)
+    console.log('sale:', sale)
+    console.log('discount:', discount)
+    console.log('promotion:', promotion)
+    console.log('coast:', coast)
+    console.log('oldCoast:', oldCoast)
+    console.log('params', params)
 
     useState(() => {
         setNumber(Object.keys(params).length + 1)
@@ -71,6 +77,10 @@ const NewProduct = ({history}) => {
             .then(res => {
                 const uniq = [...new Set(Object.keys(res.data).map(key => res.data[key].name))]
                 setBrands(uniq)
+                getCategories().then((res) => {
+                    setCategories(res.data)
+                    getSubs().then(res=>setSubs(res.data))
+                })
             })
             .catch(err => {
                 toast.error(err.data.message)
@@ -83,7 +93,7 @@ const NewProduct = ({history}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        createProduct({ name, brand, description, params, coast, oldCoast, sale, promotion, discount }, user.token)
+        createProduct({ name, brand, category, sub,  description, params, coast, oldCoast, sale, promotion, discount }, user.token)
             .then(res => {
                 setLoading(false)
                 toast.success(`Новый товар "${name}" создан`)
@@ -159,6 +169,17 @@ const NewProduct = ({history}) => {
 
     }
 
+    // compare and find parent
+    const findSubInCategory = (_sub, _categories) => {
+        return _categories.find(_c => {
+            return _c._id === _sub.parent
+        })
+            ? _categories.find(_c => {
+                return _c._id === _sub.parent
+            }).name
+            : 'категория не найдена'
+    }
+
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
     const categoryForm = () => {
@@ -196,6 +217,40 @@ const NewProduct = ({history}) => {
                     </div>
                     <UploadBrandImage name={brand} disabled={false} />
                     <br />
+                    <div className="form-group">
+                        <br />
+                        <label style={{ fontWeight: 'bold' }}>Категория</label>
+                        <select name="category" className="form-control"
+                            onChange={(e) => {
+                                setCategory(e.target.value)
+                            }}>
+                            <option value="all" >Выберите категорию (обязательный пункт)</option>
+                            {categories.length > 0 && categories.map((c, index) => {
+                                return (
+                                    <option key={index} value={c._id} >
+                                        {`${c.name}`}
+                                    </option>
+                                )
+                            })}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <br />
+                        <label style={{ fontWeight: 'bold' }}>Sub-категория</label>
+                        <select name="subcategory" className="form-control"
+                            onChange={(e) => {
+                                setSub(e.target.value)
+                            }}>
+                            <option value="all" >Выберите категорию (обязательный пункт)</option>
+                            {subs.length > 0 && subs.map((s, index) => {
+                                return (
+                                    <option key={index} value={s._id} >
+                                        {`${s.name} (${findSubInCategory(s, categories)})`}
+                                    </option>
+                                )
+                            })}
+                        </select>
+                    </div>
                     <div className="form-group">
                         <label style={{ fontWeight: 'bold' }}>Описание</label>
                         <TextArea rows={4} value={description} onChange={e => setDescription(e.target.value)} />
@@ -275,7 +330,7 @@ const NewProduct = ({history}) => {
     };
 
     const ReturnProduct = () => (
-        <div className="col md-5" style={{ backgroundColor: "GhostWhite" }}>
+        <div className="col md-5" style={{ backgroundColor: "white" }}>
             {/* {loading ? (
                 <h6>
                     <LoadingOutlined />
@@ -286,33 +341,7 @@ const NewProduct = ({history}) => {
             <br />
             {categoryForm()}
             <hr />
-            <LocalSearch filter={filter} setFilter={setFilter} />
-            {categories.filter(searched(filter)).map((c) => {
-                return (
-                    <div className="alert alert-primary " key={c._id}>
-                        {`${c.name}`}
-                        <Link
-                            className="btn btn-sm float-right"
-                            to={`/admin/category/${c.slug}`}
-                        >
-                            <EditOutlined />
-                        </Link>
-                        <span
-                            className="btn btn-sm float-right"
-                            onClick={() => handleRemove(c.slug, c.name, c.turn)}
-                        >
-                            <DeleteOutlined className="text-danger" />
-                        </span>
-                        <span
-                            className="btn btn-sm float-right"
-                            onClick={() => handleActive(c)}
-                        >
-                            <CheckSquareOutlined className={c.active ? "text-success" : "text-danger"} />
-                        </span>
-                        <span className="float-right btn btn-sm ">{`${c.turn}`}</span>
-                    </div>
-                );
-            })}
+           
         </div>
     )
 

@@ -35,6 +35,7 @@ import AdminNavigation from './components/nav/AdminNavigation'
 import BrandCreate from './pages/admin/brand/BrandCreate';
 import BrandUpdate from './pages/admin/brand/BrandUpdate'
 
+import Optimization from './pages/admin/optimization/Optimization'
 const App = () => {
   const dispatch = useDispatch()
 
@@ -91,6 +92,8 @@ const App = () => {
           <AdminRoute exact path='/admin/product/:slug' component={UpdateProduct} />
           <AdminRoute exact path='/admin/products' component={Products} />
           <AdminRoute exact path='/admin/copy/:slug' component={ProductCopy} />
+
+          <AdminRoute exact path='/admin/optimization' component={Optimization} />
           <Route exact path="/page/test" component={AdminNavigation} />
 
         </Switch>
