@@ -138,7 +138,9 @@ const Products = () => {
                     <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" className="text-success"/></Link>,
                     <DeleteOutlined key="ellipsis" className="text-danger" onClick={()=>handleRemove(p)}/>,
                     <CheckSquareOutlined key="ellipsis" className={p.active? "text-success" : "text-danger"} onClick={()=>handleActive(p)}/>,
+                    
                 ]}
+              
             >
                 <Meta
                     style={{ fontSize: "0.8rem", fontWeight: "bold", color: "black" }}

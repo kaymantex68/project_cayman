@@ -36,13 +36,15 @@ const productSchema = new mongoose.Schema({
         type: Object,
     },
     inStock: {
-        type: String,
+        type: Number,
+        default: 0
     },
     coast: {
         type: Number,
     },
     oldCoast: {
         type: Number,
+        default: 0,
     },
     sale: {
         type: Boolean,
@@ -50,7 +52,7 @@ const productSchema = new mongoose.Schema({
     },
     discount: {
         type: Number,
-        default: false,
+        default: 0,
     },
     promotion: {
         type: Boolean,

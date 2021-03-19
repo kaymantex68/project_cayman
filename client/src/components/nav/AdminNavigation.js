@@ -75,7 +75,7 @@ const AdminNavigation = (props) => {
                 style={{ padding: 0, backgroundColor: "white" }}>
                 <Header
                     className="site-layout-background pl-2"
-                    style={{ padding: 0, backgroundColor: "#404a57" }}
+                    style={{ padding: 0, backgroundColor: "#404a57", display: "flex", justifyContent:"center" }}
                 >
                     {props.name ? <span style={{ fontSize: "1.2rem", fontWeight: "bold", color:"white" }}>{props.name}</span> : null}
                 </Header>

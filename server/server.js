@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const {readdirSync} = require("fs");
 const fileUpload = require('express-fileupload')
+const path = require('path')
 require("dotenv").config();
 
 // app
@@ -38,6 +39,13 @@ app.get('/api', (req, res) => {
 readdirSync('./routes').map((route)=>app.use(`/api`,require(`./routes/${route}`)))
 
 const port = process.env.PORT || 8000
+
+if (process.env.NODE_ENV === 'production') {
+  app.use('/', express.static(path.join(__dirname, '../client', 'build')))
+  app.get('*', (req, res) => {
+          res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'))
+  })
+}
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}`);
