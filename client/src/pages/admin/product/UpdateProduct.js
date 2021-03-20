@@ -296,25 +296,27 @@ const UpdateProduct = ({ match, history }) => {
                         required
                         placeholder="название товара"
                         disabled={loading}
+                        style={{fontSize:"0.9rem"}}
                     />
                     <div className="form-group">
                         <br />
                         <label style={{ fontWeight: 'bold' }}>Brand</label>
-                        <select name="brand" className="form-control"
+                        <select name="brand" className="form-control" style={{fontSize:"0.9rem"}}
                             onChange={(e) => {
                                 setBrand(e.target.value)
                                 setBrandSlug(slugify(e.target.value))
                             }}>
-                            <option value="all" >Выберите brand (обязательный пункт)</option>
+                            <option value="all"  >Выберите brand (обязательный пункт)</option>
                             {brands.length > 0 && brands.map((b, index) => {
                                 return (
-                                    <option key={index} value={b} selected={b === brand}>
+                                    <option key={index}  value={b} selected={b === brand}>
                                         {`${b}`}
                                     </option>
                                 )
                             })}
                         </select>
                     </div>
+                    <UploadBrandImage name={brand} disabled={false} />
                     <div className="form-group">
                         <br />
                         <label style={{ fontWeight: 'bold' }}>Изображения</label>
@@ -324,7 +326,7 @@ const UpdateProduct = ({ match, history }) => {
                     <div className="form-group">
                         <br />
                         <label style={{ fontWeight: 'bold' }}>Категория</label>
-                        <select name="category" className="form-control"
+                        <select name="category" className="form-control" style={{fontSize:"0.9rem"}}
                             onChange={(e) => {
                                 setCategory(e.target.value)
                             }}>
@@ -341,7 +343,7 @@ const UpdateProduct = ({ match, history }) => {
                     <div className="form-group">
                         <br />
                         <label style={{ fontWeight: 'bold' }}>Sub-категория</label>
-                        <select name="subcategory" className="form-control"
+                        <select name="subcategory" className="form-control" style={{fontSize:"0.9rem"}}
                             onChange={(e) => {
                                 setSub(e.target.value)
                             }}>
@@ -355,11 +357,11 @@ const UpdateProduct = ({ match, history }) => {
                             })}
                         </select>
                     </div>
-                    <UploadBrandImage name={brand} disabled={false} />
+                    
                     <br />
                     <div className="form-group">
                         <label style={{ fontWeight: 'bold' }}>Описание</label>
-                        <TextArea rows={6} value={description} onChange={e => setDescription(e.target.value)} />
+                        <TextArea rows={6} value={description} style={{fontSize:"0.8rem"}} onChange={e => setDescription(e.target.value)} />
                     </div>
                     <br />
                     <div className="form-group">
@@ -374,7 +376,7 @@ const UpdateProduct = ({ match, history }) => {
                     </div>
                     <br />
                     <div className="form-group">
-                        <label style={{ fontWeight: 'bold' }}>Цена</label>
+                        <label style={{ fontWeight: 'bold' }} >Цена</label>
                         <input
                             type="text"
                             className="form-control"
@@ -382,6 +384,7 @@ const UpdateProduct = ({ match, history }) => {
                             onChange={(e) => setCoast(e.target.value)}
                             placeholder="актуальная цена товара"
                             disabled={loading}
+                            style={{fontSize:"0.9rem"}}
                         />
                     </div>
                     <div className="form-group">
@@ -393,6 +396,7 @@ const UpdateProduct = ({ match, history }) => {
                             onChange={(e) => setOldCoast(e.target.value)}
                             placeholder="старая цена товара"
                             disabled={loading}
+                            style={{fontSize:"0.9rem"}}
                         />
                     </div>
                     <br />
@@ -402,9 +406,9 @@ const UpdateProduct = ({ match, history }) => {
                             Object.keys(params).map(key => {
                                 return (
                                     <div class="input-group-prepend">
-                                        <span className="input-group-text">{key}</span>
-                                        <input name={key} placeholder="параметр" className="form-control mr-4 ml-2" value={params[key][0]} onChange={handleChange1} />
-                                        <input name={key} placeholder="значение" className="form-control mr-4" value={params[key][1]} onChange={handleChange2} />
+                                        <span className="input-group-text" style={{fontSize:"0.8rem"}}>{key}</span>
+                                        <input name={key} style={{fontSize:"0.8rem"}} placeholder="параметр" className="form-control mr-4 ml-2" value={params[key][0]} onChange={handleChange1} />
+                                        <input name={key} style={{fontSize:"0.8rem"}} placeholder="значение" className="form-control mr-4" value={params[key][1]} onChange={handleChange2} />
                                         <button
                                             type="button"
                                             name={key}

@@ -3,7 +3,7 @@ import { auth } from './firebase'
 import { useDispatch } from 'react-redux'
 import { currentUser } from './functions/auth'
 
-// import './App.css';
+import './App.css';
 import { useEffect, lazy, Suspense } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import Loading from './components/form/LoadingIcon'
@@ -136,7 +136,7 @@ const App = () => {
             <AdminRoute exact path='/admin/products' component={Products} />
             <AdminRoute exact path='/admin/copy/:slug' component={ProductCopy} />
 
-            <AdminRoute exact path='/admin/optimization' component={Optimization} />
+            <AdminRoute exact path='/admin/delete-image' component={Optimization} />
             <Route exact path="/page/test" component={AdminNavigation} />
 
           </Switch>

@@ -296,9 +296,9 @@ const NewProduct = ({history}) => {
                             Object.keys(params).map(key => {
                                 return (
                                     <div class="input-group-prepend">
-                                        <span className="input-group-text">{key}</span>
-                                        <input name={key} placeholder="параметр" className="form-control mr-4 ml-2" value={params[key][0]} onChange={handleChange1} />
-                                        <input name={key} placeholder="значение" className="form-control mr-4" value={params[key][1]} onChange={handleChange2} />
+                                        <span className="input-group-text" style={{fontSize:"0.8rem"}}>{key}</span>
+                                        <input name={key} style={{fontSize:"0.8rem"}} placeholder="параметр" className="form-control mr-4 ml-2" value={params[key][0]} onChange={handleChange1} />
+                                        <input name={key} style={{fontSize:"0.8rem"}} placeholder="значение" className="form-control mr-4" value={params[key][1]} onChange={handleChange2} />
                                         <button
                                             type="button"
                                             name={key}

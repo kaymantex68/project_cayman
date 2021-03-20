@@ -25,19 +25,19 @@ const AdminNavigation = (props) => {
     };
 
     return (
-        <Layout style={{ minHeight: "100vh"}}>
+        <Layout style={{ minHeight: "100vh" }}>
             <Sider
                 width='250'
                 collapsible
                 collapsed={collapsed}
                 onCollapse={onCollapse}
-                // style={{ backgroundColor: "white" }}
+            // style={{ backgroundColor: "white" }}
             >
-                <div className="logo" style={{ Width: "300px"  }} />
+                <div className="logo" style={{ Width: "300px" }} />
 
-                <Menu theme="dark" style={{color:'white'}} defaultSelectedKeys={["1"]} mode="inline" >
-                    <Menu.Item key="hist" style={{color:'white'}} icon={<HomeOutlined />}>
-                        <Link to="/admin/dashboard" style={{color:'white'}}>Личный кабинет</Link>
+                <Menu theme="dark" style={{ color: 'white' }} defaultSelectedKeys={["1"]} mode="inline" >
+                    <Menu.Item key="hist" style={{ color: 'white' }} icon={<HomeOutlined />}>
+                        <Link to="/admin/dashboard" style={{ color: 'white' }}>Личный кабинет</Link>
                     </Menu.Item>
                     <SubMenu key="sub1" icon={<SolutionOutlined />} title="Пользователь">
                         <Menu.Item key="1">
@@ -61,10 +61,13 @@ const AdminNavigation = (props) => {
                             <Link to="/admin/products">Товары</Link>
                         </Menu.Item>
                     </SubMenu>
+                    <SubMenu key="optimization" icon={<FileOutlined />} title="Оптимизация базы">
+                        <Menu.Item key="9" style={{ color: 'white' }} >
+                            <Link to="/admin/delete-image">Удаление изображений</Link>
+                        </Menu.Item>
 
-                    <Menu.Item key="9" style={{color:'white'}} icon={<FileOutlined />}>
-                    <Link to="/admin/optimization">Оптимизация базы</Link>
-                    </Menu.Item>
+                    </SubMenu>
+
                 </Menu>
 
             </Sider>
@@ -75,9 +78,9 @@ const AdminNavigation = (props) => {
                 style={{ padding: 0, backgroundColor: "white" }}>
                 <Header
                     className="site-layout-background pl-2"
-                    style={{ padding: 0, backgroundColor: "#404a57", display: "flex", justifyContent:"center" }}
+                    style={{ padding: 0, backgroundColor: "#404a57", display: "flex", justifyContent: "center" }}
                 >
-                    {props.name ? <span style={{ fontSize: "1.2rem", fontWeight: "bold", color:"white" }}>{props.name}</span> : null}
+                    {props.name ? <span style={{ fontSize: "1rem", color: "white" }}>{props.name}</span> : null}
                 </Header>
                 <Content style={{ margin: "0 0px" }} className="p-2">
                     {props.children ? props.children : null}

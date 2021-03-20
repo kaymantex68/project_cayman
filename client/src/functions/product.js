@@ -59,3 +59,13 @@ export const removeFile = async(slug, fileName, authtoken)=>{
                 }
             })
     }
+
+    
+
+    export const removeUnusedFile = async(fileName, authtoken)=>{
+        return await axios.delete(`${process.env.REACT_APP_API}/unusedImages/${fileName}`,
+        {
+            headers: {
+                authtoken
+            }
+        })}

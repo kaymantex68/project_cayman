@@ -13,7 +13,6 @@ import { Provider } from 'react-redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 // rootReducer
 import rootReducer from './reducers'
-
 // store
 const store = createStore(rootReducer, composeWithDevTools())
 

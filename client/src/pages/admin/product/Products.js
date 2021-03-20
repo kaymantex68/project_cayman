@@ -21,10 +21,10 @@ import AdminNavigation from '../../../components/nav/AdminNavigation'
 import _, { stubTrue } from 'lodash'
 import slugify from 'react-slugify'
 import UploadBrandImage from '../../../components/form/ShowBrandPicture'
-import { Card, Avatar } from 'antd';
-import { createProduct, getProducts, removeProduct,updateProduct } from '../../../functions/product'
+import { Card, Avatar, Tooltip, Radio } from 'antd';
+import { createProduct, getProducts, removeProduct, updateProduct } from '../../../functions/product'
 import Loading from '../../../components/form/LoadingIcon'
-
+// import PCard from '../../../components/ card/Card'
 const { Meta } = Card;
 
 
@@ -38,15 +38,17 @@ const Products = () => {
 
     const [loading, setLoading] = useState(false)
 
-    const {user}= useSelector(state=>({...state}))
+    const { user } = useSelector(state => ({ ...state }))
+
+    const [inStock, setInStock] = useState(1)
 
     // console.log('products:', products)
     // console.log('brand pictures:', brandPictures)
     // console.log('categories:', categories)
     // console.log('subs:', subs)
 
-    const loadingProducts=()=>{
-        getProducts().then((res)=>setProducts(res.data))
+    const loadingProducts = () => {
+        getProducts().then((res) => setProducts(res.data))
     }
 
     useState(() => {
@@ -78,29 +80,29 @@ const Products = () => {
         console.log('we here')
     }
 
-    const handleRemove=(p)=>{
+    const handleRemove = (p) => {
         if (window.confirm(`Удалить?`)) {
             setLoading(true)
-        removeProduct(p._id,user.token)
-        .then(res=>{
-            loadingProducts()
-            setLoading(false)
-            toast.error(`Товар ${p.name} удален!`);
-            
-        })
-        .catch((err) => {
-            setLoading(false);
-            if (err.response.status === 400) toast.error(err.response.data);
-        });
-        
-        console.log('id',p._id)
-    }
+            removeProduct(p._id, user.token)
+                .then(res => {
+                    loadingProducts()
+                    setLoading(false)
+                    toast.error(`Товар ${p.name} удален!`);
+
+                })
+                .catch((err) => {
+                    setLoading(false);
+                    if (err.response.status === 400) toast.error(err.response.data);
+                });
+
+            console.log('id', p._id)
+        }
     }
 
     const handleActive = (p) => {
         setLoading(true)
-        console.log('p',p)
-        console.log('active',p.active)
+        console.log('p', p)
+        console.log('active', p.active)
         updateProduct(p._id, { ...p, active: !p.active }, user.token)
             .then(res => {
                 loadingProducts();
@@ -115,6 +117,13 @@ const Products = () => {
 
 
     const ProductCard = (p) => {
+        const options = [
+            { label: 'in', value: 1 },
+            { label: 'soon', value: 2 },
+            { label: 'out', value: 0 },
+        ];
+        const plainOptions = ['Apple', 'Pear', 'Orange'];
+
         const path = brandPictures.find(b => b.slug === p.brandSlug)
         const category = categories.find(c => c._id === p.category)
         const sub = subs.find(s => s._id === p.sub)
@@ -122,54 +131,69 @@ const Products = () => {
         if (p.images.length > 0) pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${p.images[0]}`
         else pathImage = "/images/product/default.png"
         return (
-            <Card
-                style={{ width: 250, margin: "5px", fontSize: "0.8rem", boxShadow: "0 3px 2px rgba(0,0,0,0.1)" }}
-                cover={
-                    <div style={{ width: "250px", height: "150px", display: "flex", alignItems: "center", justifyContent: "center"}}>
-                        <img
-                            style={{ maxWidth: "200px", maxHeight:"140px" }}
-                            alt="example"
-                            src={pathImage}
-                        />
-                    </div>
-                }
-                actions={[
-                    <Link to={`/admin/copy/${p.slug}`}><CopyOutlined key="setting"  className="text-primary"/></Link>,
-                    <Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" className="text-success"/></Link>,
-                    <DeleteOutlined key="ellipsis" className="text-danger" onClick={()=>handleRemove(p)}/>,
-                    <CheckSquareOutlined key="ellipsis" className={p.active? "text-success" : "text-danger"} onClick={()=>handleActive(p)}/>,
-                    
-                ]}
-              
-            >
-                <Meta
-                    style={{ fontSize: "0.8rem", fontWeight: "bold", color: "black" }}
-                    title={p.name}
-                    description={category && sub && `${category.name}  (${sub.name})`}
-                />
-                <br />
-                {path &&
-                    <div style={{ width: "100px", height: "50px", display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
-                        <img src={`${process.env.REACT_APP_IMAGES_BRAND}/${path.fileName}`} style={{ maxWidth: "100px", maxHeight: "50px" }} />
-                    </div>}
-            </Card>
+            <div className="m-1" style={{ boxShadow: "0 3px 2px rgba(0,0,0,0.1)" }}>
+                <Card
+                    style={{ width: 250, fontSize: "0.8rem", }}
+                    cover={
+                        <div style={{ width: "250px", height: "150px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <img
+                                style={{ maxWidth: "200px", maxHeight: "140px" }}
+                                alt="example"
+                                src={pathImage}
+                            />
+                        </div>
+                    }
+                    actions={[
+                        <Tooltip title="копировать"><Link to={`/admin/copy/${p.slug}`}><CopyOutlined key="setting" className="text-primary" /></Link></Tooltip>,
+                        <Tooltip title="редактировать"><Link to={`/admin/product/${p.slug}`}><EditOutlined key="edit" className="text-success" /></Link></Tooltip>,
+                        <Tooltip title="удалить"><DeleteOutlined key="ellipsis" className="text-danger" onClick={() => handleRemove(p)} /></Tooltip>,
+                        <Tooltip title="активировать"><CheckSquareOutlined key="ellipsis" className={p.active ? "text-success" : "text-danger"} onClick={() => handleActive(p)} /></Tooltip>,
+                    ]}
+
+                >
+                    <Meta
+                        style={{ fontSize: "0.8rem", fontWeight: "bold", color: "black" }}
+                        title={p.name}
+                        description={category && sub && `${category.name}  (${sub.name})`}
+                    />
+                    <br />
+                    {path &&
+                        <div style={{ width: "100px", height: "50px", display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
+                            <img src={`${process.env.REACT_APP_IMAGES_BRAND}/${path.fileName}`} style={{ maxWidth: "100px", maxHeight: "50px" }} />
+                        </div>}
+
+                </Card>
+                <Card
+                     
+                    style={{ width: 250 }}
+                    actions={[
+                        <SettingOutlined key="setting" />,
+                        <EditOutlined key="edit" />,
+                        <EllipsisOutlined key="ellipsis" />,
+                    ]}
+                >
+                    <span>Наличие товара</span>
+                </Card>
+
+            </div>
         )
     }
 
     const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
 
-    
+
 
     const ReturnProducts = () => (
         <div className=" justify-content-center" style={{ backgroundColor: "White" }}>
             <LocalSearch filter={filter} setFilter={setFilter} />
-            
+
             <div className="row justify-content-center">
                 {
                     products.length > 0 &&
                     products.filter(searched(filter)).map((p) => {
                         return (
                             <div key={p._id}>
+                                {/* <PCard product={p}/> */}
                                 {ProductCard(p)}
                             </div>
                         )
@@ -183,7 +207,7 @@ const Products = () => {
     )
 
     return (
-        <AdminNavigation name={'Товары'} children={loading? Loading() : ReturnProducts()} />
+        <AdminNavigation name={'Товары'} children={loading ? Loading() : ReturnProducts()} />
     );
 };
 

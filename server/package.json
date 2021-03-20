@@ -4,10 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node server.js",
-    "client": "npm run start --prefix ../client",
-    "server": "nodemon server.js",
-    "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
+    "start": "nodemon server.js"
+
   },
   "keywords": [],
   "author": "",

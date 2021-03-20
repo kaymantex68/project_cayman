@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
         // console.log('-------------------------------')
         // console.log(req.body)
         // console.log('-------------------------------')
-        const { name, brand, category, sub, description, params, coast, oldCoast, sale, discount, promotion, active,images } = req.body
+        const { name, brand, category, sub, description, params, coast, oldCoast, sale, discount, promotion, active, images } = req.body
         // console.log('type', typeof (brand))
         // console.log('slug', slugify(brand, { lower: true }))
         console.log('category----->', category)
@@ -105,34 +105,34 @@ exports.remove = async (req, res) => {
 exports.upload = async (req, res) => {
     const message = {}
     try {
-        
+
         // for  (let i = 0; i < files.length; i++) {
-            const slug = req.headers.slug
-            const brand = req.headers.slugbrand
-            console.log('brand', brand, 'slug', slug)
-            let fileName = `${brand}-${slug}-${Date.now()}.${req.files.image.mimetype.split('/')[1]}`
-            // uploading file
-            await fs.writeFile(
-                `${process.env.URI_PRODUCT_PICTURE}/${fileName}`,
-                req.files.image.data,
-                "binary",
-                async (err, data) => {
-                    if (err) {
-                        // message.err = err
-                        return res.json({ message: err })
-                    }
-                    let result = await Product.findOneAndUpdate(
-                        { slug: slug },
-                        {
-                            "$push": {
-                                "images": fileName
-                            }
-                        },
-                        { new: true }
-                    )
-                    message.result = result
-                    res.json(message)
-                })
+        const slug = req.headers.slug
+        const brand = req.headers.slugbrand
+        console.log('brand', brand, 'slug', slug)
+        let fileName = `${brand}-${slug}-${Date.now()}.${req.files.image.mimetype.split('/')[1]}`
+        // uploading file
+        await fs.writeFile(
+            `${process.env.URI_PRODUCT_PICTURE}/${fileName}`,
+            req.files.image.data,
+            "binary",
+            async (err, data) => {
+                if (err) {
+                    // message.err = err
+                    return res.json({ message: err })
+                }
+                let result = await Product.findOneAndUpdate(
+                    { slug: slug },
+                    {
+                        "$push": {
+                            "images": fileName
+                        }
+                    },
+                    { new: true }
+                )
+                message.result = result
+                res.json(message)
+            })
         // }
     } catch (err) {
         console.log('Ошибка создания загрузки изображения --------->', err)
@@ -165,6 +165,29 @@ exports.removeImage = async (req, res) => {
                     }
                 })
         }
+        message.complete = 'Ok'
+        res.json(message)
+    } catch (err) {
+        console.log('Ошибка удаления изображения --------->', err)
+        // res.status(400).send('Ошибка загрузки изображения товара')
+        res.status(400).json(message)
+    }
+}
+
+exports.removeUnusedImages = async (req, res) => {
+    try {
+        console.log('------------------------------->', req.data)
+        const message = {}
+    //    console.log('$$$$$$$$', req.params)
+        const  {fileName}  = req.params
+        // console.log('++++++++', fileName)
+        await fs.unlink(`${process.env.URI_PRODUCT_PICTURE}/${fileName}`,
+            (err) => {
+                if (err) {
+                    console.log('delete error --------->', err)
+                    message.err = err
+                }
+            })
         message.complete = 'Ok'
         res.json(message)
     } catch (err) {
