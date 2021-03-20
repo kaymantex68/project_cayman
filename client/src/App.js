@@ -7,6 +7,7 @@ import { currentUser } from './functions/auth'
 import { useEffect, lazy, Suspense } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import Loading from './components/form/LoadingIcon'
+import {toast} from 'react-toastify'
 // import Home from './pages/Home'
 // import Login from './pages/auth/Login'
 // import Register from './pages/auth/Register'
@@ -92,7 +93,9 @@ const App = () => {
                 _id: res.data._id
               }
             })
-          }).catch()
+          }).catch(err=>{
+            if (err.response.status === 400) toast.error('Ваш Token закончился. Обновите страницу!');
+          })
       }
       return () => usubscribe()
     });
