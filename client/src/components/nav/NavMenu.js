@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Menu } from "antd";
 import { getCategories } from "../../functions/category";
 import { getSubs } from "../../functions/sub";
-import { getBrands} from '../../functions/brand'
+import { getBrands } from '../../functions/brand'
+import { useHistory } from 'react-router-dom'
 // import {
 //     MailOutlined,
 //     AppstoreOutlined,
@@ -12,33 +13,58 @@ import { getBrands} from '../../functions/brand'
 const { SubMenu } = Menu;
 
 function handleClick(e) {
-    console.log("click", e);
+    // console.log("click", e);
 }
 
 const NavMenu = () => {
     const [categories, setCategories] = useState([]);
     const [subs, setSubs] = useState([]);
-    const [brands, setBrands]= useState([])
+    const [brands, setBrands] = useState([])
+
+    const history = useHistory()
 
     useState(() => {
         getCategories().then((res) => {
             setCategories(res.data);
             getSubs().then((res) => {
                 setSubs(res.data);
-                getBrands().then(res=>{
+                getBrands().then(res => {
                     setBrands(res.data)
                 })
             });
         });
     }, []);
 
-    console.log("categories", categories);
-    console.log("subs", subs);
-    console.log('brands', brands)
+    // console.log("categories", categories);
+    // console.log("subs", subs);
+    // console.log('brands', brands)
+
+    const handleGoToCatalog = () => {
+        // console.log('catalog')
+        history.push('/catalog')
+    }
+
+    const handleGoToCategory = (category) => {
+        console.log('category', category)
+        // console.log('link', `/catalog/${category}`)
+        history.push(`/catalog/${category.slug}`)
+    }
+
+    const handleGoToSub = (category, sub) => {
+        // console.log('category && sub', category, sub)
+        // console.log('link', `/catalog/${category}/${sub}`)
+        history.push(`/catalog/${category}/${sub}`)
+    }
+
+    const handleGoToBrand = (category, sub, brand) => {
+        // console.log('category && sub && brand', category, sub, brand)
+        // console.log('link', `/catalog/${category}/${sub}/${brand}`)
+        history.push(`/catalog/${category}/${sub}/${brand}`)
+    }
 
     return (
         <Menu onClick={handleClick} mode="horizontal">
-            <SubMenu key="SubMenu" title="Каталог">
+            <SubMenu key="SubMenu" title="Каталог" onTitleClick={handleGoToCatalog}>
                 {/* add category to menu */}
                 {categories.map((c) => {
                     return (
@@ -48,6 +74,7 @@ const NavMenu = () => {
                                     key={c._id}
                                     title={c.name}
                                     style={{ width: "auto" }}
+                                    onTitleClick={() => handleGoToCategory(c)}
                                 >
                                     {/* add sub-category to menu */}
                                     {
@@ -60,15 +87,21 @@ const NavMenu = () => {
                                                                 key={s._id}
                                                                 title={s.name}
                                                                 style={{ width: "auto" }}
+                                                                onTitleClick={() => handleGoToSub(c.slug, s.slug)}
                                                             >
-                                                                {brands.map(b=>{
+                                                                {brands.map(b => {
                                                                     return (
                                                                         <>
-                                                                        {
-                                                                        b.active && s._id === b.parent 
-                                                                        ? <Menu.Item key={b._id}>{b.name}</Menu.Item>
-                                                                        : null
-                                                                        }
+                                                                            {
+                                                                                b.active && s._id === b.parent
+                                                                                    ? <Menu.Item
+                                                                                        key={b._id}
+                                                                                        onClick={()=>handleGoToBrand(c.slug,s.slug,b.slug)}
+                                                                                    >
+                                                                                        {b.name}
+                                                                                    </Menu.Item>
+                                                                                    : null
+                                                                            }
                                                                         </>
                                                                     )
                                                                 })}
@@ -85,27 +118,6 @@ const NavMenu = () => {
                         </>
                     );
                 })}
-                {/* <SubMenu key="IP" title="IP камеры" style={{ width: "auto" }}>
-                        <SubMenu key="IPoutdoor" title="IP камеры уличные" style={{ width: "auto" }}>
-                            <Menu.Item key="7">Dahua</Menu.Item>
-                            <Menu.Item key="8">HiWatch</Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="IPindoore" title="IP камеры  купольные" style={{ width: "auto" }}>
-                            <Menu.Item key="9">Dahua</Menu.Item>
-                            <Menu.Item key="10">HiWatch</Menu.Item>
-                        </SubMenu>
-                    </SubMenu>
-
-                    <SubMenu key="AHD" title="AHD камеры" style={{ width: "auto" }}>
-                        <SubMenu key="AHDoutdoor" title="AHD камеры уличные" style={{ width: "auto" }}>
-                            <Menu.Item key="11">Dahua</Menu.Item>
-                            <Menu.Item key="12">HiWatch</Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="AHDindoore" title="AHD камеры  купольные" style={{ width: "auto" }}>
-                            <Menu.Item key="13">Dahua</Menu.Item>
-                            <Menu.Item key="14">HiWatch</Menu.Item>
-                        </SubMenu>
-                    </SubMenu> */}
             </SubMenu>
         </Menu>
     );

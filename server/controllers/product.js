@@ -3,6 +3,7 @@ const slugify = require('slugify')
 const fs = require('fs')
 const { listenerCount } = require('../models/product')
 const { schedulingPolicy } = require('cluster')
+const sub = require('../models/sub')
 
 exports.create = async (req, res) => {
     try {
@@ -50,6 +51,54 @@ exports.list = async (req, res) => {
     }
 }
 
+
+exports.listCategoryAndSub = async (req, res) => {
+    const { categoryId, subId } = req.body
+    console.log('============', categoryId, subId)
+    try {
+        const products = await Product.find({ category: categoryId, sub: subId })
+            .sort({ brand: 1 })
+            .exec()
+        res.json(products)
+    } catch (err) {
+        console.log('Ошибка чтения товаров --------->', err)
+        res.status(400).send('Ошибка чтения товаров')
+    }
+}
+
+exports.productsFilter = async (req, res) => {
+    const { categoryId, subId, brandSlug } = req.body
+    try {
+        if (categoryId && subId && brandSlug) {
+            const products = await Product.find({ category: categoryId, sub: subId, brandSlug: brandSlug })
+                .sort({ brand: 1 })
+                .exec()
+            return res.json(products)
+        }
+        if (categoryId && subId) {
+            const products = await Product.find({ category: categoryId, sub: subId })
+                .sort({ brand: 1 })
+                .exec()
+            return res.json(products)
+        }
+        if (categoryId) {
+            const products = await Product.find({ category: categoryId})
+                .sort({ brand: 1 })
+                .exec()
+            return res.json(products)
+        }
+
+        const products = await Product.find({})
+            .sort({ brand: 1 })
+            .exec()
+        return res.json(products)
+    } catch (err) {
+        console.log('Ошибка чтения товаров --------->', err)
+        res.status(400).send('Ошибка чтения товаров')
+    }
+}
+
+
 exports.read = async (req, res) => {
     try {
         const product = await Product.findOne({ slug: req.params.slug }).exec()
@@ -66,7 +115,7 @@ exports.update = async (req, res) => {
         console.log('body', req.body)
         console.log('params', req.params._id)
         console.log('-------------------------------')
-        const { name, brand, category, sub, description, params, coast, oldCoast, sale, discount, promotion, active } = req.body
+        const { name, brand, category, sub, description, inStock, params, coast, oldCoast, sale, discount, promotion, active } = req.body
         const product = await Product.findOneAndUpdate({ _id: req.params._id }, {
             name,
             slug: slugify(name, { lower: true }),
@@ -75,6 +124,7 @@ exports.update = async (req, res) => {
             sub,
             brandSlug: await slugify(brand, { lower: true }),
             description,
+            inStock,
             params,
             coast,
             oldCoast,
@@ -178,8 +228,8 @@ exports.removeUnusedImages = async (req, res) => {
     try {
         console.log('------------------------------->', req.data)
         const message = {}
-    //    console.log('$$$$$$$$', req.params)
-        const  {fileName}  = req.params
+        //    console.log('$$$$$$$$', req.params)
+        const { fileName } = req.params
         // console.log('++++++++', fileName)
         await fs.unlink(`${process.env.URI_PRODUCT_PICTURE}/${fileName}`,
             (err) => {

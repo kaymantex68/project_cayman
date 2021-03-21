@@ -7,7 +7,7 @@ import './App.css';
 import { useEffect, lazy, Suspense } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import Loading from './components/form/LoadingIcon'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 // import Home from './pages/Home'
 // import Login from './pages/auth/Login'
 // import Register from './pages/auth/Register'
@@ -41,10 +41,12 @@ import {toast} from 'react-toastify'
 
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/auth/Login'))
+const Catalog = lazy(() => import('./pages/Catalog'))
 const Register = lazy(() => import('./pages/auth/Register'))
 const RegistrationComplete = lazy(() => import('./pages/auth/RegistrationComplete'))
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'))
 const Header = lazy(() => import('./components/nav/Header'))
+const NavMenu = lazy(() => import('./components/nav/NavMenu'))
 
 const UserRoute = lazy(() => import('./routes/UserRoute'))
 const AdminRoute = lazy(() => import('./routes/AdminRoute'))
@@ -93,7 +95,7 @@ const App = () => {
                 _id: res.data._id
               }
             })
-          }).catch(err=>{
+          }).catch(err => {
             if (err.response.status === 400) toast.error('Ваш Token закончился. Обновите страницу!');
           })
       }
@@ -112,6 +114,9 @@ const App = () => {
       }>
         <div>
           <Header />
+        </div>
+        <div>
+          <NavMenu />
         </div>
         <div>
           <Switch>
@@ -137,7 +142,10 @@ const App = () => {
             <AdminRoute exact path='/admin/copy/:slug' component={ProductCopy} />
 
             <AdminRoute exact path='/admin/delete-image' component={Optimization} />
-            <Route exact path="/page/test" component={AdminNavigation} />
+            <Route exact path="/catalog" component={Catalog} />
+            <Route exact path="/catalog/:category" component={Catalog} />
+            <Route exact path="/catalog/:category/:sub" component={Catalog} />
+            <Route exact path="/catalog/:category/:sub/:brand" component={Catalog} />
 
           </Switch>
         </div>

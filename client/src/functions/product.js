@@ -15,6 +15,7 @@ export const getProducts = async () => {
     return await axios.get(`${process.env.REACT_APP_API}/products`)
 }
 
+
 export const getProduct = async (slug) => {
     return await axios.get(`${process.env.REACT_APP_API}/product/${slug}`)
 }

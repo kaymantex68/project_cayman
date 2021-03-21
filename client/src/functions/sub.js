@@ -15,6 +15,10 @@ export const getSubs = async () => {
     return await axios.get(`${process.env.REACT_APP_API}/subs`)
 }
 
+export const getSubsSlug= async (slug) => {
+    return await axios.get(`${process.env.REACT_APP_API}/subsSlug/${slug}`)
+}
+
 export const getSub = async (_id) => {
     return await axios.get(`${process.env.REACT_APP_API}/sub/${_id}`)
 }

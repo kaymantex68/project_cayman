@@ -19,6 +19,13 @@ exports.list = async (req, res) => {
     res.json(subs)
 }
 
+exports.listSlug = async (req, res) => {
+    const subs = await Sub.find({slug: req.params.slug})
+        .sort({ parent: 1 })
+        .exec()
+    res.json(subs)
+}
+
 exports.read = async (req, res) => {
     const sub = await Sub.findOne({_id: req.params._id}).exec()
     res.json({ sub })
@@ -48,3 +55,5 @@ exports.remove = async (req, res) => {
         res.status(400).send('Ошибка удаления Sub-категории.')
     }
 }
+
+

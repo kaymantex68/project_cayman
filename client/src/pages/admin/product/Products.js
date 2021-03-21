@@ -14,6 +14,9 @@ import {
     CopyOutlined,
     CheckSquareOutlined,
     DeleteOutlined,
+    CheckCircleOutlined,
+    ClockCircleOutlined,
+    CloseCircleOutlined,
 } from "@ant-design/icons";
 import { getBrands } from '../../../functions/brand'
 import LocalSearch from '../../../components/form/LocalSearch'
@@ -105,9 +108,9 @@ const Products = () => {
         console.log('active', p.active)
         updateProduct(p._id, { ...p, active: !p.active }, user.token)
             .then(res => {
-                loadingProducts();
                 setLoading(false)
                 toast.success(`Товар ${p.name} переключен`)
+                loadingProducts();
             })
             .catch(err => {
                 setLoading(false)
@@ -115,14 +118,24 @@ const Products = () => {
             })
     }
 
+    const handleInStock =(p,i)=>{
+        setLoading(true)
+        updateProduct(p._id, { ...p, inStock: i }, user.token)
+            .then(res => {
+                setLoading(false)
+                toast.success(`Наличие товара ${p.name} обновлено`)
+                loadingProducts();
+            })
+            .catch(err => {
+                setLoading(false)
+                if (err.response.status === 400) toast.error(err.response.data)
+            })
+    }
+    
+
 
     const ProductCard = (p) => {
-        const options = [
-            { label: 'in', value: 1 },
-            { label: 'soon', value: 2 },
-            { label: 'out', value: 0 },
-        ];
-        const plainOptions = ['Apple', 'Pear', 'Orange'];
+        
 
         const path = brandPictures.find(b => b.slug === p.brandSlug)
         const category = categories.find(c => c._id === p.category)
@@ -167,9 +180,9 @@ const Products = () => {
                      
                     style={{ width: 250 }}
                     actions={[
-                        <SettingOutlined key="setting" />,
-                        <EditOutlined key="edit" />,
-                        <EllipsisOutlined key="ellipsis" />,
+                        <Tooltip title="в наличии"><CheckCircleOutlined key="inStock" className={p.inStock===1? "text-success": null} onClick={(e)=>handleInStock(p,1)} /></Tooltip>,
+                        <Tooltip title="ожидается"><ClockCircleOutlined key="soon" className={p.inStock===2? "text-warning": null} onClick={(e)=>handleInStock(p,2)}/></Tooltip>,
+                        <Tooltip title="под заказ"><CloseCircleOutlined key="outStock" className={p.inStock===0? "text-danger": null} onClick={(e)=>handleInStock(p,0)}/></Tooltip>,
                     ]}
                 >
                     <span>Наличие товара</span>
@@ -179,7 +192,7 @@ const Products = () => {
         )
     }
 
-    const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
+    const searched = (filter) => (c) => c.name.toLowerCase().includes(filter) ;
 
 
 
