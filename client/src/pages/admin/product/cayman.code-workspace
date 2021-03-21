@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "../../../../.."
+		},
+		{
+			"path": "../../../../../../eccomerce"
+		},
+		{
+			"path": "../../../../../../site"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.yaml": "home-assistant"
+		}
+	}
+}
