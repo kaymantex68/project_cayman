@@ -70,25 +70,25 @@ exports.productsFilter = async (req, res) => {
     const { categoryId, subId, brandSlug } = req.body
     try {
         if (categoryId && subId && brandSlug) {
-            const products = await Product.find({ category: categoryId, sub: subId, brandSlug: brandSlug })
+            const products = await Product.find({ category: categoryId, sub: subId, brandSlug: brandSlug, active: true })
                 .sort({ brand: 1 })
                 .exec()
             return res.json(products)
         }
         if (categoryId && subId) {
-            const products = await Product.find({ category: categoryId, sub: subId })
+            const products = await Product.find({ category: categoryId, sub: subId, active: true })
                 .sort({ brand: 1 })
                 .exec()
             return res.json(products)
         }
         if (categoryId) {
-            const products = await Product.find({ category: categoryId})
+            const products = await Product.find({ category: categoryId,active: true})
                 .sort({ brand: 1 })
                 .exec()
             return res.json(products)
         }
 
-        const products = await Product.find({})
+        const products = await Product.find({active: true})
             .sort({ brand: 1 })
             .exec()
         return res.json(products)

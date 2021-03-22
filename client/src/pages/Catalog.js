@@ -109,11 +109,11 @@ const Catalog = ({ match, history }) => {
             <div>
                 <NavMenu />
             </div>
-            <div className="container-fluid">
+            <div className="container-fluid" >
                 {loading ? (
                     <Loading />
                 ) : (
-                    <div className="row justify-content-center">
+                    <div className="row justify-content-center" style={{padding: "10px 0 0 0"}}>
                         {products.map((p) => {
                             return (
                                 <ProductCard product={p}/>
