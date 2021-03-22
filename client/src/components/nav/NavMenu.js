@@ -45,7 +45,7 @@ const NavMenu = () => {
     }
 
     const handleGoToCategory = (category) => {
-        console.log('category', category)
+        // console.log('category', category)
         // console.log('link', `/catalog/${category}`)
         history.push(`/catalog/${category.slug}`)
     }

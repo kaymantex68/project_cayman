@@ -115,9 +115,9 @@ const App = () => {
         <div>
           <Header />
         </div>
-        <div>
+        {/* <div>
           <NavMenu />
-        </div>
+        </div> */}
         <div>
           <Switch>
             <Route exact path="/" component={Home} />
