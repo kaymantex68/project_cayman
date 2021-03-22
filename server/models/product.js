@@ -19,6 +19,9 @@ const productSchema = new mongoose.Schema({
     brandSlug: {
         type: String,
     },
+    type: {
+        type: String,
+    },
     category: {
         type: ObjectId,
         // required: true,
