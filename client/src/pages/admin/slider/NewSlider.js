@@ -6,7 +6,7 @@ import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
 import slugify from 'react-slugify'
 import { Input, Checkbox, Avatar, Badge } from 'antd';
-import { uploadSliderImage } from '../../../functions/slider.js'
+import { uploadSliderImage, getSlide } from '../../../functions/slider.js'
 
 const NewSlider = () => {
     const [name, setName] = useState('')
@@ -16,14 +16,13 @@ const NewSlider = () => {
 
     const { user } = useSelector(state => ({ ...state }))
 
-    console.log('backImage', backgroundImage)
-    console.log('mainImage', mainImage)
+
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         await uploadFiles(backgroundImage, "backgroundImage")
         await uploadFiles(mainImage, "mainImage")
-        toast.success(`Новый слайд "${name}" создан`)
+        toast.success(`Слайд "${name}" создан`)
     }
 
     const uploadFiles = async (images, typeImage) => {
@@ -124,7 +123,7 @@ const NewSlider = () => {
                 <button
                     type="button"
                     className="btn btn-outline-primary btn-sm p-3 "
-                    disabled={!name || loading}
+                    disabled={!name || loading || !backgroundImage || !mainImage}
                     onClick={handleSubmit}
                 >
                     Сохранить

@@ -10,6 +10,6 @@ export const uploadSliderImage = async (data, authtoken) => {
         })
 }
 
-export const getSlife = async (slug) => {
+export const getSlide = async (slug) => {
     return await axios.get(`${process.env.REACT_APP_API}/slide/${slug}`)
 }
