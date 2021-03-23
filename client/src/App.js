@@ -57,6 +57,7 @@ const UpdateCategory = lazy(() => import('./pages/admin/category/CategoryUpdate'
 const CreateSub = lazy(() => import('./pages/admin/sub/SubCreate'))
 const UpdateSub = lazy(() => import('./pages/admin/sub/SubUpdate'))
 
+const NewSlider = lazy(()=> import('./pages/admin/slider/NewSlider'))
 
 const BrandLogoCreate = lazy(() => import('./pages/admin/brandLogo/BrandLogoCreate'))
 const NewProduct = lazy(() => import('./pages/admin/product/NewProduct'))
@@ -96,7 +97,7 @@ const App = () => {
               }
             })
           }).catch(err => {
-            if (err.response.status === 400) toast.error('Ваш Token закончился. Обновите страницу!');
+            // if (err.response.status === 400) toast.error('Ваш Token закончился. Обновите страницу!');
           })
       }
       return () => usubscribe()
@@ -140,6 +141,7 @@ const App = () => {
             <AdminRoute exact path='/admin/product/:slug' component={UpdateProduct} />
             <AdminRoute exact path='/admin/products' component={Products} />
             <AdminRoute exact path='/admin/copy/:slug' component={ProductCopy} />
+            <AdminRoute exact path='/admin/slider' component={NewSlider} />
 
             <AdminRoute exact path='/admin/delete-image' component={Optimization} />
             <Route exact path="/catalog" component={Catalog} />

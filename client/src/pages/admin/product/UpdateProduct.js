@@ -26,6 +26,7 @@ const UpdateProduct = ({ match, history }) => {
     const [product, setProduct] = useState(null)
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("")
+    const [type, setType]=useState("")
     const [brand, setBrand] = useState('')
     const [category, setCategory] = useState('')
     const [sub, setSub] = useState('')
@@ -39,6 +40,7 @@ const UpdateProduct = ({ match, history }) => {
     const [number, setNumber] = useState(null)
     const [coast, setCoast] = useState('')
     const [oldCoast, setOldCoast] = useState('')
+    const [inStock, setInStock]=useState('')
     const [active, setActive]=useState(null)
 
 
@@ -75,6 +77,7 @@ const UpdateProduct = ({ match, history }) => {
                 setProduct(res.data)
                 setName(res.data.name)
                 setSlug(res.data.slug)
+                setType(res.data.type)
                 setBrand(res.data.brand)
                 setBrandSlug(res.data.brandSlug)
                 setCategory(res.data.category)
@@ -87,6 +90,7 @@ const UpdateProduct = ({ match, history }) => {
                 setParams(res.data.params)
                 setCoast(res.data.coast)
                 setOldCoast(res.data.oldCoast)
+                setInStock(res.data.inStock)
                 setActive(res.data.active)
                 setNumber(Object.keys(res.data.params).length + 1)
                 setLoading(false)
@@ -101,6 +105,7 @@ const UpdateProduct = ({ match, history }) => {
                 setProduct(res.data)
                 setName(res.data.name)
                 setSlug(res.data.slug)
+                setType(res.data.type)
                 setBrand(res.data.brand)
                 setBrandSlug(res.data.brandSlug)
                 setCategory(res.data.category)
@@ -113,6 +118,7 @@ const UpdateProduct = ({ match, history }) => {
                 setParams(res.data.params)
                 setCoast(res.data.coast)
                 setOldCoast(res.data.oldCoast)
+                setInStock(res.data.inStock)
                 setActive(res.data.active)
                 setNumber(Object.keys(res.data.params).length + 1)
                 getCategories()
@@ -143,7 +149,7 @@ const UpdateProduct = ({ match, history }) => {
         e.preventDefault();
         setLoading(true);
         updateProduct(product._id,
-            { name, brand, category, sub, description, params, coast, oldCoast, sale, promotion, discount, active }
+            { name, brand, category, sub, description, params, coast, inStock, oldCoast, sale, promotion, discount, active, type }
             , user.token)
             .then(res => {
                 setLoading(false)
@@ -315,6 +321,18 @@ const UpdateProduct = ({ match, history }) => {
                                 )
                             })}
                         </select>
+                    </div>
+                    <div className="form-group">
+                    <label style={{ fontWeight: 'bold' }}>Тип</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                        placeholder="тип товара"
+                        disabled={loading}
+                        style={{fontSize:"0.9rem"}}
+                    />
                     </div>
                     <UploadBrandImage name={brand} disabled={false} />
                     <div className="form-group">

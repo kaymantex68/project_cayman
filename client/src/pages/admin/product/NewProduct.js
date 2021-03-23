@@ -24,6 +24,7 @@ const { TextArea } = Input;
 const NewProduct = ({history}) => {
     const [name, setName] = useState("");
     const [brand, setBrand] = useState('')
+    const [type, setType]=useState("")
     const [brandSlug, setBrandSlug] = useState('')
     const [category, setCategory] = useState('')
     const [sub, setSub] = useState('')
@@ -93,7 +94,7 @@ const NewProduct = ({history}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        createProduct({ name, brand, category, sub,  description, params, coast, oldCoast, sale, promotion, discount }, user.token)
+        createProduct({ name, brand, category, sub, type,  description, params, coast, oldCoast, sale, promotion, discount }, user.token)
             .then(res => {
                 setLoading(false)
                 toast.success(`Новый товар "${name}" создан`)
@@ -214,6 +215,18 @@ const NewProduct = ({history}) => {
                                 )
                             })}
                         </select>
+                    </div>
+                    <div className="form-group">
+                    <label style={{ fontWeight: 'bold' }}>Тип</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                        placeholder="тип товара"
+                        disabled={loading}
+                        style={{fontSize:"0.9rem"}}
+                    />
                     </div>
                     <UploadBrandImage name={brand} disabled={false} />
                     <br />

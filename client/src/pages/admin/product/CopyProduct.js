@@ -27,6 +27,7 @@ const CopyProduct = ({ match, history }) => {
     const [name, setName] = useState("");
     const [slug, setSlug] = useState("")
     const [brand, setBrand] = useState('')
+    const [type, setType]=useState('')
     const [category, setCategory] = useState('')
     const [sub, setSub] = useState('')
     const [brandSlug, setBrandSlug] = useState('')
@@ -39,6 +40,7 @@ const CopyProduct = ({ match, history }) => {
     const [number, setNumber] = useState(null)
     const [coast, setCoast] = useState('')
     const [oldCoast, setOldCoast] = useState('')
+    const [inStock, setInStock]=useState('')
     const [active, setActive] = useState(null)
 
 
@@ -55,19 +57,19 @@ const CopyProduct = ({ match, history }) => {
 
     // console.log('match', match.params.slug)
 
-    console.log('name: ', name)
-    console.log('brand: ', brand)
-    console.log('brandSlug:', brandSlug)
-    console.log('category', category)
-    console.log('sub', sub)
-    console.log('description:', description)
-    console.log('sale:', sale)
-    console.log('discount:', discount)
-    console.log('promotion:', promotion)
-    console.log('coast:', coast)
-    console.log('oldCoast:', oldCoast)
-    console.log('params', params)
-    console.log('number', number)
+    // console.log('name: ', name)
+    // console.log('brand: ', brand)
+    // console.log('brandSlug:', brandSlug)
+    // console.log('category', category)
+    // console.log('sub', sub)
+    // console.log('description:', description)
+    // console.log('sale:', sale)
+    // console.log('discount:', discount)
+    // console.log('promotion:', promotion)
+    // console.log('coast:', coast)
+    // console.log('oldCoast:', oldCoast)
+    // console.log('params', params)
+    // console.log('number', number)
 
 
     // console.log('product', product)
@@ -79,6 +81,7 @@ const CopyProduct = ({ match, history }) => {
                 setName('')
                 setSlug(res.data.slug)
                 setBrand(res.data.brand)
+                setType(res.data.type)
                 setBrandSlug(res.data.brandSlug)
                 setCategory(res.data.category)
                 setSub(res.data.sub)
@@ -90,6 +93,7 @@ const CopyProduct = ({ match, history }) => {
                 setParams(res.data.params)
                 setCoast(res.data.coast)
                 setOldCoast(res.data.oldCoast)
+                setInStock(res.data.inStock)
                 setActive(res.data.active)
                 setNumber(Object.keys(res.data.params).length + 1)
                 getCategories()
@@ -125,6 +129,7 @@ const CopyProduct = ({ match, history }) => {
             {
                 name,
                 brand,
+                type,
                 description,
                 category,
                 sub,
@@ -134,6 +139,7 @@ const CopyProduct = ({ match, history }) => {
                 sale,
                 promotion,
                 discount,
+                inStock,
                 active,
                 images
             }, user.token)
@@ -248,7 +254,18 @@ const CopyProduct = ({ match, history }) => {
                             })}
                         </select>
                     </div>
-
+                    <div className="form-group">
+                    <label style={{ fontWeight: 'bold' }}>Тип</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                        placeholder="тип товара"
+                        disabled={loading}
+                        style={{fontSize:"0.9rem"}}
+                    />
+                    </div>
 
                     <div className="form-group">
                         <br />

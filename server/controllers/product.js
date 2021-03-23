@@ -10,7 +10,7 @@ exports.create = async (req, res) => {
         // console.log('-------------------------------')
         // console.log(req.body)
         // console.log('-------------------------------')
-        const { name, brand, category, sub, description, params, coast, oldCoast, sale, discount, promotion, active, images } = req.body
+        const { name, brand,type, category, sub, description, params, coast, oldCoast, sale, discount, promotion, active, images } = req.body
         // console.log('type', typeof (brand))
         // console.log('slug', slugify(brand, { lower: true }))
         console.log('category----->', category)
@@ -19,6 +19,7 @@ exports.create = async (req, res) => {
             name,
             slug: slugify(name, { lower: true }),
             brand,
+            type,
             category,
             sub,
             brandSlug: await slugify(brand, { lower: true }),
@@ -115,11 +116,12 @@ exports.update = async (req, res) => {
         console.log('body', req.body)
         console.log('params', req.params._id)
         console.log('-------------------------------')
-        const { name, brand, category, sub, description, inStock, params, coast, oldCoast, sale, discount, promotion, active } = req.body
+        const { name, brand,type, category, sub, description, inStock, params, coast, oldCoast, sale, discount, promotion, active } = req.body
         const product = await Product.findOneAndUpdate({ _id: req.params._id }, {
             name,
             slug: slugify(name, { lower: true }),
             brand,
+            type,
             category,
             sub,
             brandSlug: await slugify(brand, { lower: true }),
