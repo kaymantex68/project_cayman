@@ -12,6 +12,9 @@ const SliderSchema = new Schema({
         unique: true,
         lowercase: true,
     },
+    turn: {
+        type: Number,
+    },
     backgroundImage:{
         type: String,
         default: '',

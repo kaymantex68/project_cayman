@@ -20,18 +20,9 @@ ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
       <ToastContainer
-        position="top-right"
-        autoClose={30000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
+        autoClose={4000}
       />
       <App />
-      <ToastContainer />
     </Provider>
   </BrowserRouter>,
   document.getElementById('root')

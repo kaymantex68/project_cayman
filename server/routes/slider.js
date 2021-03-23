@@ -6,14 +6,15 @@ const router = express.Router()
 const { authCheck, adminCheck } = require('../middlewares/auth')
 
 // import controllers
-const { create, read } = require('../controllers/slider')
+const { create, read, list, remove } = require('../controllers/slider')
 
 
 router.post("/slider", authCheck, adminCheck, create)
 router.get("/slide/:slug", read)
+router.get("/slides", list)
 // router.get("/subsSlug/:slug", listSlug)
 // router.get("/sub/:_id", read)
 // router.put("/sub/:_id", authCheck, adminCheck, update)
-// router.delete("/sub/:_id", authCheck, adminCheck, remove)
+router.delete("/slider/:slug", authCheck, adminCheck, remove)
 
-module.exports=router
+module.exports = router

@@ -6,16 +6,44 @@ import LocalSearch from '../../../components/form/LocalSearch'
 import AdminNavigation from '../../../components/nav/AdminNavigation'
 import slugify from 'react-slugify'
 import { Input, Checkbox, Avatar, Badge } from 'antd';
-import { uploadSliderImage, getSlide } from '../../../functions/slider.js'
+import { uploadSliderImage, getSlides, removeSlide } from '../../../functions/slider.js'
+import Loading from '../../../components/form/LoadingIcon'
+import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
 
-const NewSlider = () => {
+const CreateSlide = () => {
     const [name, setName] = useState('')
     const [backgroundImage, setBackgroundImage] = useState(null)
     const [mainImage, setMainImage] = useState(null)
     const [loading, setLoading] = useState(false)
-
+    const [slides, setSlides]=useState([])
+    const [filter, setFilter]=useState('')
     const { user } = useSelector(state => ({ ...state }))
 
+    console.log('slides', slides)
+
+    const loadSlides = () => {
+        getSlides().then((res) => setSlides(res.data));
+    };
+
+    useState(() => {
+        loadSlides();
+    }, []);
+
+    const handleRemove = (slug, name, turn) => {
+        if (window.confirm(`Удалить?`)) {
+            setLoading(true);
+            removeSlide(slug, user.token)
+                .then((res) => {
+                    setLoading(false);
+                    toast.warning(`Слайд ${name} с номером  удалена!`);
+                    loadSlides();
+                })
+                .catch((err) => {
+                    setLoading(false);
+                    if (err.response.status === 400) toast.error(err.response.data);
+                });
+        }
+    };
 
 
     const handleSubmit = async (e) => {
@@ -23,6 +51,10 @@ const NewSlider = () => {
         await uploadFiles(backgroundImage, "backgroundImage")
         await uploadFiles(mainImage, "mainImage")
         toast.success(`Слайд "${name}" создан`)
+        loadSlides()
+        setBackgroundImage('')
+        setMainImage('')
+        setName('')
     }
 
     const uploadFiles = async (images, typeImage) => {
@@ -94,7 +126,7 @@ const NewSlider = () => {
         )
     }
 
-    const ReturnNewSliderForm = () => {
+    const CreateSliderForm = () => {
         return (
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -131,11 +163,58 @@ const NewSlider = () => {
             </form>
         )
     }
+
+    const searched = (filter) => (c) => c.name.toLowerCase().includes(filter);
+
+    const ReturnSlide = () => (
+        <div className="col md-5" style={{ backgroundColor: "white" }}>
+            {/* {loading ? (
+                <h6>
+                    <LoadingOutlined />
+                </h6>
+            ) : (
+                <h6>Управление "Категориями"</h6>
+            )} */}
+            <br />
+            {CreateSliderForm()}
+            <hr />
+            <LocalSearch filter={filter} setFilter={setFilter} />
+            {slides.filter(searched(filter)).map((s) => {
+               
+                return (
+                    <div className="alert alert-primary" key={s._id}>
+                        {`${s.name}`}
+                        <Link
+                            className="btn btn-sm float-right"
+                            to={`/admin/slide/${s.slug}`}
+                        >
+                            <EditOutlined />
+                        </Link>
+                        <span
+                            className="btn btn-sm float-right"
+                            onClick={() => handleRemove(s.slug, s.name, s.turn)}
+                        >
+                            <DeleteOutlined className="text-danger" />
+                        </span>
+                        <span
+                            className="btn btn-sm float-right"
+                            // onClick={() => handleActive(c)}
+                        >
+                            <CheckSquareOutlined className={s.active ? "text-success" : "text-danger"} />
+                        </span>
+                        <span className="float-right btn btn-sm ">{`${s.turn}`}</span>
+                    </div>
+                );
+            })}
+        </div>
+    )
+
+
     return (
-        <AdminNavigation name={'Новый слайд'} children={ReturnNewSliderForm()} />
+        <AdminNavigation name={'Слайды'} children={loading ? <Loading /> : ReturnSlide()}  />
 
 
     )
 }
 
-export default NewSlider
+export default CreateSlide

@@ -69,7 +69,7 @@ const AdminNavigation = (props) => {
                     </SubMenu>
                     <SubMenu key="slider" icon={<FileOutlined />} title="Слайдер">
                     <Menu.Item key="slider1" style={{ color: 'white' }} >
-                            <Link to="/admin/slider">Новый слайд</Link>
+                            <Link to="/admin/slider">Слайды</Link>
                         </Menu.Item>
                     </SubMenu>
                 </Menu>

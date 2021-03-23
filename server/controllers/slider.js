@@ -85,4 +85,18 @@ exports.read = async (req, res) => {
     }
 }
 
+exports.list = async(req, res)=>{
+    const result = await Slider.find({}).sort({name: 1}).exec()
+    res.json(result)
+}
 
+exports.remove = async (req, res) => {
+    try {
+        console.log(req.params.slug)
+        const result = await Slider.findOneAndDelete({ slug: req.params.slug })
+        res.json(result)
+    } catch (err) {
+        console.log('Ошибка удаления слайда --------->', err)
+        res.status(400).send('Ошибка удаления слайда.')
+    }
+}
