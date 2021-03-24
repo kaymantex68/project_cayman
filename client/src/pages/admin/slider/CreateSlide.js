@@ -112,7 +112,7 @@ const CreateSlide = () => {
                 </div> */}
                 <br />
                 <label className="btn btn-primary p-0" disabled={!name || loading}>
-                    {`Загрузить изображение `}
+                    {`Загрузить изображение    `}
                     <input
                         type="file"
                         // hidden
@@ -182,19 +182,12 @@ const CreateSlide = () => {
             {slides.filter(searched(filter)).map((s) => {
 
                 return (
-                    <div className="alert alert-info " key={s._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
+                    <div className="alert alert-info " key={s._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-around", borderRadius:"10px"}}>
                         {`${s.name}`}
 
                         <div className="row">
                             {s.backgroundImage
                                 ?
-                                // <Badge
-                                //     key={s._id}
-                                //     count="X"
-                                //     onClick={() => { }}
-                                //     style={{ cursor: "pointer" }}
-                                //     className="m-3"
-                                // >
                                 <img
                                     alt={s.backgroundImage}
                                     style={{ height: "100px" }}
@@ -202,21 +195,12 @@ const CreateSlide = () => {
                                     src={`${process.env.REACT_APP_IMAGES_SLIDER}/${s.backgroundImage}`}
                                     className="m-3"
                                 />
-                                // </Badge>
-
                                 : <h7 className="m-3 text-danger">нет изображений</h7>
                             }
                         </div>
                         <div className="row">
                             {s.mainImage
                                 ?
-                                // <Badge
-                                //     key={s._id}
-                                //     count="X"
-                                //     onClick={() => { }}
-                                //     style={{ cursor: "pointer" }}
-                                //     className="m-3"
-                                // >
                                 <img
                                     alt={s.mainImage}
                                     style={{ height: "100px" }}
@@ -224,8 +208,6 @@ const CreateSlide = () => {
                                     src={`${process.env.REACT_APP_IMAGES_SLIDER}/${s.mainImage}`}
                                     className="m-3"
                                 />
-                                // </Badge>
-
                                 : <h7 className="m-3 text-danger">нет изображений</h7>
                             }
                         </div>
@@ -242,12 +224,12 @@ const CreateSlide = () => {
                             >
                                 <CheckSquareOutlined className={s.active ? "text-success" : "text-danger"} />
                             </span>
-                            <Link
+                            {/* <Link
                                 className="btn btn-sm float-right"
-                                to={`/admin/slide/${s.slug}`}
+                                to={`/admin/slider/${s.slug}`}
                             >
                                 <EditOutlined />
-                            </Link>
+                            </Link> */}
                             {/* <span className="float-right btn btn-sm ">{`${s.turn}`}</span> */}
                         </div>
                     </div>

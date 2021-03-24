@@ -7,13 +7,16 @@ const StyleInStock = {
   padding: "3px 5px 5px 5px",
   color: "white",
   borderRadius: "10px",
-  boxShadow: "0 2px 7px rgba(0,0,0,0.4)",
+  // boxShadow: "0 2px 7px rgba(0,0,0,0.4)",
 };
 
 const ProductCard = ({ product }) => {
   let fontSize = "0.9rem";
-  if (product.name.length > 20) {
+  if (product.name.length > 20 && product.name.length <= 26 ) {
     fontSize = "0.8rem";
+  }
+  if (product.name.length > 26  ) {
+    fontSize = "0.7rem";
   }
   let pathImage = "";
   if (product.images.length > 0)
