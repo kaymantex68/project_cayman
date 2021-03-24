@@ -15,8 +15,8 @@ const CreateSlide = () => {
     const [backgroundImage, setBackgroundImage] = useState(null)
     const [mainImage, setMainImage] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [slides, setSlides]=useState([])
-    const [filter, setFilter]=useState('')
+    const [slides, setSlides] = useState([])
+    const [filter, setFilter] = useState('')
     const { user } = useSelector(state => ({ ...state }))
 
     console.log('slides', slides)
@@ -58,9 +58,9 @@ const CreateSlide = () => {
     }
 
     const uploadFiles = async (images, typeImage) => {
-        let message=''
-        if (typeImage==="backgroundImage") message="Фоновое изображение"
-        if (typeImage==="mainImage") message="Основное изображение" 
+        let message = ''
+        if (typeImage === "backgroundImage") message = "Фоновое изображение"
+        if (typeImage === "mainImage") message = "Основное изображение"
         const files = images
         if (files) {
             for (let i = 0; i < files.length; i++) {
@@ -84,7 +84,7 @@ const CreateSlide = () => {
 
     }
 
-    const UploadImage = (image,type) => {
+    const UploadImage = (image, type) => {
 
         return (
             <>
@@ -110,15 +110,15 @@ const CreateSlide = () => {
                         : <h7 className="m-3 text-danger">нет изображений</h7>
                     }
                 </div> */}
-                <br/>
+                <br />
                 <label className="btn btn-primary p-0" disabled={!name || loading}>
                     {`Загрузить изображение `}
-                <input
+                    <input
                         type="file"
                         // hidden
                         multiple
                         accept="image/*"
-                        onChange={(e) => type==="backgrondImage"?  setBackgroundImage(e.target.files): setMainImage(e.target.files) }
+                        onChange={(e) => type === "backgrondImage" ? setBackgroundImage(e.target.files) : setMainImage(e.target.files)}
                         disabled={!name || loading}
                     />
                 </label>
@@ -145,7 +145,7 @@ const CreateSlide = () => {
                 <div className="form-group">
                     <br />
                     <label style={{ fontWeight: 'bold' }}>Фоновое изображение</label>
-                    {UploadImage(backgroundImage,"backgrondImage")}
+                    {UploadImage(backgroundImage, "backgrondImage")}
                 </div>
                 <div className="form-group">
                     <br />
@@ -180,29 +180,76 @@ const CreateSlide = () => {
             <hr />
             <LocalSearch filter={filter} setFilter={setFilter} />
             {slides.filter(searched(filter)).map((s) => {
-               
+
                 return (
-                    <div className="alert alert-primary" key={s._id}>
+                    <div className="alert alert-info " key={s._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }}>
                         {`${s.name}`}
-                        <Link
-                            className="btn btn-sm float-right"
-                            to={`/admin/slide/${s.slug}`}
-                        >
-                            <EditOutlined />
-                        </Link>
-                        <span
-                            className="btn btn-sm float-right"
-                            onClick={() => handleRemove(s.slug, s.name, s.turn)}
-                        >
-                            <DeleteOutlined className="text-danger" />
-                        </span>
-                        <span
-                            className="btn btn-sm float-right"
+
+                        <div className="row">
+                            {s.backgroundImage
+                                ?
+                                // <Badge
+                                //     key={s._id}
+                                //     count="X"
+                                //     onClick={() => { }}
+                                //     style={{ cursor: "pointer" }}
+                                //     className="m-3"
+                                // >
+                                <img
+                                    alt={s.backgroundImage}
+                                    style={{ height: "100px" }}
+                                    key={s.backgroundImage}
+                                    src={`${process.env.REACT_APP_IMAGES_SLIDER}/${s.backgroundImage}`}
+                                    className="m-3"
+                                />
+                                // </Badge>
+
+                                : <h7 className="m-3 text-danger">нет изображений</h7>
+                            }
+                        </div>
+                        <div className="row">
+                            {s.mainImage
+                                ?
+                                // <Badge
+                                //     key={s._id}
+                                //     count="X"
+                                //     onClick={() => { }}
+                                //     style={{ cursor: "pointer" }}
+                                //     className="m-3"
+                                // >
+                                <img
+                                    alt={s.mainImage}
+                                    style={{ height: "100px" }}
+                                    key={s.mainImage}
+                                    src={`${process.env.REACT_APP_IMAGES_SLIDER}/${s.mainImage}`}
+                                    className="m-3"
+                                />
+                                // </Badge>
+
+                                : <h7 className="m-3 text-danger">нет изображений</h7>
+                            }
+                        </div>
+                        <div>
+                            <span
+                                className="btn btn-sm float-right"
+                                onClick={() => handleRemove(s.slug, s.name, s.turn)}
+                            >
+                                <DeleteOutlined className="text-danger" />
+                            </span>
+                            <span
+                                className="btn btn-sm float-right"
                             // onClick={() => handleActive(c)}
-                        >
-                            <CheckSquareOutlined className={s.active ? "text-success" : "text-danger"} />
-                        </span>
-                        <span className="float-right btn btn-sm ">{`${s.turn}`}</span>
+                            >
+                                <CheckSquareOutlined className={s.active ? "text-success" : "text-danger"} />
+                            </span>
+                            <Link
+                                className="btn btn-sm float-right"
+                                to={`/admin/slide/${s.slug}`}
+                            >
+                                <EditOutlined />
+                            </Link>
+                            {/* <span className="float-right btn btn-sm ">{`${s.turn}`}</span> */}
+                        </div>
                     </div>
                 );
             })}
@@ -211,7 +258,7 @@ const CreateSlide = () => {
 
 
     return (
-        <AdminNavigation name={'Слайды'} children={loading ? <Loading /> : ReturnSlide()}  />
+        <AdminNavigation name={'Слайды'} children={loading ? <Loading /> : ReturnSlide()} />
 
 
     )
