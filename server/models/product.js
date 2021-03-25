@@ -61,6 +61,10 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    lider: {
+        type: Boolean,
+        default: false,
+    },
     defaultImage: {
         type: String,
     }, 

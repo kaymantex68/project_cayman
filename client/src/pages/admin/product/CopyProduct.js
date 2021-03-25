@@ -32,6 +32,7 @@ const CopyProduct = ({ match, history }) => {
     const [sub, setSub] = useState('')
     const [brandSlug, setBrandSlug] = useState('')
     const [description, setDescription] = useState('')
+    const [lider, setLider]=useState(null)
     const [sale, setSale] = useState(false)
     const [images, setImages] = useState([])
     const [discount, setDiscount] = useState('')
@@ -88,6 +89,7 @@ const CopyProduct = ({ match, history }) => {
                 setImages([])
                 setDescription(res.data.description)
                 setSale(res.data.sale)
+                setLider(res.data.lider)
                 setDiscount(res.data.discount)
                 setPromotion(res.data.promotion)
                 setParams(res.data.params)
@@ -135,6 +137,7 @@ const CopyProduct = ({ match, history }) => {
                 sub,
                 params,
                 coast,
+                lider,
                 oldCoast,
                 sale,
                 promotion,
@@ -308,6 +311,11 @@ const CopyProduct = ({ match, history }) => {
                         <TextArea rows={6} value={description} onChange={e => setDescription(e.target.value)} />
                     </div>
                     <br />
+                    <div className="form-group">
+                        <label style={{ fontWeight: 'bold' }}>Лидер</label>
+                        <br />
+                        <Checkbox onChange={e => setLider(e.target.checked)} checked={lider} />
+                    </div>
                     <div className="form-group">
                         <label style={{ fontWeight: 'bold' }}>Распродажа</label>
                         <br />

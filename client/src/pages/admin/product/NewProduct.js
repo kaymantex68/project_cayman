@@ -29,6 +29,7 @@ const NewProduct = ({history}) => {
     const [category, setCategory] = useState('')
     const [sub, setSub] = useState('')
     const [description, setDescription] = useState('')
+    const [lider, setLider]=useState(false)
     const [sale, setSale] = useState(false)
     const [discount, setDiscount] = useState('')
     const [promotion, setPromotion] = useState(false)
@@ -94,7 +95,7 @@ const NewProduct = ({history}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        createProduct({ name, brand, category, sub, type,  description, params, coast, oldCoast, sale, promotion, discount }, user.token)
+        createProduct({ name, brand, category, sub, type, lider, description, params, coast, oldCoast, sale, promotion, discount }, user.token)
             .then(res => {
                 setLoading(false)
                 toast.success(`Новый товар "${name}" создан`)
@@ -108,36 +109,9 @@ const NewProduct = ({history}) => {
             })
     };
 
-    const handleRemove = (slug, name, turn) => {
-        if (window.confirm(`Удалить?`)) {
-            setLoading(true);
-            removeCategory(slug, user.token)
-                .then((res) => {
-                    setLoading(false);
-                    toast.warning(`Категория ${name} с номером ${turn} удалена!`);
-                    loadCategories();
-                })
-                .catch((err) => {
-                    setLoading(false);
-                    if (err.response.status === 400) toast.error(err.response.data);
-                  
-                });
-        }
-    };
+    
 
-    const handleActive = (c) => {
-        setLoading(true)
-        updateCategory(c.slug, { name: c.name, turn: c.turn, active: !c.active }, user.token)
-            .then(res => {
-                setLoading(false)
-                // toast.success(`Категория ${c.name} с номером ${c.turn} переключена`)
-                loadCategories();
-            })
-            .catch(err => {
-                setLoading(false)
-                if (err.response.status === 400) toast.error(err.response.data)
-            })
-    }
+    
 
     const handleChange1 = (e) => {
         let arr = [...params[e.target.name]]
@@ -269,6 +243,11 @@ const NewProduct = ({history}) => {
                         <TextArea rows={4} value={description} onChange={e => setDescription(e.target.value)} />
                     </div>
                     <br />
+                    <div className="form-group">
+                        <label style={{ fontWeight: 'bold' }}>Лидер</label>
+                        <br />
+                        <Checkbox onChange={e => setLider(e.target.checked)} checked={lider} />
+                    </div>
                     <div className="form-group">
                         <label style={{ fontWeight: 'bold' }}>Распродажа</label>
                         <br />

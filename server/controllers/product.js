@@ -7,12 +7,7 @@ const sub = require('../models/sub')
 
 exports.create = async (req, res) => {
     try {
-        // console.log('-------------------------------')
-        // console.log(req.body)
-        // console.log('-------------------------------')
-        const { name, brand,type, category, sub, description, params, coast, oldCoast, sale, discount, promotion, active, images } = req.body
-        // console.log('type', typeof (brand))
-        // console.log('slug', slugify(brand, { lower: true }))
+        const { name, brand, type, category, sub, description, lider, params, coast, oldCoast, sale, discount, promotion, active, images } = req.body
         console.log('category----->', category)
         console.log('sub------>', sub)
         const product = await new Product({
@@ -25,6 +20,7 @@ exports.create = async (req, res) => {
             brandSlug: await slugify(brand, { lower: true }),
             description,
             params,
+            lider,
             coast,
             oldCoast,
             sale,
@@ -83,13 +79,13 @@ exports.productsFilter = async (req, res) => {
             return res.json(products)
         }
         if (categoryId) {
-            const products = await Product.find({ category: categoryId,active: true})
+            const products = await Product.find({ category: categoryId, active: true })
                 .sort({ brand: 1 })
                 .exec()
             return res.json(products)
         }
 
-        const products = await Product.find({active: true})
+        const products = await Product.find({ active: true })
             .sort({ brand: 1 })
             .exec()
         return res.json(products)
@@ -116,7 +112,7 @@ exports.update = async (req, res) => {
         console.log('body', req.body)
         console.log('params', req.params._id)
         console.log('-------------------------------')
-        const { name, brand,type, category, sub, description, inStock, params, coast, oldCoast, sale, discount, promotion, active } = req.body
+        const { name, brand, type, category, sub, description, lider, inStock, params, coast, oldCoast, sale, discount, promotion, active } = req.body
         const product = await Product.findOneAndUpdate({ _id: req.params._id }, {
             name,
             slug: slugify(name, { lower: true }),
@@ -128,6 +124,7 @@ exports.update = async (req, res) => {
             description,
             inStock,
             params,
+            lider,
             coast,
             oldCoast,
             sale,

@@ -34,6 +34,7 @@ const UpdateProduct = ({ match, history }) => {
     const [description, setDescription] = useState('')
     const [sale, setSale] = useState(false)
     const [images, setImages] = useState([])
+    const[lider, setLider]=useState(false)
     const [discount, setDiscount] = useState('')
     const [promotion, setPromotion] = useState(false)
     const [params, setParams] = useState({})
@@ -83,6 +84,7 @@ const UpdateProduct = ({ match, history }) => {
                 setCategory(res.data.category)
                 setSub(res.data.sub)
                 setImages(res.data.images)
+                setLider(res.data.lider)
                 setDescription(res.data.description)
                 setSale(res.data.sale)
                 setDiscount(res.data.discount)
@@ -111,6 +113,7 @@ const UpdateProduct = ({ match, history }) => {
                 setCategory(res.data.category)
                 setSub(res.data.sub)
                 setImages(res.data.images)
+                setLider(res.data.lider)
                 setDescription(res.data.description)
                 setSale(res.data.sale)
                 setDiscount(res.data.discount)
@@ -149,7 +152,7 @@ const UpdateProduct = ({ match, history }) => {
         e.preventDefault();
         setLoading(true);
         updateProduct(product._id,
-            { name, brand, category, sub, description, params, coast, inStock, oldCoast, sale, promotion, discount, active, type }
+            { name, brand, category, sub, description, params, coast, inStock, lider, oldCoast, sale, promotion, discount, active, type }
             , user.token)
             .then(res => {
                 setLoading(false)
@@ -382,6 +385,11 @@ const UpdateProduct = ({ match, history }) => {
                         <TextArea rows={6} value={description} style={{fontSize:"0.8rem"}} onChange={e => setDescription(e.target.value)} />
                     </div>
                     <br />
+                    <div className="form-group">
+                        <label style={{ fontWeight: 'bold' }}>Лидер</label>
+                        <br />
+                        <Checkbox onChange={e => setLider(e.target.checked)} checked={lider} />
+                    </div>
                     <div className="form-group">
                         <label style={{ fontWeight: 'bold' }}>Распродажа</label>
                         <br />
