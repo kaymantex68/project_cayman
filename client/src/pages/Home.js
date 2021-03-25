@@ -1,34 +1,49 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect, lazy } from 'react'
 import NavMenu from '../components/nav/NavMenu'
 import Slider from '../components/slider/slider'
 import ProductCarusel from '../components/prodiuctCarusel/ProductCarusel'
-import {getProducts} from '../functions/product'
+import { getProduct, getProducts } from '../functions/product'
+import { getProductsFilter } from '../functions/catalog'
+import { ConsoleSqlOutlined } from '@ant-design/icons'
 
 const Home = () => {
-    const [products, setProducts]=useState([])
-    
-    useEffect(()=>{
-        getProducts()
-        .then(res=>{
-            setProducts(res.data)
-            console.log('products', products)
+    const [loading, setLoading] = useState(false)
+    const [liders, setLiders] = useState([])
+    const [sales, setSales] = useState([])
+
+    useEffect(() => {
+        setLoading(true)
+        getProductsFilter(null, null, null, 'lider').then(res => {
+            setLiders(res.data)
+            getProductsFilter(null, null, null, 'sale').then(res => {
+                setSales(res.data)
+                setLoading(false)
+            })
         })
     },[])
+
+    // console.log('lider', liderArray)
+    // console.log('sale', salesArray)
 
     return (
         <>
             <div>
                 <NavMenu />
             </div>
-            <div>
-                <Slider />
-            </div>
-            <div>
-                <ProductCarusel products={products} description='Лидеры продаж'/>
-            </div>
-            <div>
-                <ProductCarusel products={products} description='Распродажа'/>
-            </div>
+            {
+                !loading && <div>
+                    <div>
+                        <Slider />
+                    </div>
+                    <div>
+                        <ProductCarusel products={liders} description='Лидеры продаж' />
+                    </div>
+                    <div>
+                        <ProductCarusel products={sales} description='Распродажа' />
+                    </div>
+                </div>
+            }
+
         </>
     )
 }

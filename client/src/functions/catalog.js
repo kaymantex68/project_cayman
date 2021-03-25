@@ -18,12 +18,13 @@ export const getProductsCategorySub = async (categoryId, subId) => {
 
 
 
-export const getProductsFilter = async (categoryId, subId, brandSlug) => {
+export const getProductsFilter = async (categoryId, subId, brandSlug, typeSwiper) => {
     return await axios.post(`${process.env.REACT_APP_API}/productsFilter`,
     {
         categoryId,
         subId,
-        brandSlug
+        brandSlug,
+        typeSwiper
     })
 }
 

@@ -4,6 +4,7 @@ const fs = require('fs')
 const { listenerCount } = require('../models/product')
 const { schedulingPolicy } = require('cluster')
 const sub = require('../models/sub')
+const { Types } = require('mongoose')
 
 exports.create = async (req, res) => {
     try {
@@ -64,7 +65,8 @@ exports.listCategoryAndSub = async (req, res) => {
 }
 
 exports.productsFilter = async (req, res) => {
-    const { categoryId, subId, brandSlug } = req.body
+    const { categoryId, subId, brandSlug, typeSwiper } = req.body
+    // console.log('body', req.body.typeSwiper)
     try {
         if (categoryId && subId && brandSlug) {
             const products = await Product.find({ category: categoryId, sub: subId, brandSlug: brandSlug, active: true })
@@ -80,6 +82,13 @@ exports.productsFilter = async (req, res) => {
         }
         if (categoryId) {
             const products = await Product.find({ category: categoryId, active: true })
+                .sort({ brand: 1 })
+                .exec()
+            return res.json(products)
+        }
+
+        if (typeSwiper) {
+            const products = await Product.find({ [typeSwiper]: true, active: true })
                 .sort({ brand: 1 })
                 .exec()
             return res.json(products)

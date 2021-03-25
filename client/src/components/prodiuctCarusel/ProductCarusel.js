@@ -17,6 +17,7 @@ SwiperCore.use([Navigation, Pagination, Scrollbar, A11y, Autoplay]);
 
 function useWindowSize() {
     const [size, setSize] = useState([window.innerHeight, window.innerWidth]);
+    
     useEffect(() => {
         const handleResize = () => {
             setSize([window.innerHeight, window.innerWidth]);
@@ -37,10 +38,7 @@ function useWindowSize() {
 
 const ProductCarusel = ({products,description}) => {
     
-
-    
-    
-
+    console.log('carusel product', products )
 
     const ProductsArr = [];
     products.map((p, index) => {
