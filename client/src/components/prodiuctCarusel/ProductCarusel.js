@@ -40,15 +40,17 @@ const ProductCarusel = ({products,description}) => {
     
     console.log('carusel product', products )
 
-    const ProductsArr = [];
+    let ProductsArr = [];
+
+    
     products.map((p, index) => {
-        if (p.lider) {
+        
             ProductsArr.push(
                 <SwiperSlide key={`${p._id}`}>
                     <ProductCard product={p} />
                 </SwiperSlide>
             );
-        }
+        
     })
 
 
@@ -59,7 +61,7 @@ const ProductCarusel = ({products,description}) => {
                
             </div>
             <Swiper
-                spaceBetween={100}
+                spaceBetween={0}
                 slidesPerView={useWindowSize()}
                 pagination={{ clickable: true }}
                 loop={true}

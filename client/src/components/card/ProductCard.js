@@ -7,7 +7,7 @@ const StyleInStock = {
   padding: "3px 5px 5px 5px",
   color: "white",
   borderRadius: "10px",
-  // boxShadow: "0 2px 7px rgba(0,0,0,0.4)",
+  boxShadow: "0 2px 7px rgba(0,0,0,0.4)",
 };
 
 const ProductCard = ({ product }) => {
@@ -64,12 +64,12 @@ const ProductCard = ({ product }) => {
             src={`${process.env.REACT_APP_IMAGES_BRAND}/${product.brandSlug}.png`}
           />
         </div>
-        <hr />
+        {/* <hr /> */}
         <div style={{
           // backgroundColor:"green"
           }}>
           {/* product name */}
-          <div style={{ margin: "0 5px 0 0", padding: "0"}}>
+          <div style={{ margin: "10px 5px 0 0", padding: "0"}}>
             <span
               style={{
                 fontSize: `${fontSize}`,
@@ -159,7 +159,7 @@ const ProductCard = ({ product }) => {
             )}
           </div>
           {/* coast */}
-          <div style={{ margin: "0 5px 0 0" }}>
+          <div style={{ margin: "0 5px 10px 0" }}>
             <span
               style={{
                 fontSize: "1.2rem",
@@ -173,6 +173,7 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
       </div>
+      {/* <br/> */}
       {/* button */}
       <div className={classes.buttonAddToCart}>
               <span>в корзину</span>

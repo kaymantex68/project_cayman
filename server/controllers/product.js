@@ -87,8 +87,17 @@ exports.productsFilter = async (req, res) => {
             return res.json(products)
         }
 
-        if (typeSwiper) {
-            const products = await Product.find({ [typeSwiper]: true, active: true })
+        if (typeSwiper==="sale") {
+            console.log("SALE")
+            const products = await Product.find({ sale: true, active: true })
+                .sort({ brand: 1 })
+                .exec()
+            return res.json(products)
+        }
+
+        if (typeSwiper==="lider") {
+            console.log("LIDER")
+            const products = await Product.find({ lider: true, active: true })
                 .sort({ brand: 1 })
                 .exec()
             return res.json(products)

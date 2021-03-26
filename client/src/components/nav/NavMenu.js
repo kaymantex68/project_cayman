@@ -86,7 +86,7 @@ const NavMenu = () => {
                                                             <SubMenu
                                                                 key={s._id}
                                                                 title={s.name}
-                                                                style={{ width: "auto" }}
+                                                                style={{ width: "auto"}}
                                                                 onTitleClick={() => handleGoToSub(c.slug, s.slug)}
                                                             >
                                                                 {brands.map(b => {
@@ -94,9 +94,11 @@ const NavMenu = () => {
                                                                         <>
                                                                             {
                                                                                 b.active && s._id === b.parent
-                                                                                    ? <Menu.Item
+                                                                                    ? 
+                                                                                    <Menu.Item
                                                                                         key={b._id}
                                                                                         onClick={()=>handleGoToBrand(c.slug,s.slug,b.slug)}
+                                                                                        // style={{backgroundColor: "green"}}
                                                                                     >
                                                                                         {b.name}
                                                                                     </Menu.Item>
