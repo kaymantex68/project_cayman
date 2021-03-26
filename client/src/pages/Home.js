@@ -2,9 +2,10 @@ import React, { useState, useEffect, lazy } from 'react'
 import NavMenu from '../components/nav/NavMenu'
 import Slider from '../components/slider/Slider'
 import ProductCarusel from '../components/prodiuctCarusel/ProductCarusel'
+import BrandsPictures from '../components/brands/Brands'
 import { getProduct, getProducts } from '../functions/product'
 import { getProductsFilter } from '../functions/catalog'
-
+import OurParthners from '../components/ourPartners/OurParthners'
 
 const Home = () => {
     const [loading, setLoading] = useState(false)
@@ -38,6 +39,12 @@ const Home = () => {
             </div>
             <div>
                {sales.length>0 && <ProductCarusel products={sales} description='Распродажа' />}
+            </div>
+            <div>
+                <BrandsPictures/>
+            </div>
+            <div>
+                <OurParthners/>
             </div>
         </>
     )

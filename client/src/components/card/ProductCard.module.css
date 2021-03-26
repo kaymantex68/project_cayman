@@ -22,7 +22,7 @@
       text-align: -webkit-center;
      
 
-    /* background-color: grey; */
+    background-color: white;
   }
 
   .cardContainer:hover{
@@ -30,8 +30,9 @@
       transform: scale(1.05);
       transition: 0.3s;
       border: 1px solid rgba(102, 102, 102, 0.13);
-      transform-origin: 20px 0 3px;
+      /* transform-origin: 20px 0 3px; */
       box-shadow: -5px  10px 14px rgba(0,0,0,0.1);
+    
   }
 
   .buttonAddToCart{

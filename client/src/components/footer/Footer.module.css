@@ -1,0 +1,98 @@
+.footerContainer{
+    margin-top: 20px;
+    display:flex;
+    width: 100%;
+    min-height: 250px;
+    background-color: #3c475b;
+    /* border: 1px solid black; */
+    justify-content: center;
+    
+    
+}
+
+.containerCenter{
+    width: 80%;
+    max-width: 1200px;
+    min-height: 300px;
+    /* border: 1px solid blue */
+    /* background-color: #5b5e63; */
+    
+}
+
+.containerCenterTop{
+    width: 100%;
+    min-height: 250px;
+    /* border: 1px solid red; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+
+
+.containerLogo{
+    
+    width: 200px;
+    height: 200px;
+    padding-top: 40px;
+    /*border: 1px solid green;*/
+    text-align: -webkit-center;
+}
+
+.logo{
+    width: 150px;
+    /* margin-bottom: 10px; */
+}
+
+.phone{
+    color: white;
+    
+}
+
+.containerContacs{
+    width: 200px;
+    height: 200px;
+    padding-top: 40px;
+    /*border: 1px solid green;*/
+    text-align: -webkit-center;
+}
+
+.containerInfo{
+    width: 200px;
+    height: 200px;
+    padding-top: 40px;
+    /*border: 1px solid green;*/
+    text-align: -webkit-center;
+}
+
+.containerService{
+    width: 200px;
+    height: 200px;
+    padding-top: 40px;
+    /*border: 1px solid green;*/
+    text-align: -webkit-center;
+}
+
+
+
+
+.containerCenterBottom{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    min-height: 100px;
+    /* border: 1px solid yellow */
+    border-top: 1px solid rgba(255, 255, 255, 0.226);
+}
+
+.copyright{
+    color: white;
+}
+
+.creditCard{
+    display: flex;
+    color: white;
+    align-items: center;
+}

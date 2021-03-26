@@ -63,6 +63,8 @@ const NavMenu = () => {
     }
 
     return (
+        <div style={{display: "flex", alignItems:"center", justifyContent:"space-around"}}>
+        <img style={{width: "200px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.svg`} />
         <Menu onClick={handleClick} mode="horizontal">
             <SubMenu key="SubMenu" title="Каталог" onTitleClick={handleGoToCatalog}>
                 {/* add category to menu */}
@@ -122,6 +124,7 @@ const NavMenu = () => {
                 })}
             </SubMenu>
         </Menu>
+        </div>
     );
 };
 

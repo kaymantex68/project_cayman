@@ -46,7 +46,8 @@ const Register = lazy(() => import('./pages/auth/Register'))
 const RegistrationComplete = lazy(() => import('./pages/auth/RegistrationComplete'))
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'))
 const Header = lazy(() => import('./components/nav/Header'))
-const NavMenu = lazy(() => import('./components/nav/NavMenu'))
+// const NavMenu = lazy(() => import('./components/nav/NavMenu'))
+const Footer = lazy(()=>import('./components/footer/Footer')) 
 
 const UserRoute = lazy(() => import('./routes/UserRoute'))
 const AdminRoute = lazy(() => import('./routes/AdminRoute'))
@@ -154,6 +155,7 @@ const App = () => {
 
           </Switch>
         </div>
+        <Footer/>
       </Suspense>
     </>
   );
