@@ -12,6 +12,7 @@ const {
     uploadBrandImage,
     getBrandImageInfo,
     brandList,
+    deleteBrandImage,
     // product image
     uploadProductImage,
     deleteProductImage,
@@ -22,9 +23,10 @@ router.post("/brandImage", authCheck, adminCheck, uploadBrandImage)
 router.get("/brandImages", brandList)
 router.post("/brandImage/data", authCheck, adminCheck, createBrand)
 router.get('/brandImage/:name', getBrandImageInfo)
+router.delete("/brandImage/:slug", authCheck, adminCheck, deleteBrandImage)
 
 router.post("/productImage", authCheck, adminCheck, uploadProductImage)
-router.delete("/productImage/:fileName", authCheck, adminCheck, deleteProductImage)
+router.delete("/productImage/:slug", authCheck, adminCheck, deleteProductImage)
 
 // router.get("/subs", list)
 // router.get("/sub/:_id", read)

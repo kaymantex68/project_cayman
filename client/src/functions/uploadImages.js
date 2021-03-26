@@ -29,3 +29,16 @@ export const getBrandPictureInfo = async (name) => {
 export const getBrandPictures= async()=>{
     return await axios.get(`${process.env.REACT_APP_API}/brandImages`)
 }
+
+
+export const removeBrandPcture= async(slug, authtoken)=>{
+    console.log("------",slug)
+    return await axios.delete(`${process.env.REACT_APP_API}/brandImage/${slug}`,
+    {
+        headers:{
+            authtoken
+        }
+    })
+}
+
+
