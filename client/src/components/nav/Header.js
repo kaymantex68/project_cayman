@@ -37,6 +37,7 @@ const Header = () => {
 
 
     return (
+        <div >
         <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
             <Menu.Item key="home">
                 <Link to="/">Главная</Link>
@@ -77,6 +78,7 @@ const Header = () => {
                 </SubMenu>
             )}
         </Menu >
+        </div>
     );
 };
 

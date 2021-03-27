@@ -65,8 +65,8 @@ exports.listCategoryAndSub = async (req, res) => {
 }
 
 exports.productsFilter = async (req, res) => {
-    const { categoryId, subId, brandSlug, typeSwiper } = req.body
-    // console.log('body', req.body.typeSwiper)
+    const { categoryId, subId, brandSlug, typeSwiper, filterBrand } = req.body
+    console.log('body------>', req.body.filterBrand)
     try {
         if (categoryId && subId && brandSlug) {
             const products = await Product.find({ category: categoryId, sub: subId, brandSlug: brandSlug, active: true })
@@ -88,7 +88,7 @@ exports.productsFilter = async (req, res) => {
         }
 
         if (typeSwiper==="sale") {
-            console.log("SALE")
+           
             const products = await Product.find({ sale: true, active: true })
                 .sort({ brand: 1 })
                 .exec()
@@ -96,9 +96,16 @@ exports.productsFilter = async (req, res) => {
         }
 
         if (typeSwiper==="lider") {
-            console.log("LIDER")
+          
             const products = await Product.find({ lider: true, active: true })
                 .sort({ brand: 1 })
+                .exec()
+            return res.json(products)
+        }
+
+        if (filterBrand) {
+            const products = await Product.find({ brandSlug: filterBrand, active: true })
+                .sort({ name: 1 })
                 .exec()
             return res.json(products)
         }

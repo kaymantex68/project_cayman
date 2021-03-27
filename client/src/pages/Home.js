@@ -6,6 +6,7 @@ import BrandsPictures from '../components/brands/Brands'
 import { getProduct, getProducts } from '../functions/product'
 import { getProductsFilter } from '../functions/catalog'
 import OurParthners from '../components/ourPartners/OurParthners'
+import Footer from '../components/footer/Footer'
 
 const Home = () => {
     const [loading, setLoading] = useState(false)
@@ -45,6 +46,9 @@ const Home = () => {
             </div>
             <div>
                 <OurParthners/>
+            </div>
+            <div>
+                <Footer/>
             </div>
         </>
     )

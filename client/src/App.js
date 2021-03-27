@@ -47,7 +47,7 @@ const RegistrationComplete = lazy(() => import('./pages/auth/RegistrationComplet
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'))
 const Header = lazy(() => import('./components/nav/Header'))
 // const NavMenu = lazy(() => import('./components/nav/NavMenu'))
-const Footer = lazy(()=>import('./components/footer/Footer')) 
+// const Footer = lazy(()=>import('./components/footer/Footer')) 
 
 const UserRoute = lazy(() => import('./routes/UserRoute'))
 const AdminRoute = lazy(() => import('./routes/AdminRoute'))
@@ -60,6 +60,8 @@ const UpdateSub = lazy(() => import('./pages/admin/sub/SubUpdate'))
 
 const CreateSlide = lazy(()=> import('./pages/admin/slider/CreateSlide'))
 const UpdateSlide = lazy(()=> import('./pages/admin/slider/UpdateSlide'))
+
+const Diler = lazy(()=>import('./pages/admin/diler/Diler'))
 
 const BrandLogoCreate = lazy(() => import('./pages/admin/brandLogo/BrandLogoCreate'))
 const NewProduct = lazy(() => import('./pages/admin/product/NewProduct'))
@@ -146,16 +148,19 @@ const App = () => {
             <AdminRoute exact path='/admin/copy/:slug' component={ProductCopy} />
             <AdminRoute exact path='/admin/slider' component={CreateSlide} />
             <AdminRoute exact path='/admin/slider/:slug' component={UpdateSlide} />
-
             <AdminRoute exact path='/admin/delete-image' component={Optimization} />
+            <AdminRoute exact path='/admin/diler' component={Diler} />
+
             <Route exact path="/catalog" component={Catalog} />
+            <Route exact path="/catalog/brand/:filterBrand" component={Catalog} />
             <Route exact path="/catalog/:category" component={Catalog} />
             <Route exact path="/catalog/:category/:sub" component={Catalog} />
-            <Route exact path="/catalog/:category/:sub/:brand" component={Catalog} />
+            <Route exact path="/catalog/:category/:sub/:brand" component={Catalog} />  
+            
 
           </Switch>
         </div>
-        <Footer/>
+        {/* <Footer/> */}
       </Suspense>
     </>
   );

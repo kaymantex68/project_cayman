@@ -4,6 +4,8 @@ import { getCategories } from "../../functions/category";
 import { getSubs } from "../../functions/sub";
 import { getBrands } from '../../functions/brand'
 import { useHistory } from 'react-router-dom'
+import classes from './NavMenu.module.css'
+import 'antd/dist/antd.css'
 // import {
 //     MailOutlined,
 //     AppstoreOutlined,
@@ -63,9 +65,9 @@ const NavMenu = () => {
     }
 
     return (
-        <div style={{display: "flex", alignItems:"center", justifyContent:"space-around"}}>
+        <div style={{display: "flex", alignItems:"center", justifyContent:"space-around", borderBottom:"1px solid rgba(128, 128, 128, 0.1)"}}>
         <img style={{width: "200px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.svg`} />
-        <Menu onClick={handleClick} mode="horizontal">
+        <Menu onClick={handleClick} mode="horizontal" className={classes.menuClass}>
             <SubMenu key="SubMenu" title="Каталог" onTitleClick={handleGoToCatalog}>
                 {/* add category to menu */}
                 {categories.map((c) => {

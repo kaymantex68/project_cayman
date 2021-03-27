@@ -10,16 +10,16 @@ import SubUpdate from "./admin/sub/SubUpdate";
 import Loading from "../components/form/LoadingIcon";
 import NavMenu from "../components/nav/NavMenu";
 import ProductCard from '../components/card/ProductCard'
-
+import Footer from '../components/footer/Footer'
 
 const Catalog = ({ match, history }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const { params } = match;
-    const { brand, sub, category } = match.params;
+    const { brand, sub, category, filterBrand } = match.params;
 
     // console.log('products', products)
-    // console.log(match)
+    console.log('match', match)
     // console.log('history', history)
 
     useEffect(() => {
@@ -53,6 +53,7 @@ const Catalog = ({ match, history }) => {
                     setLoading(false);
                 });
         } else if (sub) {
+            console.log('sub')
             let catObject;
             let subArray;
             setProducts([]);
@@ -78,6 +79,7 @@ const Catalog = ({ match, history }) => {
                     setLoading(false);
                 });
         } else if (category) {
+            console.log('category')
             setProducts([]);
             getCategory(category)
                 .then((res) => {
@@ -90,9 +92,9 @@ const Catalog = ({ match, history }) => {
                     console.log("err get category--------->", err);
                     setLoading(false);
                 });
-        } else if (!brand && !sub && !category) {
-            // console.log('catalog')
-            getProductsFilter()
+        } else if (filterBrand) {
+            console.log('weHere')
+            getProductsFilter(null, null, null, null, filterBrand)
                 .then((res) => {
                     setProducts(res.data);
                     setLoading(false);
@@ -102,6 +104,18 @@ const Catalog = ({ match, history }) => {
                     setLoading(false);
                 });
         }
+        else if (!brand && !sub && !category && !filterBrand) {
+            console.log('catalog')
+            getProductsFilter()
+                .then((res) => {
+                    setProducts(res.data);
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.log("err--------->", err);
+                    setLoading(false);
+                });
+        } 
     }, [params]);
 
     return (
@@ -113,14 +127,17 @@ const Catalog = ({ match, history }) => {
                 {loading ? (
                     <Loading />
                 ) : (
-                    <div className="row justify-content-center" style={{padding: "10px 0 0 0"}}>
+                    <div className="row justify-content-center" style={{ padding: "10px 0 0 0" }}>
                         {products.map((p) => {
                             return (
-                                <ProductCard product={p}/>
+                                <ProductCard product={p} />
                             );
                         })}
                     </div>
                 )}
+            </div>
+            <div>
+                <Footer/>
             </div>
         </>
     );

@@ -1,0 +1,20 @@
+.dilerContainer{
+ transition: 0.3s;
+}
+
+.dilerContainer:hover{
+    transition: 0.3s;
+    transform: scale(1.05);
+}
+
+.dilerImage{ 
+    max-width: 100px; 
+    margin: 10px; 
+    cursor: pointer; 
+    transition: 0.3s
+}
+
+.dilerImage:hover{
+    transform: scale(1.2);
+    transition: 0.3s;
+}

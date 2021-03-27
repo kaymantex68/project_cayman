@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const { ObjectId } = mongoose.Schema;
 
-const brandPictureSchema = new mongoose.Schema(
+const dilerSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -25,4 +25,4 @@ const brandPictureSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-module.exports = mongoose.model("BrandPicture", brandPictureSchema);
+module.exports = mongoose.model("Diler", dilerSchema);

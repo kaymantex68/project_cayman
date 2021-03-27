@@ -1,0 +1,11 @@
+.brandImage{ 
+    max-width: 100px; 
+    margin: 10px; 
+    cursor: pointer; 
+    transition: 0.3s
+}
+
+.brandImage:hover{
+    transform: scale(1.2);
+    transition: 0.3s;
+}
