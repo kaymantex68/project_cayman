@@ -17,7 +17,7 @@ const Catalog = ({ match, history }) => {
     const [loading, setLoading] = useState(false);
     const { params } = match;
     const { brand, sub, category, filterBrand } = match.params;
-
+    
     // console.log('products', products)
     console.log('match', match)
     // console.log('history', history)

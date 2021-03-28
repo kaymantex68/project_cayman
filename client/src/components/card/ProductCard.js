@@ -19,7 +19,7 @@ const ProductCard = ({ product }) => {
   // console.log("cart", cart);
 
   const handleAddToCart = async (e, product) => {
-    e.preventDefault();
+    // e.preventDefault();
     // console.log("add to cart product:", product.name);
 
     let uniqCart = [];

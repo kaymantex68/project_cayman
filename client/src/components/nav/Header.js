@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu } from "antd";
+import { Menu, Badge } from "antd";
 import {
   LogoutOutlined,
   UserOutlined,
@@ -19,7 +19,7 @@ const Header = () => {
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => ({ ...state }));
+  const { user,cart } = useSelector((state) => ({ ...state }));
   const handleClick = (e) => {
     setCurrent(e.key);
   };
@@ -90,9 +90,15 @@ const Header = () => {
         )}
          <Item key="cart" className="float-right" style={{display:"flex", alignItems:"center"}}>
                 <Link to="/user/cart">
+                <Badge
+              count={cart.length}
+              // style={{ cursor: "pointer" }}
+              // className="m-3"
+            >
                   <ShoppingCartOutlined
                     style={{ fontSize: "1rem" }}
                   /> Корзина
+                  </Badge>
                 </Link>
               </Item>
       </Menu>
