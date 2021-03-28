@@ -19,7 +19,7 @@ const Catalog = ({ match, history }) => {
     const { brand, sub, category, filterBrand } = match.params;
     
     // console.log('products', products)
-    console.log('match', match)
+    // console.log('match', match)
     // console.log('history', history)
 
     useEffect(() => {
@@ -116,7 +116,7 @@ const Catalog = ({ match, history }) => {
                     setLoading(false);
                 });
         } 
-    }, [params]);
+    }, [brand, sub, category, filterBrand ]);
 
     return (
         <>

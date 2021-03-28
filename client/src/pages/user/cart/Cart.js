@@ -36,6 +36,7 @@ const Cart = () => {
       });
       setCart([]);
     });
+    setSum(0)
     setLoading(false);
   };
 
