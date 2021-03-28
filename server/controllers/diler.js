@@ -105,7 +105,7 @@ exports.deleteDilerImage = async (req, res) => {
         await fs.unlink(path,(err)=>{
             if (err) {
                 console.log('-----error delete brand image-----', err);
-                return res.json({message:"ошибка удаления логотипа бренда"})
+                // res.json({message:"ошибка удаления логотипа бренда"})
             }
         })
     }
@@ -114,6 +114,6 @@ exports.deleteDilerImage = async (req, res) => {
     console.log("-------------delete error start-------------");
     console.log(err);
     console.log("-------------delete error end-------------");
-    return res.status(500).json({ message: "-----delete error-----" });
+    res.status(500).json({ message: "-----delete error-----" });
   }
 };

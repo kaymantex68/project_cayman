@@ -33,7 +33,7 @@ const Login = ({ history }) => {
             history.push("/admin/dashboard")
         }
         if (res.data.role === 'subscriber') {
-            history.push('/user/history')
+            history.push('/user/dashboard')
         }
         if (res.data.role === 'manager') {
             history.push('/manager/dashboard')

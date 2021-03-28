@@ -1,7 +1,9 @@
 
 import { auth } from './firebase'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { currentUser } from './functions/auth'
+
+import {readCart} from './functions/cart'
 
 import './App.css';
 import { useEffect, lazy, Suspense } from 'react'
@@ -68,7 +70,7 @@ const NewProduct = lazy(() => import('./pages/admin/product/NewProduct'))
 const Products = lazy(() => import('./pages/admin/product/Products'))
 const UpdateProduct = lazy(() => import('./pages/admin/product/UpdateProduct'))
 const ProductCopy = lazy(() => import('./pages/admin/product/CopyProduct'))
-const History = lazy(() => import('./pages/user/History'))
+const UserDashboard = lazy(() => import('./pages/user/UserDashboard'))
 const Password = lazy(() => import('./pages/user/Password'))
 
 const AdminNavigation = lazy(() => import('./components/nav/AdminNavigation'))
@@ -78,10 +80,17 @@ const BrandUpdate = lazy(() => import('./pages/admin/brand/BrandUpdate'))
 const Optimization = lazy(() => import('./pages/admin/optimization/Optimization'))
 
 
+//User
+
+const Cart = lazy(()=>import('./pages/user/cart/Cart'))
+
+
+
 const App = () => {
   const dispatch = useDispatch()
+  const {user} = useSelector(state=> ({...state}))
 
-  // to check firebase auth state
+ 
   useEffect(() => {
     const usubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -103,10 +112,27 @@ const App = () => {
           }).catch(err => {
             // if (err.response.status === 400) toast.error('Ваш Token закончился. Обновите страницу!');
           })
+
+      // read users cart
+
       }
       return () => usubscribe()
     });
   }, [])
+
+
+  useEffect(()=>{
+    if(user && user.token) {
+      console.log('token change')
+      readCart(user.token).then(res=>{
+        dispatch({
+          type: "ADD_TO_CART",
+          payload: res.data.cart,
+        });
+        console.log(res.data.cart)
+      })
+    }
+  },[user])
 
 
   return (
@@ -131,8 +157,9 @@ const App = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/register/complete" component={RegistrationComplete} />
             <Route exact path="/forgot/password" component={ForgotPassword} />
-            <UserRoute exact path='/user/history' component={History} />
+            <UserRoute exact path='/user/dashboard' component={UserDashboard} />
             <UserRoute exact path='/user/password' component={Password} />
+            <UserRoute exact path='/user/cart' component={Cart} />
 
             <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
             <AdminRoute exact path='/admin/category' component={CreateCategory} />

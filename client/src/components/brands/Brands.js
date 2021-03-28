@@ -14,7 +14,7 @@ const BrandsPictures = () => {
     });
   }, []);
 
-  console.log("brand pictures", brands);
+  // console.log("brand pictures", brands);
 
   return (
     <div className="container-fluid" style={{ textAlign: "-webkit-center" }}>

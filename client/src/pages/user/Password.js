@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import UserNav from '../../components/nav/UserNav'
 import { auth } from '../../firebase'
 import { toast } from 'react-toastify'
+import UserNavigation from '../../components/nav/UserNavigation'
+
 const Password = () => {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -49,12 +51,10 @@ const Password = () => {
         )
     }
 
-    return (
-        <div className='container-fluid' style={{ minHeight: '1250px' }}>
+    const returnPassword=()=>{
+        return (
+            <div className='container-fluid' style={{ minHeight: '1250px' }}>
             <div className="row" >
-                <div className="colmd-2" style={{ minHeight: '1250px' }}>
-                    <UserNav />
-                </div>
                 <div className='col p-5' style={{ backgroundColor: 'GhostWhite' }}>
                     {loading
                     ? <h5>Загрузка...</h5>
@@ -63,6 +63,11 @@ const Password = () => {
                 </div>
             </div>
         </div>
+        )
+    }
+
+    return (
+        <UserNavigation name="Личный кабинет" children={returnPassword()}/>
     )
 }
 

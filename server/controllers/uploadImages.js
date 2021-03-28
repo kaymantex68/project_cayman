@@ -105,7 +105,7 @@ exports.deleteBrandImage = async (req, res) => {
         await fs.unlink(path,(err)=>{
             if (err) {
                 console.log('-----error delete brand image-----', err);
-                return res.json({message:"ошибка удаления логотипа бренда"})
+                // return res.json({message:"ошибка удаления логотипа бренда"})
             }
         })
     }

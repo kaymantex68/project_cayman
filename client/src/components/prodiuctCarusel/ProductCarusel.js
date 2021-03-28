@@ -39,7 +39,7 @@ function useWindowSize() {
 
 const ProductCarusel = ({products,description}) => {
     
-    console.log('carusel product', products )
+    // console.log('carusel product', products )
 
     let ProductsArr = [];
 

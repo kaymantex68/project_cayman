@@ -1,6 +1,8 @@
 import React from "react";
 import classes from "./ProductCard.module.css";
-
+import { useDispatch, useSelector } from "react-redux";
+import _ from "lodash";
+import {addToCart} from '../../functions/cart'
 const StyleInStock = {
   fontSize: "0.8rem",
   margin: "0px",
@@ -11,11 +13,38 @@ const StyleInStock = {
 };
 
 const ProductCard = ({ product }) => {
+  const { user, cart } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
+
+  // console.log("cart", cart);
+
+  const handleAddToCart = async (e, product) => {
+    e.preventDefault();
+    // console.log("add to cart product:", product.name);
+
+    let uniqCart = [];
+    uniqCart = [...cart];
+    uniqCart.push({
+      ...product,
+      count: 1,
+    });
+    uniqCart = _.uniqWith(uniqCart, _.isEqual);
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: uniqCart,
+    });
+
+    await addToCart(uniqCart, user.token).then(res=>{
+      // console.log(res.data)
+    })
+    // console.log("uniqCart", uniqCart);
+  };
+
   let fontSize = "0.9rem";
-  if (product.name.length > 20 && product.name.length <= 26 ) {
+  if (product.name.length > 20 && product.name.length <= 26) {
     fontSize = "0.8rem";
   }
-  if (product.name.length > 26  ) {
+  if (product.name.length > 26) {
     fontSize = "0.7rem";
   }
   let pathImage = "";
@@ -23,9 +52,7 @@ const ProductCard = ({ product }) => {
     pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${product.images[0]}`;
   else pathImage = "/images/product/default.png";
   return (
-    <div
-      className={classes.cardContainer}
-    >
+    <div className={classes.cardContainer}>
       <div>
         <div
           style={{
@@ -65,11 +92,15 @@ const ProductCard = ({ product }) => {
           />
         </div>
         {/* <hr /> */}
-        <div style={{
-          // backgroundColor:"green"
-          }}>
+        <div
+          style={
+            {
+              // backgroundColor:"green"
+            }
+          }
+        >
           {/* product name */}
-          <div style={{ margin: "10px 5px 0 0", padding: "0"}}>
+          <div style={{ margin: "10px 5px 0 0", padding: "0" }}>
             <span
               style={{
                 fontSize: `${fontSize}`,
@@ -101,7 +132,6 @@ const ProductCard = ({ product }) => {
                 // margin: "0px",
                 // padding: "0px",
                 color: "#3C475B",
-               
               }}
             >
               {product.params[1]
@@ -117,7 +147,6 @@ const ProductCard = ({ product }) => {
                 // margin: "0px",
                 // padding: "0px",
                 color: "#3C475B",
-               
               }}
             >
               {product.params[2]
@@ -167,17 +196,39 @@ const ProductCard = ({ product }) => {
                 color: "#3C475B",
               }}
             >
-              {(product.coast && product.oldCoast === 0) && <div><span style={{fontSize:"1rem"}}>{`${product.coast} руб.`}</span></div> }
-              {(product.coast && product.oldCoast > 0) && <div><span style={{textDecoration:"line-through", color:"red", fontSize:"0.9rem"}}>{`${product.oldCoast} руб.` }</span><span style={{fontSize:"1.1rem"}}>{`  ${product.coast}  руб.`}</span></div> }
+              {product.coast && product.oldCoast === 0 && (
+                <div>
+                  <span
+                    style={{ fontSize: "1rem" }}
+                  >{`${product.coast} руб.`}</span>
+                </div>
+              )}
+              {product.coast && product.oldCoast > 0 && (
+                <div>
+                  <span
+                    style={{
+                      textDecoration: "line-through",
+                      color: "red",
+                      fontSize: "0.9rem",
+                    }}
+                  >{`${product.oldCoast} руб.`}</span>
+                  <span
+                    style={{ fontSize: "1.1rem" }}
+                  >{`  ${product.coast}  руб.`}</span>
+                </div>
+              )}
             </span>
           </div>
         </div>
       </div>
       {/* <br/> */}
       {/* button */}
-      <div className={classes.buttonAddToCart}>
-              <span>в корзину</span>
-        </div>
+      <div
+        onClick={(e) => handleAddToCart(e, product)}
+        className={classes.buttonAddToCart}
+      >
+        <span>в корзину</span>
+      </div>
     </div>
   );
 };
