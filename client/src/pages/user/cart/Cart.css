@@ -1,0 +1,5 @@
+table th.text-center, table td.text-center { 
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}

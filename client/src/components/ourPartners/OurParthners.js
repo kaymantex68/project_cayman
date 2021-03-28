@@ -7,13 +7,13 @@ const OurParthners = () => {
     const [dilers, setDilers] = useState([]);
 
     useEffect(() => {
-        // console.log('weHere')
+        console.log('weHere')
         getDilers().then((res) => {
             setDilers(res.data);
         });
     }, []);
 
-    // console.log("dilers", dilers);
+    console.log("dilers", dilers);
 
     return (
         <div className="container-fluid" style={{ textAlign: "-webkit-center" }} >
@@ -22,7 +22,7 @@ const OurParthners = () => {
             >
                 <span>Мы являемся дилерами</span>
             </div>
-            <div className={`container-fluid row ${classes.dilerCard}`} style={{display:"flex", flexWrap:"wrap",justifyContent:"center"}} >
+            <div className="container-fluid row" style={{display:"flex", flexWrap:"wrap",justifyContent:"center"}} >
                 
                     {dilers.map((d) => {
                         return (

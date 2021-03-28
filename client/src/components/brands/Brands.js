@@ -25,7 +25,7 @@ const BrandsPictures = () => {
       </div>
       {brands.map((l) => {
         return (
-          <Link to={`/catalog/brand/${l.slug}`}>
+          <Link to={`/catalog/brand/${l.slug}`} key={l._id}>
             <img
               key={l._id}
               alt="logo"
