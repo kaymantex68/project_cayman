@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../../components/form/LoadingIcon";
 import { addToCart } from "../../../functions/cart";
 import { removeSlide } from "../../../functions/slider";
-import {CloseCircleOutlined} from '@ant-design/icons' 
+import { CloseCircleOutlined } from "@ant-design/icons";
 // import './Cart.css'
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -15,6 +15,7 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const resetSum = () => {
+    console.log('reset sum')
     setSum(cart.reduce((a, p) => a + p.count * p.coast, 0));
   };
 
@@ -27,6 +28,7 @@ const Cart = () => {
     });
   }, []);
 
+
   const handleClear = async () => {
     setLoading(true);
     await addToCart([], user.token).then((res) => {
@@ -36,7 +38,7 @@ const Cart = () => {
       });
       setCart([]);
     });
-    setSum(0)
+    setSum(0);
     setLoading(false);
   };
 
@@ -59,18 +61,17 @@ const Cart = () => {
     });
     setCart([...change]);
     await addToCart([...change], user.token).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
     });
     resetSum();
     //  console.log('change', change)
   };
 
-  const handleDelete=async(e, product)=>{
+  const handleDelete = async (e, product) => {
     let change = cart.filter((p) => {
       if (p.name !== product.name) {
         return p;
       }
-      
     });
     dispatch({
       type: "ADD_TO_CART",
@@ -78,11 +79,11 @@ const Cart = () => {
     });
     setCart([...change]);
     await addToCart([...change], user.token).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
     });
     resetSum();
     //  console.log('change', change)
-  }
+  };
 
   const ReturnCart = () => {
     return (
@@ -118,7 +119,7 @@ const Cart = () => {
                 return (
                   <tr key={p._id}>
                     <td>{index + 1}</td>
-                    <td >
+                    <td>
                       <img
                         style={{
                           maxWidth: "90px",
@@ -129,7 +130,7 @@ const Cart = () => {
                         src={pathImage}
                       />
                     </td>
-                    <th >
+                    <th>
                       <div>{p.name}</div>
                     </th>
                     <td>{p.brand}</td>
@@ -168,7 +169,12 @@ const Cart = () => {
                     </td>
                     <td>{p.coast} p.</td>
                     <td>{p.coast * p.count} р.</td>
-                    <td><CloseCircleOutlined className="text-danger" onClick={e=>handleDelete(e,p)} /></td>
+                    <td>
+                      <CloseCircleOutlined
+                        className="text-danger"
+                        onClick={(e) => handleDelete(e, p)}
+                      />
+                    </td>
                   </tr>
                 );
               })}
