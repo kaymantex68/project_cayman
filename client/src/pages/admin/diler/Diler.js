@@ -45,7 +45,8 @@ const Diler = () => {
   console.log('logos', logos)
 
   const loadLogos = () => {
-    getDilerPictures().then((res) => {
+    console.log('weHere')
+    getDilers().then((res) => {
       setLogos(res.data);
     });
   };

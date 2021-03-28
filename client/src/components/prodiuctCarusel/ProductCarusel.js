@@ -26,11 +26,12 @@ function useWindowSize() {
     }, []);
     if (window.innerWidth > 1700) { return 7 }
     if (window.innerWidth < 1700 && window.innerWidth > 1500) { return 6 }
-    if (window.innerWidth < 1500 && window.innerWidth > 1400) { return 5 }
-    if (window.innerWidth < 1400 && window.innerWidth > 1100) { return 4 }
-    if (window.innerWidth < 1100 && window.innerWidth > 900) { return 3 }
-    if (window.innerWidth < 900 && window.innerWidth > 700) { return 3 }
-    if (window.innerWidth < 700) { return 2 }
+    if (window.innerWidth < 1500 && window.innerWidth > 1300) { return 5 }
+    if (window.innerWidth < 1300 && window.innerWidth > 1000) { return 4 }
+    if (window.innerWidth < 1000 && window.innerWidth > 850) { return 3 }
+    if (window.innerWidth < 850 ) { return 2 }
+    // if (window.innerWidth < 850 && window.innerWidth > 700) { return 2 }
+    // if (window.innerWidth < 700) { return 2 }
     // return size;
 }
 
@@ -72,7 +73,9 @@ const ProductCarusel = ({products,description}) => {
                 className={classes.swiper_container_products}
             >
                 {ProductsArr}
+                
             </Swiper>
+            
         </div>
     )
 

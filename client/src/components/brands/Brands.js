@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getBrandPictures } from "../../functions/uploadImages";
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 import classes from './Brands.module.css'
 const BrandsPictures = () => {
   const [brands, setBrands] = useState([]);
@@ -35,6 +35,7 @@ const BrandsPictures = () => {
           </Link>
         );
       })}
+      <hr/>
     </div>
   );
 };

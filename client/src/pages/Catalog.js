@@ -123,7 +123,7 @@ const Catalog = ({ match, history }) => {
             <div>
                 <NavMenu />
             </div>
-            <div className="container-fluid" >
+            <div className="container-fluid" style={{minHeight:"750px"}}>
                 {loading ? (
                     <Loading />
                 ) : (

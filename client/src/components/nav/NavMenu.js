@@ -3,7 +3,7 @@ import { Menu } from "antd";
 import { getCategories } from "../../functions/category";
 import { getSubs } from "../../functions/sub";
 import { getBrands } from '../../functions/brand'
-import { useHistory } from 'react-router-dom'
+import { Link,useHistory } from 'react-router-dom'
 import classes from './NavMenu.module.css'
 import 'antd/dist/antd.css'
 // import {
@@ -65,8 +65,8 @@ const NavMenu = () => {
     }
 
     return (
-        <div style={{display: "flex", alignItems:"center", justifyContent:"space-around", borderBottom:"1px solid rgba(128, 128, 128, 0.1)"}}>
-        <img style={{width: "200px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.svg`} />
+        <div style={{display: "flex", alignItems:"center", height:"70px", justifyContent:"space-around", borderBottom:"1px solid rgba(128, 128, 128, 0.1)"}}>
+        <Link to="/"><img style={{width: "200px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.svg`} /></Link>
         <Menu onClick={handleClick} mode="horizontal" className={classes.menuClass}>
             <SubMenu key="SubMenu" title="Каталог" onTitleClick={handleGoToCatalog}>
                 {/* add category to menu */}
@@ -102,7 +102,7 @@ const NavMenu = () => {
                                                                                     <Menu.Item
                                                                                         key={b._id}
                                                                                         onClick={()=>handleGoToBrand(c.slug,s.slug,b.slug)}
-                                                                                        // style={{backgroundColor: "green"}}
+                                                                                        // style={{borderTop: "1px solid green"}}
                                                                                     >
                                                                                         {b.name}
                                                                                     </Menu.Item>

@@ -1,20 +1,25 @@
 .dilerContainer{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-radius:10px;
  transition: 0.3s;
 }
 
 .dilerContainer:hover{
+    box-shadow: -5px  10px 14px rgba(0,0,0,0.08);
     transition: 0.3s;
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .dilerImage{ 
-    max-width: 100px; 
+    max-width: 150px; 
     margin: 10px; 
     cursor: pointer; 
     transition: 0.3s
 }
 
 .dilerImage:hover{
-    transform: scale(1.2);
-    transition: 0.3s;
+    /* transform: scale(1.2);
+    transition: 0.3s; */
 }

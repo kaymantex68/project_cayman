@@ -39,7 +39,8 @@ const Home = () => {
                 <ProductCarusel products={liders} description='Лидеры продаж' />
             </div>
             <div>
-               {sales.length>0 && <ProductCarusel products={sales} description='Распродажа' />}
+               <ProductCarusel products={sales} description='Распродажа' />
+               <hr/>
             </div>
             <div>
                 <BrandsPictures/>

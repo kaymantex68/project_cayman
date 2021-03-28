@@ -51,14 +51,14 @@ const ProductCard = ({ product }) => {
             style={{
               position: "absolute",
               right: "0",
-              bottom: "0",
+              top: "0",
               maxWidth: "100px",
               maxHeight: "40px",
               padding: "7px 7px 7px 7px",
               borderRadius: "5px",
               //   backgroundColor: "rgba(177, 177, 177, 0.199)",
-              boxShadow: "0 2px 7px rgba(0,0,0,0.1)",
-              margin: "0px 0px 5px 5px",
+              // boxShadow: "0 2px 7px rgba(0,0,0,0.1)",
+              margin: "5px 5px 5px 5px",
             }}
             alt="example"
             src={`${process.env.REACT_APP_IMAGES_BRAND}/${product.brandSlug}.png`}
