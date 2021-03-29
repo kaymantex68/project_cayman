@@ -68,6 +68,7 @@ const Cart = () => {
   };
 
   const handleDelete = async (e, product) => {
+    // setLoading(true)
     let change = cart.filter((p) => {
       if (p.name !== product.name) {
         return p;
@@ -81,8 +82,8 @@ const Cart = () => {
     await addToCart([...change], user.token).then((res) => {
       // console.log(res.data);
     });
-    resetSum();
-    //  console.log('change', change)
+    setSum(change.reduce((a, p) => a + p.count * p.coast, 0));
+    // setLoading(false);
   };
 
   const ReturnCart = () => {
