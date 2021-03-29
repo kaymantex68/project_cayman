@@ -70,7 +70,7 @@ const Cart = () => {
   const handleDelete = async (e, product) => {
     // setLoading(true)
     let change = cart.filter((p) => {
-      if (p.name !== product.name) {
+      if (p !== product) {
         return p;
       }
     });

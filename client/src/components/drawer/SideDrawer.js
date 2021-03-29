@@ -15,7 +15,7 @@ const SideDrawer = () => {
 
   return (
     <Drawer
-      title={`Корзина/ ${cart.length} товаров`}
+      title={`Корзина/ товаров: ${cart.length} шт.`}
       placement="right"
       closable={false}
       onClose={() => {
