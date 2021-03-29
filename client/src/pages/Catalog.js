@@ -18,6 +18,8 @@ import {
   StarOutlined,
 } from "@ant-design/icons";
 
+import classes from './Catalog.module.css'
+
 const { SubMenu, ItemGroup } = Menu;
 
 const Catalog = ({ match, history }) => {
@@ -130,73 +132,69 @@ const Catalog = ({ match, history }) => {
       <div>
         <NavMenu />
       </div>
-      <div  
-      style={{ backgroundColor:"yellow" , display:"flex", flexWrap:"wrap", width:"100%"}}
-      >
-          <div 
-          style={{minWidth:"300px", backgroundColor:"blue"}} >
-            
-            <Menu mode="inline" defaultOpenKeys={["1", "2", "3"]}>
-              {/* price */}
-              <SubMenu
-                key="1"
-                title={
-                  <span style={{fontSize:"0.8rem"}}>
-                    <DollarOutlined /> Цена
+      <div className={classes.catalogContainer}>
+        <div className={classes.containerFilter}>
+          <Menu className={classes.menu} mode="inline" defaultOpenKeys={["1", "2", "3"]}>
+            {/* price */}
+            <SubMenu
+              key="1"
+              title={
+                <span style={{ fontSize: "0.8rem" }}>
+                  <DollarOutlined /> Цена
                 </span>
-                }
-              >
-                <div>
-                  <Slider
-                    className="ml-4 mr-4"
-                    tipFormatter={(v) => `$${v}`}
-                    // range value={price}
-                    // onChange={handleSlider}
-                    max="4999"
-                  />
-                </div>
-              </SubMenu>
-              {/* categories */}
-              <SubMenu
-                key="2"
-                title={
-                  <span style={{fontSize:"0.8rem"}}>
-                    <DownSquareOutlined /> Категория
-                </span>
-                }
-              >
-                {/* {showCategory()} */}
-              </SubMenu>
-
-              {/* stars */}
-              <SubMenu
-                key="3"
-                title={
-                  <span style={{fontSize:"0.8rem"}}>
-                    <StarOutlined /> Рейтинг
-                </span>
-                }
-              >
-                {/* {showStars()} */}
-              </SubMenu>
-            </Menu>
-          </div>
-          <div style={{minWidth:"700px", maxWidth:"1200px", backgroundColor:"green"}}
-          >
-            {loading ? (
-              <Loading />
-            ) : (
-              <div
-                className="row justify-content-center"
-                style={{ padding: "10px 0 0 0" }}
-              >
-                {products.map((p) => {
-                  return <ProductCard product={p} />;
-                })}
+              }
+            >
+              <div>
+                <Slider
+                  className="ml-4 mr-4"
+                  tipFormatter={(v) => `$${v}`}
+                  // range value={price}
+                  // onChange={handleSlider}
+                  max="4999"
+                />
               </div>
-            )}
-          </div>
+            </SubMenu>
+            {/* categories */}
+            <SubMenu
+              key="2"
+              title={
+                <span style={{ fontSize: "0.8rem" }}>
+                  <DownSquareOutlined /> Категория
+                </span>
+              }
+            >
+              {/* {showCategory()} */}
+            </SubMenu>
+
+            {/* stars */}
+            <SubMenu
+              key="3"
+              title={
+                <span style={{ fontSize: "0.8rem" }}>
+                  <StarOutlined /> Рейтинг
+                </span>
+              }
+            >
+              {/* {showStars()} */}
+            </SubMenu>
+          </Menu>
         </div>
+
+        <div className={classes.containerProducts}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <div
+              className="row justify-content-center p-0 m-0"
+              style={{ padding: "10px 0 0 0" }}
+            >
+              {products.map((p) => {
+                return <ProductCard product={p} />;
+              })}
+            </div>
+          )}
+        </div>
+      </div>
       <div>
         <Footer />
       </div>
