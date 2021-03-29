@@ -7,13 +7,13 @@ const OurParthners = () => {
     const [dilers, setDilers] = useState([]);
 
     useEffect(() => {
-        console.log('weHere')
+        // console.log('weHere')
         getDilers().then((res) => {
             setDilers(res.data);
         });
     }, []);
 
-    console.log("dilers", dilers);
+    // console.log("dilers", dilers);
 
     return (
         <div className="container-fluid" style={{ textAlign: "-webkit-center" }} >

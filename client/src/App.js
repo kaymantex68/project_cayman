@@ -124,13 +124,13 @@ const App = () => {
 
   useEffect(()=>{
     if(user && user.token) {
-      console.log('token change')
+      // console.log('token change')
       readCart(user.token).then(res=>{
         dispatch({
           type: "ADD_TO_CART",
           payload: res.data.cart,
         });
-        console.log(res.data.cart)
+        // console.log(res.data.cart)
       })
     }
   },[user])
