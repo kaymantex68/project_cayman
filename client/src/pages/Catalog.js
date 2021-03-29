@@ -130,10 +130,11 @@ const Catalog = ({ match, history }) => {
       <div>
         <NavMenu />
       </div>
-      <div className="container-fluid" style={{ minHeight: "750px" }}>
-        <div className="row">
-
-          <div className="col-xl-2" >
+      <div  
+      style={{ backgroundColor:"yellow" , display:"flex", flexWrap:"wrap", width:"100%"}}
+      >
+          <div 
+          style={{minWidth:"300px", backgroundColor:"blue"}} >
             
             <Menu mode="inline" defaultOpenKeys={["1", "2", "3"]}>
               {/* price */}
@@ -180,9 +181,7 @@ const Catalog = ({ match, history }) => {
               </SubMenu>
             </Menu>
           </div>
-
-          <div className="col-md-9  container-fluid" 
-          // style={{backgroundColor:"green"}}
+          <div style={{minWidth:"700px", maxWidth:"1200px", backgroundColor:"green"}}
           >
             {loading ? (
               <Loading />
@@ -198,7 +197,6 @@ const Catalog = ({ match, history }) => {
             )}
           </div>
         </div>
-      </div>
       <div>
         <Footer />
       </div>
