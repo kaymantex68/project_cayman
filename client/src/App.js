@@ -79,6 +79,7 @@ const BrandUpdate = lazy(() => import('./pages/admin/brand/BrandUpdate'))
 
 const Optimization = lazy(() => import('./pages/admin/optimization/Optimization'))
 
+const SideDrawer = lazy(()=> import('./components/drawer/SideDrawer'))
 
 //User
 
@@ -146,6 +147,7 @@ const App = () => {
         
         <div>
           <Header />
+          <SideDrawer/>
         </div>
         {/* <div>
           <NavMenu />
