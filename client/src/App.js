@@ -62,7 +62,8 @@ const UpdateSub = lazy(() => import('./pages/admin/sub/SubUpdate'))
 
 const CreateSlide = lazy(()=> import('./pages/admin/slider/CreateSlide'))
 const UpdateSlide = lazy(()=> import('./pages/admin/slider/UpdateSlide'))
-
+const CreateWork = lazy(()=>import('./pages/admin/work/CreateWork'))
+const UpdateWork = lazy(()=>import('./pages/admin/work/UpdateWork'))
 const Diler = lazy(()=>import('./pages/admin/diler/Diler'))
 
 const BrandLogoCreate = lazy(() => import('./pages/admin/brandLogo/BrandLogoCreate'))
@@ -179,6 +180,8 @@ const App = () => {
             <AdminRoute exact path='/admin/slider/:slug' component={UpdateSlide} />
             <AdminRoute exact path='/admin/delete-image' component={Optimization} />
             <AdminRoute exact path='/admin/diler' component={Diler} />
+            <AdminRoute exact path='/admin/work' component={CreateWork} />
+            <AdminRoute exact path='/admin/work/:slug' component={UpdateWork} />
 
             <Route exact path="/catalog" component={Catalog} />
             <Route exact path="/catalog/brand/:filterBrand" component={Catalog} />

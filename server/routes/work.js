@@ -19,7 +19,7 @@ router.post("/work",
     authCheck, adminCheck,
     create)
 router.get("/works", list)
-router.get("/work/:_id", read)
+router.get("/work/:slug", read)
 router.put("/work/:_id",
     authCheck, adminCheck,
     update)

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu, Breadcrumb } from "antd";
 import {
     DesktopOutlined,
@@ -10,17 +10,35 @@ import {
     SolutionOutlined,
     VideoCameraOutlined,
     VideoCameraAddOutlined,
+    ToolOutlined,
+    ClearOutlined,
+    ColumnWidthOutlined,
+    RobotOutlined,
 
 } from "@ant-design/icons";
+import {useSelector, useDispatch} from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const AdminNavigation = (props) => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
+
+    const {sideMenu}= useSelector(state=>({...state}))
+    const dispatch= useDispatch()
+
+    // console.log('sideMenu', sideMenu)
+
+    useEffect(()=>{
+        setCollapsed(sideMenu)
+    },[])
 
     const onCollapse = () => {
+        dispatch({
+            type: "SET_VISIBLE_SIDEMENU",
+            payload: !collapsed,
+          });
         setCollapsed(!collapsed);
     };
 
@@ -31,9 +49,11 @@ const AdminNavigation = (props) => {
                 collapsible
                 collapsed={collapsed}
                 onCollapse={onCollapse}
-            // style={{ backgroundColor: "white" }}
+                style={{ overflow:"hidden" }}
             >
-                <div className="logo" style={{ Width: "300px" }} />
+                <div className=" p-3"  >
+                    <img style={{ width: "210px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.png`} />
+                </div>
 
                 <Menu theme="dark" style={{ color: 'white' }} defaultSelectedKeys={["1"]} mode="inline" >
                     <Menu.Item key="hist" style={{ color: 'white' }} icon={<HomeOutlined />}>
@@ -61,19 +81,24 @@ const AdminNavigation = (props) => {
                             <Link to="/admin/products">Товары</Link>
                         </Menu.Item>
                     </SubMenu>
-                    <SubMenu key="optimization" icon={<FileOutlined />} title="Оптимизация базы">
+                    <SubMenu key="works" icon={<ToolOutlined />} title="Работы">
+                        <Menu.Item key="newwork" icon={<VideoCameraAddOutlined />}>
+                            <Link to="/admin/work">Виды работ</Link>
+                        </Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="optimization" icon={<ClearOutlined />} title="Оптимизация базы">
                         <Menu.Item key="9" style={{ color: 'white' }} >
                             <Link to="/admin/delete-image">Удаление изображений</Link>
                         </Menu.Item>
 
                     </SubMenu>
-                    <SubMenu key="slider" icon={<FileOutlined />} title="Слайдер">
-                    <Menu.Item key="slider1" style={{ color: 'white' }} >
+                    <SubMenu key="slider" icon={<ColumnWidthOutlined />} title="Слайдер">
+                        <Menu.Item key="slider1" style={{ color: 'white' }} >
                             <Link to="/admin/slider">Слайды</Link>
                         </Menu.Item>
                     </SubMenu>
-                    <SubMenu key="diler" icon={<FileOutlined />} title="Дилер">
-                    <Menu.Item key="diler1" style={{ color: 'white' }} >
+                    <SubMenu key="diler" icon={<RobotOutlined />} title="Дилер">
+                        <Menu.Item key="diler1" style={{ color: 'white' }} >
                             <Link to="/admin/diler">Дилер</Link>
                         </Menu.Item>
                     </SubMenu>
@@ -87,9 +112,9 @@ const AdminNavigation = (props) => {
                 style={{ padding: 0, backgroundColor: "white" }}>
                 <Header
                     className="site-layout-background pl-2"
-                    style={{ padding: 0, backgroundColor: "#404a57", display: "flex", justifyContent: "center" }}
+                    style={{ padding: 0, backgroundColor: "white", display: "flex", justifyContent: "center" }}
                 >
-                    {props.name ? <span style={{ fontSize: "1rem", color: "white" }}>{props.name}</span> : null}
+                    {props.name ? <span style={{ fontSize: "1rem", color: "black" }}>{props.name}</span> : null}
                 </Header>
                 <Content style={{ margin: "0 0px" }} className="p-2">
                     {props.children ? props.children : null}

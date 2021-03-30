@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Menu, Breadcrumb } from "antd";
 import {
     DesktopOutlined,
@@ -13,17 +13,31 @@ import {
     ShoppingCartOutlined,
 
 } from "@ant-design/icons";
+import {useSelector, useDispatch} from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const AdminNavigation = (props) => {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
+
+    const {sideMenu}= useSelector(state=>({...state}))
+    const dispatch= useDispatch()
+
+    useEffect(()=>{
+        setCollapsed(sideMenu)
+    },[])
 
     const onCollapse = () => {
+        dispatch({
+            type: "SET_VISIBLE_SIDEMENU",
+            payload: !collapsed,
+          });
         setCollapsed(!collapsed);
     };
+   
+
 
     return (
         <Layout style={{ minHeight: "100vh" }}>
@@ -32,9 +46,11 @@ const AdminNavigation = (props) => {
                 collapsible
                 collapsed={collapsed}
                 onCollapse={onCollapse}
-            // style={{ backgroundColor: "white" }}
+                style={{ overflow:"hidden" }}
             >
-                <div className="logo" style={{ Width: "300px" }} />
+                <div className=" p-3"  >
+                    <img style={{ width: "210px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.png`} />
+                </div>
 
                 <Menu theme="dark" style={{ color: 'white' }} defaultSelectedKeys={["1"]} mode="inline" >
                     {/* <Menu.Item key="hist" style={{ color: 'white' }} icon={<HomeOutlined />}>

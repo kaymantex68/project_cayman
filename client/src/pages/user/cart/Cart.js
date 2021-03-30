@@ -26,6 +26,10 @@ const Cart = () => {
       setCart(res.data.cart);
       setSum(res.data.cart.reduce((a, p) => a + p.count * p.coast, 0));
       setLoading(false);
+    }).catch(err=>{
+      setLoading(false);
+      if (err.response.status === 401) toast.error(err.response.data);
+      window.location.reload()
     });
   }, []);
 

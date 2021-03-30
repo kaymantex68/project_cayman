@@ -69,68 +69,68 @@ const NavMenu = () => {
             <div className={classes.container}>
                 <Link to="/"><img style={{ width: "200px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.svg`} /></Link>
                 <div className={classes.containerMenu}>
-                <Menu onClick={handleClick} mode="horizontal" className={classes.menuClass}>
-                    <SubMenu key="SubMenu" title="Каталог" onTitleClick={handleGoToCatalog}>
-                        {/* add category to menu */}
-                        {categories.map((c) => {
-                            return (
-                                <>
-                                    {c.active ? (
-                                        <SubMenu
-                                            key={c._id}
-                                            title={c.name}
-                                            style={{ width: "auto" }}
-                                            onTitleClick={() => handleGoToCategory(c)}
-                                        >
-                                            {/* add sub-category to menu */}
-                                            {
-                                                subs.map(s => {
-                                                    return (
-                                                        <>
-                                                            {
-                                                                s.active && c._id === s.parent ?
-                                                                    <SubMenu
-                                                                        key={s._id}
-                                                                        title={s.name}
-                                                                        style={{ width: "auto" }}
-                                                                        onTitleClick={() => handleGoToSub(c.slug, s.slug)}
-                                                                    >
-                                                                        {brands.map(b => {
-                                                                            return (
-                                                                                <>
-                                                                                    {
-                                                                                        b.active && s._id === b.parent
-                                                                                            ?
-                                                                                            <Menu.Item
-                                                                                                key={b._id}
-                                                                                                onClick={() => handleGoToBrand(c.slug, s.slug, b.slug)}
-                                                                                            // style={{borderTop: "1px solid green"}}
-                                                                                            >
-                                                                                                {b.name}
-                                                                                            </Menu.Item>
-                                                                                            : null
-                                                                                    }
-                                                                                </>
-                                                                            )
-                                                                        })}
-                                                                    </SubMenu>
-                                                                    : null
+                    <Menu onClick={handleClick} mode="horizontal" className={classes.menuClass}>
+                        <SubMenu key="SubMenu" title="Каталог" onTitleClick={handleGoToCatalog}>
+                            {/* add category to menu */}
+                            {categories.map((c) => {
+                                return (
+                                    <>
+                                        {c.active ? (
+                                            <SubMenu
+                                                key={c._id}
+                                                title={c.name}
+                                                style={{ width: "auto" }}
+                                                onTitleClick={() => handleGoToCategory(c)}
+                                            >
+                                                {/* add sub-category to menu */}
+                                                {
+                                                    subs.map(s => {
+                                                        return (
+                                                            <>
+                                                                {
+                                                                    s.active && c._id === s.parent ?
+                                                                        <SubMenu
+                                                                            key={s._id}
+                                                                            title={s.name}
+                                                                            style={{ width: "auto" }}
+                                                                            onTitleClick={() => handleGoToSub(c.slug, s.slug)}
+                                                                        >
+                                                                            {brands.map(b => {
+                                                                                return (
+                                                                                    <>
+                                                                                        {
+                                                                                            b.active && s._id === b.parent
+                                                                                                ?
+                                                                                                <Menu.Item
+                                                                                                    key={b._id}
+                                                                                                    onClick={() => handleGoToBrand(c.slug, s.slug, b.slug)}
+                                                                                                // style={{borderTop: "1px solid green"}}
+                                                                                                >
+                                                                                                    {b.name}
+                                                                                                </Menu.Item>
+                                                                                                : null
+                                                                                        }
+                                                                                    </>
+                                                                                )
+                                                                            })}
+                                                                        </SubMenu>
+                                                                        : null
 
-                                                            }
-                                                        </>
-                                                    )
-                                                })
-                                            }
-                                        </SubMenu>
-                                    ) : null}
-                                </>
-                            );
-                        })}
-                    </SubMenu>
-                    <Menu.Item>
-                    Контакты
+                                                                }
+                                                            </>
+                                                        )
+                                                    })
+                                                }
+                                            </SubMenu>
+                                        ) : null}
+                                    </>
+                                );
+                            })}
+                        </SubMenu>
+                        <Menu.Item>
+                            Контакты
                 </Menu.Item>
-                </Menu>
+                    </Menu>
                 </div>
             </div>
         </div>

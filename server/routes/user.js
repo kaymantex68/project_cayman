@@ -1,9 +1,31 @@
-const express= require('express')
+const express = require("express");
 
-const router=express.Router()
+const router = express.Router();
 
-router.get('/test2',(req,res)=>{
-    res.json({message:'user'})
-})
+// import moddlewares
+const { authCheck, adminCheck } = require("../middlewares/auth");
 
-module.exports= router
+// import controllers
+const {
+    //create,
+    list,
+    //read,
+    //update,
+    //remove,
+} = require("../controllers/user");
+
+// router.post("/work",
+//     authCheck, adminCheck,
+//     create)
+router.post("/users",
+    // authCheck, adminCheck,
+    list);
+// router.get("/work/:slug", read)
+// router.put("/work/:_id",
+//     authCheck, adminCheck,
+//     update)
+// router.delete("/work/:_id",
+//     authCheck, adminCheck,
+//     remove)
+
+module.exports = router;

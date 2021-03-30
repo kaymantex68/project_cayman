@@ -18,7 +18,7 @@ exports.list = async(req, res)=>{
 }
 
 exports.read=async(req, res)=>{
-    const work= await Work.findOne({_id: req.params._id}).exec()
+    const work= await Work.findOne({slug: req.params.slug}).exec()
     res.json(work)
 }
 
