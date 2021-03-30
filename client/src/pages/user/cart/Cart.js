@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import UserNavigation from "../../../components/nav/UserNavigation";
 import { readCart } from "../../../functions/cart";
+import { getWorks } from '../../../functions/work'
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../../components/form/LoadingIcon";
 import { addToCart } from "../../../functions/cart";
 import { removeSlide } from "../../../functions/slider";
 import { CloseCircleOutlined } from "@ant-design/icons";
-import {toast} from 'react-toastify' 
+import { toast } from 'react-toastify'
 // import './Cart.css'
 const Cart = () => {
   const [cart, setCart] = useState([]);
+  const [works, setWorks] = useState([])
+  const [workTable, setWorkTable] = useState({})
+  // const [singlWorkTable, setSingleWorkTable] = useState({
+  //   name: null,
+  //   coast: null,
+  //   count: null,
+  // })
+
   const [loading, setLoading] = useState(false);
   const [sum, setSum] = useState(0);
   const { user } = useSelector((state) => ({ ...state }));
@@ -25,8 +34,11 @@ const Cart = () => {
     readCart(user.token).then((res) => {
       setCart(res.data.cart);
       setSum(res.data.cart.reduce((a, p) => a + p.count * p.coast, 0));
-      setLoading(false);
-    }).catch(err=>{
+      getWorks().then(res => {
+        setWorks(res.data)
+        setLoading(false);
+      })
+    }).catch(err => {
       setLoading(false);
       if (err.response.status === 401) toast.error(err.response.data);
       window.location.reload()
@@ -87,13 +99,57 @@ const Cart = () => {
     await addToCart([...change], user.token).then((res) => {
       // console.log(res.data);
     })
-    .catch(err=>{
-      console.log('err in cart:', err)
-      if (err.response.status === 400) toast.error(err.response.data);
-    });
+      .catch(err => {
+        console.log('err in cart:', err)
+        if (err.response.status === 400) toast.error(err.response.data);
+      });
     setSum(change.reduce((a, p) => a + p.count * p.coast, 0));
     // setLoading(false);
   };
+
+  console.log(workTable)
+  const handleAddWorkRow = () => {
+    workTable[Date.now()] = {}
+    setWorkTable({ ...workTable })
+  }
+
+  // add work
+  const handleAddWork = (e, key) => {
+
+    // console.log('work', e.target.value)
+    let result = works.find(w => {
+      return e.target.value === w._id
+    })
+
+    const temp = {}
+    temp.name = result.name
+    temp.coast = result.coast
+    temp.count = 1
+    setWorkTable({ ...workTable, [key]: temp })
+  }
+  // add count
+  const handleChangeCountWork = (e, key) => {
+    let count = e.target.value
+    if (count < 1) count = 1
+    workTable[key].count = count
+
+
+    setWorkTable({ ...workTable })
+  }
+  console.log(works)
+
+  const inputWork = (key) => {
+    return (
+      <div className="form-group" >
+        <select style={{fontSize:"0.9rem" }} name="category" className="form-control" onChange={(e) => handleAddWork(e, key)}>
+          <option  key="1" value="all">Выберите вид работ</option>
+          {works.length > 0 && works.map(w => {
+            return <option key={w._id} value={w._id}>{w.name}</option>
+          })}
+        </select>
+      </div>
+    )
+  }
 
   const ReturnCart = () => {
     return (
@@ -190,6 +246,45 @@ const Cart = () => {
               })}
             </tbody>
           </table>
+        </div>
+        <hr />
+        <div className="container">
+          <table className="table table-bordered table-sm">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col">№</th>
+                <th scope="col">Вид работ</th>
+                <th scope="col">Кол-во</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Удалить</th>
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              {Object.keys(workTable).map((key, index) => {
+                return (
+                  <tr style={{fontSize:"0.9rem"}}>
+                    <td>{index + 1}</td>
+                    <td >{inputWork(key)}</td>
+                    <td> <input
+                      type="number"
+                      className="form-control"
+                      style={{ maxWidth: "100px", fontSize:"0.9rem" }}
+                      onChange={(e) => handleChangeCountWork(e, key)}
+                      value={workTable[key].count}
+                    /></td>
+                    <td style={{fontSize:"0.9rem" }} >{workTable[key].coast}</td>
+                    <td style={{fontSize:"0.9rem" }}>{(workTable[key].coast && workTable[key].count) && workTable[key].coast * workTable[key].count}</td>
+                    <td> <CloseCircleOutlined
+                      className="text-danger"
+                    /></td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+          <hr />
+          <div className="btn btn-primary" onClick={handleAddWorkRow}>Добавить</div>
         </div>
       </>
     );

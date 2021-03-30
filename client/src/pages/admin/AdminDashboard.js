@@ -6,6 +6,9 @@ import {getUsers} from '../../functions/user'
 import AdminNavigation from '../../components/nav/AdminNavigation'
 import {useSelector} from 'react-redux'
 import Loading from '../../components/form/LoadingIcon'
+import UserCard from '../../components/userCard/UserCard'
+import classes from './AdminDashboard.module.css'
+
 
 const AdminDashboard = () => {
 const[users, setUsers]=useState([])
@@ -28,13 +31,10 @@ useState(()=>{
 
 
 const ReturnPanel=()=>(
-    <div>
+    <div className={classes.container}>
         {users.map(u=>{
             return (
-            // <div className={classes.UserCardContainer}>
-                <p>{u.email}</p>
-            // </div>
-            
+                <UserCard user={u}/>
             )
         })}
         </div>
@@ -42,7 +42,7 @@ const ReturnPanel=()=>(
 
 
 return (
-    <AdminNavigation name="АдминПанель" children={loading ? <Loading /> : ReturnPanel()} />
+    <AdminNavigation name="Dashboard" children={loading ? <Loading /> : ReturnPanel()} />
 )
 }
 

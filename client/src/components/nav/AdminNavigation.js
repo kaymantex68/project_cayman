@@ -52,7 +52,7 @@ const AdminNavigation = (props) => {
                 style={{ overflow:"hidden" }}
             >
                 <div className=" p-3"  >
-                    <img style={{ width: "210px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.png`} />
+                    <Link to="/"><img style={{ width: "210px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.png`} /></Link>
                 </div>
 
                 <Menu theme="dark" style={{ color: 'white' }} defaultSelectedKeys={["1"]} mode="inline" >
