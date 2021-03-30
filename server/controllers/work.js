@@ -1,4 +1,5 @@
 const Work = require('../models/work')
+const User = require('../models/user')
 const slugify = require('slugify')
 
 exports.create = async (req, res) => {
@@ -45,3 +46,39 @@ exports.remove = async (req, res) => {
         res.status(400).send('Ошибка удаления work.')
     }
 }
+
+
+exports.add = async (req, res) => {
+    try {
+    //   if (req.user.email) {
+        const { email } = req.user
+  
+        const { work } = req.body;
+        console.log('we here-----')
+        console.group('work', work)
+        let result = await User.findOneAndUpdate(
+          { email },
+          {
+            "$set": { "work": work }
+          },
+          { new: true }
+        );
+  
+        console.log(result)
+        res.json(result);
+    //   }
+    //   else (
+    //     res.status(400).json({ message: "Время токена истекло, перезагрузите страницу" })
+    //   )
+  
+    } catch (err) {
+      res.status(400).json({ message: "Время токена истекло, перезагрузите страницу" })
+      console.log('err-->', err)
+    }
+  };
+
+  exports.listWorks = async (req, res) => {
+    const { email } = req.user
+    const result = await User.findOne({ email }).exec()
+    res.json({ work: result.work })
+  }

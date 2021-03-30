@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema(
             type: Array,
             default: []
         },
+        work:{
+            type: Object,
+            default:{},
+        },
         address: String
     },
     {

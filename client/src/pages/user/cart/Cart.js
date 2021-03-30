@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserNavigation from "../../../components/nav/UserNavigation";
 import { readCart } from "../../../functions/cart";
-import { getWorks } from '../../../functions/work'
+import { getWorks, addToWork, readWorks } from '../../../functions/work'
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../../components/form/LoadingIcon";
 import { addToCart } from "../../../functions/cart";
@@ -36,6 +36,9 @@ const Cart = () => {
       setSum(res.data.cart.reduce((a, p) => a + p.count * p.coast, 0));
       getWorks().then(res => {
         setWorks(res.data)
+        readWorks(user.token).then(res=>{
+          setWorkTable(res.data.work)
+        })
         setLoading(false);
       })
     }).catch(err => {
@@ -107,7 +110,7 @@ const Cart = () => {
     // setLoading(false);
   };
 
-  console.log(workTable)
+  // console.log(workTable)
   const handleAddWorkRow = () => {
     workTable[Date.now()] = {}
     setWorkTable({ ...workTable })
@@ -115,41 +118,64 @@ const Cart = () => {
 
   // add work
   const handleAddWork = (e, key) => {
-
     // console.log('work', e.target.value)
     let result = works.find(w => {
       return e.target.value === w._id
     })
-
     const temp = {}
     temp.name = result.name
     temp.coast = result.coast
     temp.count = 1
+    dispatch({
+      type: "ADD_TO_WORK",
+      payload: { ...workTable, [key]: temp },
+    });
     setWorkTable({ ...workTable, [key]: temp })
+    addToWork({ ...workTable, [key]: temp }, user.token).then(res=>{
+      console.log(res.data)
+    })
+
   }
   // add count
   const handleChangeCountWork = (e, key) => {
     let count = e.target.value
     if (count < 1) count = 1
     workTable[key].count = count
-
-
+    dispatch({
+      type: "ADD_TO_WORK",
+      payload: { ...workTable},
+    });
     setWorkTable({ ...workTable })
+    addToWork({...workTable}, user.token).then(res=>{
+      console.log(res.data)
+    })
   }
-  console.log(works)
+  // console.log(works)
 
-  const inputWork = (key) => {
+  const inputWork = (key, name) => {
     return (
       <div className="form-group" >
-        <select style={{fontSize:"0.9rem" }} name="category" className="form-control" onChange={(e) => handleAddWork(e, key)}>
-          <option  key="1" value="all">Выберите вид работ</option>
+        <select style={{ fontSize: "0.9rem" }} name="category"  className="form-control" onChange={(e) => handleAddWork(e, key)}>
+          <option key="1" value="all">Выберите вид работ</option>
           {works.length > 0 && works.map(w => {
-            return <option key={w._id} value={w._id}>{w.name}</option>
+            return <option key={w._id} selected={w.name === name } value={w._id}>{w.name}</option>
           })}
         </select>
       </div>
     )
   }
+
+  console.log(workTable)
+  const handleDeleteWork=(e, key)=>{
+    console.log(key)
+    let change = {...workTable}
+    delete change[key];
+    setWorkTable(change) 
+    addToWork(change, user.token).then(res=>{
+      console.log(res.data)
+    })
+    }
+  
 
   const ReturnCart = () => {
     return (
@@ -196,7 +222,7 @@ const Cart = () => {
                         src={pathImage}
                       />
                     </td>
-                    <th>
+                    <th align="center">
                       <div>{p.name}</div>
                     </th>
                     <td>{p.brand}</td>
@@ -260,24 +286,35 @@ const Cart = () => {
                 <th scope="col">Удалить</th>
               </tr>
             </thead>
-            <tbody className="text-center">
+            <tbody className=" text-center">
               {Object.keys(workTable).map((key, index) => {
                 return (
-                  <tr style={{fontSize:"0.9rem"}}>
-                    <td>{index + 1}</td>
-                    <td >{inputWork(key)}</td>
-                    <td> <input
-                      type="number"
-                      className="form-control"
-                      style={{ maxWidth: "100px", fontSize:"0.9rem" }}
-                      onChange={(e) => handleChangeCountWork(e, key)}
-                      value={workTable[key].count}
-                    /></td>
-                    <td style={{fontSize:"0.9rem" }} >{workTable[key].coast}</td>
-                    <td style={{fontSize:"0.9rem" }}>{(workTable[key].coast && workTable[key].count) && workTable[key].coast * workTable[key].count}</td>
-                    <td> <CloseCircleOutlined
+                  <tr style={{ fontSize: "0.9rem" }} >
+                    <td >{index + 1}</td>
+                    <td>{inputWork(key,workTable[key].name)}</td>
+                    <td >
+                      <input
+                        type="number"
+                        className="form-control "
+
+                        size="sm"
+                        style={{ maxWidth: "100px", fontSize: "0.9rem" }}
+                        onChange={(e) => handleChangeCountWork(e, key)}
+                        value={workTable[key].count}
+                      />
+                    </td>
+                    <td style={{ fontSize: "0.9rem" }} >
+                      {workTable[key].coast ? `${workTable[key].coast} р.` : null}
+                    </td>
+                    <td style={{ fontSize: "0.9rem" }}>
+                      {(workTable[key].coast && workTable[key].count) ? `${workTable[key].coast * workTable[key].count} p.` : null}
+                    </td>
+                    <td> 
+                      <CloseCircleOutlined
                       className="text-danger"
-                    /></td>
+                      onClick={(e)=>handleDeleteWork(e,key)}
+                    />
+                    </td>
                   </tr>
                 )
               })}

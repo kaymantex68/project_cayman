@@ -38,3 +38,24 @@ export const removeWork = async (_id, authtoken) => {
             }
         })
 }
+
+export const addToWork= async (work, authtoken)=>{
+    // console.log('function cart', cart)
+    return axios.post(`${process.env.REACT_APP_API}/addWork`,
+    {work},
+    {
+        headers: {
+            authtoken,
+        }
+    })
+}
+
+export const readWorks = async (authtoken)=>{
+    return axios.post(`${process.env.REACT_APP_API}/workItems`,
+    {},
+    {
+        headers: {
+            authtoken,
+        }
+    })
+}
