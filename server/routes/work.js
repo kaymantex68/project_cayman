@@ -21,7 +21,7 @@ router.post("/work",
     authCheck, adminCheck,
     create)
 router.post("/addWork",
-    authCheck, adminCheck,
+    authCheck, 
     add)
 router.get("/works", list)
 router.get("/work/:slug", read)
