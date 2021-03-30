@@ -6,6 +6,7 @@ import Loading from "../../../components/form/LoadingIcon";
 import { addToCart } from "../../../functions/cart";
 import { removeSlide } from "../../../functions/slider";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import {toast} from 'react-toastify' 
 // import './Cart.css'
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -81,6 +82,10 @@ const Cart = () => {
     setCart([...change]);
     await addToCart([...change], user.token).then((res) => {
       // console.log(res.data);
+    })
+    .catch(err=>{
+      console.log('err in cart:', err)
+      if (err.response.status === 400) toast.error(err.response.data);
     });
     setSum(change.reduce((a, p) => a + p.count * p.coast, 0));
     // setLoading(false);

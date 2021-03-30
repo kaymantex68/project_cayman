@@ -24,6 +24,7 @@ exports.add = async (req, res) => {
     )
 
   } catch (err) {
+    res.status(400).json({ message: "Время токена истекло, перезагрузите страницу" })
     console.log('err-->', err)
   }
 };

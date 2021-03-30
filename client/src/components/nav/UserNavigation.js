@@ -10,6 +10,7 @@ import {
     SolutionOutlined,
     VideoCameraOutlined,
     VideoCameraAddOutlined,
+    ShoppingCartOutlined,
 
 } from "@ant-design/icons";
 import { Link } from 'react-router-dom'
@@ -36,24 +37,24 @@ const AdminNavigation = (props) => {
                 <div className="logo" style={{ Width: "300px" }} />
 
                 <Menu theme="dark" style={{ color: 'white' }} defaultSelectedKeys={["1"]} mode="inline" >
-                    <Menu.Item key="hist" style={{ color: 'white' }} icon={<HomeOutlined />}>
+                    {/* <Menu.Item key="hist" style={{ color: 'white' }} icon={<HomeOutlined />}>
                         <Link to="/user/dashboard" style={{ color: 'white' }}>Личный кабинет</Link>
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <SubMenu key="sub1" icon={<SolutionOutlined />} title="Пользователь">
-                        <Menu.Item key="1">
+                        {/* <Menu.Item key="1">
                             <Link to="/userInformation">Личный профиль</Link>
-                        </Menu.Item>
+                        </Menu.Item> */}
                         <Menu.Item key="2">
                             <Link to="/user/password">Пароль</Link>
                         </Menu.Item>
                     </SubMenu>
-                    <SubMenu key="card" icon={<SolutionOutlined />} title="Корзина">
+                    <SubMenu key="card" icon={<ShoppingCartOutlined />} title="Корзина">
                         <Menu.Item key="1">
                             <Link to="/user/cart">Корзина</Link>
                         </Menu.Item>
-                        <Menu.Item key="2">
+                        {/* <Menu.Item key="2">
                             <Link to="/user/specification">Спецификация</Link>
-                        </Menu.Item>
+                        </Menu.Item> */}
                     </SubMenu>
                 </Menu>
 
