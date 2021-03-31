@@ -17,6 +17,9 @@ import {
   DownSquareOutlined,
   StarOutlined,
   StrikethroughOutlined,
+  SmallDashOutlined,
+  FilterOutlined,
+  SortAscendingOutlined,
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -168,12 +171,39 @@ const Catalog = ({ match, history }) => {
       <div className={classes.catalogContainer}>
         <div className={classes.containerFilter}>
           <Menu className={classes.menu} mode="inline" defaultOpenKeys={["1", "2", "3"]}>
+          <SubMenu
+              key="filter"
+              title={
+                <span style={{ fontSize: "1rem", fontWeight:"bold" }}>
+                  <FilterOutlined /> Фильтр
+                </span>
+              }
+            >
+          <SubMenu
+              key="1"
+              title={
+                <span style={{ fontSize: "0.8rem", fontWeight:"bold" }}>
+                  <SortAscendingOutlined /> Cортировать по:
+                </span>
+              }
+            >
+
+              <div>
+                <select className="ml-4 mr-4 form-control" style={{width:"80%", fontSize:"0.9rem"}}>
+                  <option style={{fontSize:"0.8rem"}}></option>
+                  <option style={{fontSize:"0.8rem"}}>по возрастанию цены</option>
+                  <option style={{fontSize:"0.8rem"}}>по убыванию цены</option>
+                  <option style={{fontSize:"0.8rem"}}>по алфавиту A-Z</option>
+                  <option style={{fontSize:"0.8rem"}}>по алфавиту Z-A</option>
+                </select>
+              </div>
+            </SubMenu>
             {/* price */}
 
             <SubMenu
-              key="1"
+              key="2"
               title={
-                <span style={{ fontSize: "0.8rem" }}>
+                <span style={{ fontSize: "0.8rem", fontWeight:"bold"  }}>
                   <DollarOutlined /> Цена
                 </span>
               }
@@ -191,53 +221,87 @@ const Catalog = ({ match, history }) => {
             </SubMenu>
             {/* inStock */}
             <SubMenu
-              key="2"
+              key="3"
               title={
-                <span style={{ fontSize: "0.8rem" }}>
+                <span style={{ fontSize: "0.8rem", fontWeight:"bold"  }}>
                   <StrikethroughOutlined /> Статус
                 </span>
               }
             >
-              <label className="ml-5 mr-4" style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
-              <input
-                className="ml-4 mr-4"
-                name="3"
-                type="checkbox"
-              />
-              В наличии 
+              <label className="ml-5 mr-4" style={{ fontSize: "0.8rem", display: "flex", alignItems: "center" }}>
+                <input
+                  className="ml-4 mr-4"
+                  name="3"
+                  type="checkbox"
+                />
+              В наличии
               </label>
-              <label className="ml-5 mr-4" style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
-                
-              <input
-                className="ml-4 mr-4"
-                name="3"
-                type="checkbox"
-              />
+              <label className="ml-5 mr-4" style={{ fontSize: "0.8rem", display: "flex", alignItems: "center" }}>
+
+                <input
+                  className="ml-4 mr-4"
+                  name="3"
+                  type="checkbox"
+                />
               Акция
               </label>
-              <label className="ml-5 mr-4" style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
-                 
-              <input
-                className="ml-4 mr-4"
-                name="3"
-                type="checkbox"
-              />
+              <label className="ml-5 mr-4" style={{ fontSize: "0.8rem", display: "flex", alignItems: "center" }}>
+                <input
+                  className="ml-4 mr-4"
+                  name="3"
+                  type="checkbox"
+                />
               Распродажа
+              </label>
+              <label className="ml-5 mr-4" style={{ fontSize: "0.8rem", display: "flex", alignItems: "center" }}>
+
+                <input
+                  className="ml-4 mr-4"
+                  name="3"
+                  type="checkbox"
+                />
+              Изменение цены
               </label>
             </SubMenu>
 
-            {/* stars */}
+            {/* specification */}
             <SubMenu
-              key="3"
+              key="4"
               title={
-                <span style={{ fontSize: "0.8rem" }}>
-                  <StarOutlined /> Рейтинг
+                <span style={{ fontSize: "0.8rem" , fontWeight:"bold" }}>
+                  <SmallDashOutlined /> Характеристики
                 </span>
               }
             >
-              {/* {showStars()} */}
+              <label className="ml-5 mr-4" style={{ fontSize: "0.8rem", display: "flex", alignItems: "center" }}>
+                <input
+                  className="ml-4 mr-4"
+                  name="wifi"
+                  type="checkbox"
+                />
+              Wi-Fi
+              </label>
+              <label className="ml-5 mr-4" style={{ fontSize: "0.8rem", display: "flex", alignItems: "center" }}>
+                <input
+                  className="ml-4 mr-4"
+                  name="3"
+                  type="checkbox"
+                />
+              Ip
+              </label>
+              <label className="ml-5 mr-4" style={{ fontSize: "0.8rem", display: "flex", alignItems: "center" }}>
+                <input
+                  className="ml-4 mr-4"
+                  name="3"
+                  type="checkbox"
+                />
+              AHD-CVI-TVI
+              </label>
+            </SubMenu>
             </SubMenu>
           </Menu>
+          <hr/>
+          <button className="btn btn-sm btn-dark float-right">показать</button>
         </div>
 
         <div className={classes.containerProducts}>

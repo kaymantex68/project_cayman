@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import UserNavigation from "../../../components/nav/UserNavigation";
 import { readCart } from "../../../functions/cart";
 import { getWorks, addToWork, readWorks } from '../../../functions/work'
@@ -21,14 +21,21 @@ const Cart = () => {
 
   const [loading, setLoading] = useState(false);
   const [sum, setSum] = useState(0);
+  const [sumWork, setSumWork] = useState(0)
+  const [coast, setCoast]=useState(0)
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   const resetSum = () => {
     console.log('reset sum')
     setSum(cart.reduce((a, p) => a + p.count * p.coast, 0));
+    setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
   };
 
+  useMemo(()=>{
+    setCoast(sum+sumWork)
+  },[sum, sumWork])
+  // console.log('work', sumWork)
   useState(() => {
     setLoading(true);
     readCart(user.token).then((res) => {
@@ -36,8 +43,9 @@ const Cart = () => {
       setSum(res.data.cart.reduce((a, p) => a + p.count * p.coast, 0));
       getWorks().then(res => {
         setWorks(res.data)
-        readWorks(user.token).then(res=>{
+        readWorks(user.token).then(res => {
           setWorkTable(res.data.work)
+          setSumWork(Object.keys(res.data.work).reduce((a, key) =>  a + (res.data.work[key].coast * res.data.work[key].count), 0));
         })
         setLoading(false);
       })
@@ -130,11 +138,13 @@ const Cart = () => {
       type: "ADD_TO_WORK",
       payload: { ...workTable, [key]: temp },
     });
+    let newWork={...workTable,[key]: temp}
+    setSumWork(Object.keys(newWork).reduce((a, key) => a + (newWork[key].coast * newWork[key].count), 0));
     setWorkTable({ ...workTable, [key]: temp })
-    addToWork({ ...workTable, [key]: temp }, user.token).then(res=>{
+    addToWork({ ...workTable, [key]: temp }, user.token).then(res => {
       console.log(res.data)
     })
-
+    
   }
   // add count
   const handleChangeCountWork = (e, key) => {
@@ -143,39 +153,41 @@ const Cart = () => {
     workTable[key].count = count
     dispatch({
       type: "ADD_TO_WORK",
-      payload: { ...workTable},
+      payload: { ...workTable },
     });
     setWorkTable({ ...workTable })
-    addToWork({...workTable}, user.token).then(res=>{
+    addToWork({ ...workTable }, user.token).then(res => {
       console.log(res.data)
     })
+    setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
   }
   // console.log(works)
 
   const inputWork = (key, name) => {
     return (
       <div className="form-group" >
-        <select style={{ fontSize: "0.9rem" }} name="category"  className="form-control" onChange={(e) => handleAddWork(e, key)}>
+        <select style={{ fontSize: "0.9rem" }} name="category" className="form-control" onChange={(e) => handleAddWork(e, key)}>
           <option key="1" value="all">Выберите вид работ</option>
           {works.length > 0 && works.map(w => {
-            return <option key={w._id} selected={w.name === name } value={w._id}>{w.name}</option>
+            return <option key={w._id} selected={w.name === name} value={w._id}>{w.name}</option>
           })}
         </select>
       </div>
     )
   }
 
-  console.log(workTable)
-  const handleDeleteWork=(e, key)=>{
+  
+  const handleDeleteWork = (e, key) => {
     console.log(key)
-    let change = {...workTable}
+    let change = { ...workTable }
     delete change[key];
-    setWorkTable(change) 
-    addToWork(change, user.token).then(res=>{
+    setWorkTable(change)
+    addToWork(change, user.token).then(res => {
       console.log(res.data)
     })
-    }
-  
+    setSumWork(Object.keys(change).reduce((a, key) => a + (change[key].coast * change[key].count), 0));
+  }
+
 
   const ReturnCart = () => {
     return (
@@ -184,26 +196,27 @@ const Cart = () => {
           <div onClick={handleClear} className="btn btn-outline-danger">
             очистить корзину
           </div>
-          
+          <div className="float-right btn text-primary">{`Итого: ${coast} руб.`}</div>
         </div>
         <hr />
-        <div className="float-right btn text-primary">{`Итого: ${sum} руб.`}</div>
+        
         <div className="container">
+        <div className="float-right btn text-primary">{`Итого (материалы): ${sum} руб.`}</div>
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>№</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Изображение</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Наименование</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Бренд</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Описание</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Кол-во</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Цена</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Сумма</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Удалить</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>№</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Изображение</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Наименование</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Бренд</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Описание</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Кол-во</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Цена</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Сумма</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Удалить</th>
               </tr>
             </thead>
-            <tbody  className="text-center">
+            <tbody className="text-center">
               {cart.map((p, index) => {
                 let pathImage;
                 if (p.images.length > 0)
@@ -211,8 +224,8 @@ const Cart = () => {
                 else pathImage = "/images/product/default.png";
                 return (
                   <tr key={p._id} >
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{index + 1}</td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{index + 1}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
                       <img
                         style={{
                           maxWidth: "90px",
@@ -223,37 +236,37 @@ const Cart = () => {
                         src={pathImage}
                       />
                     </td>
-                    <th align="center" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
+                    <th align="center" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
                       <div>{p.name}</div>
                     </th>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{p.brand}</td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.brand}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
                       <div>
-                      <p
-                        style={{
-                          margin: "0px",
-                          padding: "0px",
-                          fontSize: "0.7rem",
-                          fontWeight: "bold",
-                        }}
-                      >{`${p.type}`}</p>
-                      <p
-                        style={{
-                          margin: "0px",
-                          padding: "0px",
-                          fontSize: "0.7rem",
-                        }}
-                      >{`${p.params[1][0]} ${p.params[1][1]}`}</p>
-                      <p
-                        style={{
-                          margin: "0px",
-                          padding: "0px",
-                          fontSize: "0.7rem",
-                        }}
-                      >{`${p.params[2][0]} ${p.params[2][1]}`}</p>
+                        <p
+                          style={{
+                            margin: "0px",
+                            padding: "0px",
+                            fontSize: "0.7rem",
+                            fontWeight: "bold",
+                          }}
+                        >{`${p.type}`}</p>
+                        <p
+                          style={{
+                            margin: "0px",
+                            padding: "0px",
+                            fontSize: "0.7rem",
+                          }}
+                        >{`${p.params[1][0]} ${p.params[1][1]}`}</p>
+                        <p
+                          style={{
+                            margin: "0px",
+                            padding: "0px",
+                            fontSize: "0.7rem",
+                          }}
+                        >{`${p.params[2][0]} ${p.params[2][1]}`}</p>
                       </div>
                     </td>
-                    <td className="text-center" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
+                    <td className="text-center" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
                       <input
                         type="number"
                         className="form-control"
@@ -262,9 +275,9 @@ const Cart = () => {
                         value={p.count}
                       />
                     </td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{p.coast} p.</td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{p.coast * p.count} р.</td>
-                    <td style={{verticalAlign:"middle" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast} p.</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast * p.count} р.</td>
+                    <td style={{ verticalAlign: "middle" }}>
                       <CloseCircleOutlined
                         className="text-danger"
                         onClick={(e) => handleDelete(e, p)}
@@ -277,25 +290,29 @@ const Cart = () => {
           </table>
         </div>
         <hr />
+
+        {/* table work */}
+
         <div className="container">
+        <div className="float-right btn text-primary">{`Итого (работы): ${sumWork} руб.`}</div>
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>№</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Вид работ</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Кол-во</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Цена</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Сумма</th>
-                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Удалить</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>№</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Вид работ</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Кол-во</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Цена</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Сумма</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Удалить</th>
               </tr>
             </thead>
             <tbody className=" text-center">
               {Object.keys(workTable).map((key, index) => {
                 return (
                   <tr style={{ fontSize: "0.9rem" }} >
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{index + 1}</td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{inputWork(key,workTable[key].name)}</td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{index + 1}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{inputWork(key, workTable[key].name)}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
                       <input
                         type="number"
                         className="form-control "
@@ -306,17 +323,17 @@ const Cart = () => {
                         value={workTable[key].count}
                       />
                     </td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }} >
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }} >
                       {workTable[key].coast ? `${workTable[key].coast} р.` : null}
                     </td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
                       {(workTable[key].coast && workTable[key].count) ? `${workTable[key].coast * workTable[key].count} p.` : null}
                     </td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}> 
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
                       <CloseCircleOutlined
-                      className="text-danger"
-                      onClick={(e)=>handleDeleteWork(e,key)}
-                    />
+                        className="text-danger"
+                        onClick={(e) => handleDeleteWork(e, key)}
+                      />
                     </td>
                   </tr>
                 )
