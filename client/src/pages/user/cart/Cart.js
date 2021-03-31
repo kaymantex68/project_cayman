@@ -6,8 +6,9 @@ import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../../components/form/LoadingIcon";
 import { addToCart } from "../../../functions/cart";
 import { removeSlide } from "../../../functions/slider";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, SubnodeOutlined  } from "@ant-design/icons";
 import { toast } from 'react-toastify'
+import classes from './Cart.module.css'
 // import './Cart.css'
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -163,18 +164,7 @@ const Cart = () => {
   }
   // console.log(works)
 
-  const inputWork = (key, name) => {
-    return (
-      <div className="form-group" >
-        <select style={{ fontSize: "0.9rem" }} name="category" className="form-control" onChange={(e) => handleAddWork(e, key)}>
-          <option key="1" value="all">Выберите вид работ</option>
-          {works.length > 0 && works.map(w => {
-            return <option key={w._id} selected={w.name === name} value={w._id}>{w.name}</option>
-          })}
-        </select>
-      </div>
-    )
-  }
+  
 
   
   const handleDeleteWork = (e, key) => {
@@ -188,19 +178,50 @@ const Cart = () => {
     setSumWork(Object.keys(change).reduce((a, key) => a + (change[key].coast * change[key].count), 0));
   }
 
+  const handleClearWork = async () => {
+    setLoading(true);
+    await addToWork({}, user.token).then((res) => {
+      dispatch({
+        type: "ADD_TO_WORK",
+        payload: {},
+      });
+      setWorkTable({});
+    });
+    setSumWork(0);
+    setLoading(false);
+  };
+
+
+  const inputWork = (key, name) => {
+    return (
+      <div  >
+        <select style={{ fontSize: "0.9rem" }} name="category" className="form-control" onChange={(e) => handleAddWork(e, key)}>
+          <option key="1" value="all">Выберите вид работ</option>
+          {works.length > 0 && works.map(w => {
+            return <option key={w._id} selected={w.name === name} value={w._id}>{w.name}</option>
+          })}
+        </select>
+      </div>
+    )
+  }
 
   const ReturnCart = () => {
     return (
       <>
+      <div className="float-right    btn text-primary">{`Итого: ${coast} руб.`}</div>
+      <br/>
         <div className="mt-2 container">
-          <div onClick={handleClear} className="btn btn-outline-danger">
+          
+          
+          
+        </div>
+        
+        <hr />
+        <div className="container">
+        
+        <div onClick={handleClear} className="btn btn-outline-danger float-left">
             очистить корзину
           </div>
-          <div className="float-right btn text-primary">{`Итого: ${coast} руб.`}</div>
-        </div>
-        <hr />
-        
-        <div className="container">
         <div className="float-right btn text-primary">{`Итого (материалы): ${sum} руб.`}</div>
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
@@ -266,11 +287,11 @@ const Cart = () => {
                         >{`${p.params[2][0]} ${p.params[2][1]}`}</p>
                       </div>
                     </td>
-                    <td className="text-center" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+                    <td className="text-center" style={{ fontSize: "0.9rem", verticalAlign: "middle", maxWidth:"80px" }}>
                       <input
                         type="number"
-                        className="form-control"
-                        style={{ maxWidth: "100px" }}
+                        className="form-control text-center"
+                        style={{ fontSize:"0.9rem" }}
                         onChange={(e) => handleChangeCount(e, p)}
                         value={p.count}
                       />
@@ -289,11 +310,14 @@ const Cart = () => {
             </tbody>
           </table>
         </div>
-        <hr />
-
+        {/* <hr /> */}
+              <br/>
         {/* table work */}
 
         <div className="container">
+        <div onClick={handleClearWork} className="btn btn-outline-danger float-left">
+            очистить работы
+          </div>
         <div className="float-right btn text-primary">{`Итого (работы): ${sumWork} руб.`}</div>
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
@@ -312,16 +336,18 @@ const Cart = () => {
                   <tr style={{ fontSize: "0.9rem" }} >
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{index + 1}</td>
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{inputWork(key, workTable[key].name)}</td>
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle", maxWidth: "80px" }}>
+                      
                       <input
                         type="number"
-                        className="form-control "
+                        className="form-control text-center"
 
                         size="sm"
-                        style={{ maxWidth: "100px", fontSize: "0.9rem" }}
+                        style={{ fontSize: "0.9rem"  }}
                         onChange={(e) => handleChangeCountWork(e, key)}
                         value={workTable[key].count}
                       />
+                      
                     </td>
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }} >
                       {workTable[key].coast ? `${workTable[key].coast} р.` : null}
@@ -340,8 +366,9 @@ const Cart = () => {
               })}
             </tbody>
           </table>
-          <hr />
-          <div className="btn btn-primary" onClick={handleAddWorkRow}>Добавить</div>
+          {/* <hr /> */}
+          <div className={classes.btnAdd} style={{display:"flex", alignItems:"center"}} onClick={handleAddWorkRow}><span>+ добавить работу</span></div>
+          <br/>
         </div>
       </>
     );

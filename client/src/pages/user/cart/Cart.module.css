@@ -1,0 +1,13 @@
+/* table th.text-center, table td.text-center { 
+    display: flex;
+    justify-content: center;
+    text-align: center;
+} */
+
+.btnAdd{
+    padding: 8px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    background-color: rgba(128, 128, 128, 0.315);
+    cursor: pointer;   
+}

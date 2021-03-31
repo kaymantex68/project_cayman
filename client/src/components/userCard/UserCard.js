@@ -14,6 +14,7 @@ const UserCard = ({ user }) => {
             </div>
             <hr />
             <div>
+                <div>Права: {user.role}</div>
                 <Badge
                     count={user.cart.length}
                 >
