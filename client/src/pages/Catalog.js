@@ -11,12 +11,14 @@ import Loading from "../components/form/LoadingIcon";
 import NavMenu from "../components/nav/NavMenu";
 import ProductCard from "../components/card/ProductCard";
 import Footer from "../components/footer/Footer";
-import { Menu, Slider, Checkbox } from "antd";
+import { Menu, Slider, Checkbox, Tooltip } from "antd";
 import {
   DollarOutlined,
   DownSquareOutlined,
   StarOutlined,
+  StrikethroughOutlined,
 } from "@ant-design/icons";
+import { useSelector, useDispatch } from 'react-redux'
 
 import classes from './Catalog.module.css'
 
@@ -25,12 +27,32 @@ const { SubMenu, ItemGroup } = Menu;
 const Catalog = ({ match, history }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // filter 
+  const [ok, setOk] = useState(false)
+  const [price, setPrice] = useState([0, 0])
+
   const { params } = match;
   const { brand, sub, category, filterBrand } = match.params;
 
+  const { filter } = useSelector(state => ({ ...state }))
+  const dispatch = useDispatch()
+
+  console.log('redux filter', filter)
   // console.log('products', products)
   // console.log('match', match)
   // console.log('history', history)
+
+  // useEffect(() => {
+  //   if (filter.priceFilter) {
+  //     let filterProducts = [...products]
+  //     filterProducts = filterProducts.filter(p => {
+  //       return p.coast >= filter.priceFilter[0] && p.coast <= filter.priceFilter[1]
+  //     })
+  //     setProducts(filterProducts)
+  //   }
+  // }, [ok])
+  // console.log('ok', ok)
 
   useEffect(() => {
     setLoading(true);
@@ -127,6 +149,17 @@ const Catalog = ({ match, history }) => {
     }
   }, [brand, sub, category, filterBrand]);
 
+  //----------------------------------------------fiter--------------------------------------------------
+  // handleSlider
+  const handleSlider = (value) => {
+    setPrice(value)
+    dispatch({
+      type: 'SET_FILTER',
+      payload: { ...filter, priceFilter: value }
+    })
+  }
+  //nahdleInStock
+
   return (
     <>
       <div>
@@ -136,6 +169,7 @@ const Catalog = ({ match, history }) => {
         <div className={classes.containerFilter}>
           <Menu className={classes.menu} mode="inline" defaultOpenKeys={["1", "2", "3"]}>
             {/* price */}
+
             <SubMenu
               key="1"
               title={
@@ -144,26 +178,52 @@ const Catalog = ({ match, history }) => {
                 </span>
               }
             >
+
               <div>
                 <Slider
                   className="ml-4 mr-4"
-                  tipFormatter={(v) => `$${v}`}
-                  // range value={price}
-                  // onChange={handleSlider}
-                  max="4999"
+                  tipFormatter={(v) => `${v} р.`}
+                  range value={price}
+                  onChange={handleSlider}
+                  max="21000"
                 />
               </div>
             </SubMenu>
-            {/* categories */}
+            {/* inStock */}
             <SubMenu
               key="2"
               title={
                 <span style={{ fontSize: "0.8rem" }}>
-                  <DownSquareOutlined /> Категория
+                  <StrikethroughOutlined /> Статус
                 </span>
               }
             >
-              {/* {showCategory()} */}
+              <label className="ml-5 mr-4" style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
+              <input
+                className="ml-4 mr-4"
+                name="3"
+                type="checkbox"
+              />
+              В наличии 
+              </label>
+              <label className="ml-5 mr-4" style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
+                
+              <input
+                className="ml-4 mr-4"
+                name="3"
+                type="checkbox"
+              />
+              Акция
+              </label>
+              <label className="ml-5 mr-4" style={{fontSize: "0.8rem", display:"flex", alignItems:"center"}}>
+                 
+              <input
+                className="ml-4 mr-4"
+                name="3"
+                type="checkbox"
+              />
+              Распродажа
+              </label>
             </SubMenu>
 
             {/* stars */}

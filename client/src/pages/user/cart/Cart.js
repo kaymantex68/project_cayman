@@ -184,34 +184,35 @@ const Cart = () => {
           <div onClick={handleClear} className="btn btn-outline-danger">
             очистить корзину
           </div>
-          <div className="float-right btn text-primary">{`Итого: ${sum} руб.`}</div>
+          
         </div>
         <hr />
+        <div className="float-right btn text-primary">{`Итого: ${sum} руб.`}</div>
         <div className="container">
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr>
-                <th scope="col">№</th>
-                <th scope="col">Изображение</th>
-                <th scope="col">Наименование</th>
-                <th scope="col">Бренд</th>
-                <th scope="col">Описание</th>
-                <th scope="col">Кол-во</th>
-                <th scope="col">Цена</th>
-                <th scope="col">Сумма</th>
-                <th scope="col">Удалить</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>№</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Изображение</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Наименование</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Бренд</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Описание</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Кол-во</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Цена</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Сумма</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Удалить</th>
               </tr>
             </thead>
-            <tbody className="text-center">
+            <tbody  className="text-center">
               {cart.map((p, index) => {
                 let pathImage;
                 if (p.images.length > 0)
                   pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${p.images[0]}`;
                 else pathImage = "/images/product/default.png";
                 return (
-                  <tr key={p._id}>
-                    <td>{index + 1}</td>
-                    <td>
+                  <tr key={p._id} >
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{index + 1}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
                       <img
                         style={{
                           maxWidth: "90px",
@@ -222,11 +223,12 @@ const Cart = () => {
                         src={pathImage}
                       />
                     </td>
-                    <th align="center">
+                    <th align="center" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
                       <div>{p.name}</div>
                     </th>
-                    <td>{p.brand}</td>
-                    <td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{p.brand}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
+                      <div>
                       <p
                         style={{
                           margin: "0px",
@@ -249,8 +251,9 @@ const Cart = () => {
                           fontSize: "0.7rem",
                         }}
                       >{`${p.params[2][0]} ${p.params[2][1]}`}</p>
+                      </div>
                     </td>
-                    <td className="text-center">
+                    <td className="text-center" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
                       <input
                         type="number"
                         className="form-control"
@@ -259,9 +262,9 @@ const Cart = () => {
                         value={p.count}
                       />
                     </td>
-                    <td>{p.coast} p.</td>
-                    <td>{p.coast * p.count} р.</td>
-                    <td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{p.coast} p.</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{p.coast * p.count} р.</td>
+                    <td style={{verticalAlign:"middle" }}>
                       <CloseCircleOutlined
                         className="text-danger"
                         onClick={(e) => handleDelete(e, p)}
@@ -278,21 +281,21 @@ const Cart = () => {
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr>
-                <th scope="col">№</th>
-                <th scope="col">Вид работ</th>
-                <th scope="col">Кол-во</th>
-                <th scope="col">Цена</th>
-                <th scope="col">Сумма</th>
-                <th scope="col">Удалить</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>№</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Вид работ</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Кол-во</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Цена</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Сумма</th>
+                <th scope="col" style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>Удалить</th>
               </tr>
             </thead>
             <tbody className=" text-center">
               {Object.keys(workTable).map((key, index) => {
                 return (
                   <tr style={{ fontSize: "0.9rem" }} >
-                    <td >{index + 1}</td>
-                    <td>{inputWork(key,workTable[key].name)}</td>
-                    <td >
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{index + 1}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>{inputWork(key,workTable[key].name)}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
                       <input
                         type="number"
                         className="form-control "
@@ -303,13 +306,13 @@ const Cart = () => {
                         value={workTable[key].count}
                       />
                     </td>
-                    <td style={{ fontSize: "0.9rem" }} >
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }} >
                       {workTable[key].coast ? `${workTable[key].coast} р.` : null}
                     </td>
-                    <td style={{ fontSize: "0.9rem" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}>
                       {(workTable[key].coast && workTable[key].count) ? `${workTable[key].coast * workTable[key].count} p.` : null}
                     </td>
-                    <td> 
+                    <td style={{ fontSize: "0.9rem", verticalAlign:"middle" }}> 
                       <CloseCircleOutlined
                       className="text-danger"
                       onClick={(e)=>handleDeleteWork(e,key)}

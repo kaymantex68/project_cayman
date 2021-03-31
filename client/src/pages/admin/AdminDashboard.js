@@ -34,7 +34,7 @@ const ReturnPanel=()=>(
     <div className={classes.container}>
         {users.map(u=>{
             return (
-                <UserCard user={u}/>
+                <UserCard key={u._id} user={u}/>
             )
         })}
         </div>
