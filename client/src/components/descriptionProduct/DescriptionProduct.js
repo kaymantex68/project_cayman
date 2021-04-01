@@ -101,7 +101,7 @@ const DescriptionProduct = ({ match }) => {
 
                                     return (
                                         <tr>
-                                            <td scope="col" style={{ width: "40%", fontSize: "0.8rem", verticalAlign: "middle" }}>{product.params[key][0]}</td>
+                                            <td scope="col" style={{ width: "40%", fontSize: "0.8rem", verticalAlign: "middle", fontWeight:"bold" }}>{product.params[key][0]}</td>
                                             <td scope="col" style={{ width: "10%", fontSize: "0.8rem", verticalAlign: "middle" }}></td>
                                             <td scope="col" style={{ width: "50%", fontSize: "0.8rem", verticalAlign: "middle" }}>{product.params[key][1]}</td>
                                         </tr>
