@@ -58,7 +58,8 @@ const ProductCard = ({ product }) => {
   else pathImage = "/images/product/default.png";
   return (
     <div className={classes.cardContainer}>
-      <Link to={`/catalog/${product.category}/${product.sub}/${product.brand}/${product.slug}`}>
+      
+      <Link to={`/catalog/${product.category.slug}/${product.sub.slug}/${product.brandSlug}/${product.slug}`}>
         <div>
           <div
             style={{

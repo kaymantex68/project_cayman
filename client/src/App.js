@@ -81,7 +81,7 @@ const BrandUpdate = lazy(() => import('./pages/admin/brand/BrandUpdate'))
 const Optimization = lazy(() => import('./pages/admin/optimization/Optimization'))
 
 const SideDrawer = lazy(()=> import('./components/drawer/SideDrawer'))
-
+const DescriptionProduct = lazy(()=>import('./components/descriptionProduct/DescriptionProduct'))
 //User
 
 const Cart = lazy(()=>import('./pages/user/cart/Cart'))
@@ -188,8 +188,8 @@ const App = () => {
             <Route exact path="/catalog/:category" component={Catalog} />
             <Route exact path="/catalog/:category/:sub" component={Catalog} />
             <Route exact path="/catalog/:category/:sub/:brand" component={Catalog} />  
+            <Route exact path="/catalog/:category/:sub/:brand/:name" component={DescriptionProduct} />  
             
-
           </Switch>
         </div>
         {/* <Footer/> */}

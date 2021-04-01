@@ -41,6 +41,8 @@ exports.list = async (req, res) => {
     try {
         const products = await Product.find({})
             .sort({ brand: 1 })
+            .populate('category')
+            .populate('sub')
             .exec()
         res.json(products)
     } catch (err) {
@@ -71,18 +73,24 @@ exports.productsFilter = async (req, res) => {
         if (categoryId && subId && brandSlug) {
             const products = await Product.find({ category: categoryId, sub: subId, brandSlug: brandSlug, active: true })
                 .sort({ brand: 1 })
+                .populate('category')
+                .populate('sub')
                 .exec()
             return res.json(products)
         }
         if (categoryId && subId) {
             const products = await Product.find({ category: categoryId, sub: subId, active: true })
                 .sort({ brand: 1 })
+                .populate('category')
+                .populate('sub')
                 .exec()
             return res.json(products)
         }
         if (categoryId) {
             const products = await Product.find({ category: categoryId, active: true })
                 .sort({ brand: 1 })
+                .populate('category')
+                .populate('sub')
                 .exec()
             return res.json(products)
         }
@@ -91,6 +99,8 @@ exports.productsFilter = async (req, res) => {
            
             const products = await Product.find({ sale: true, active: true })
                 .sort({ brand: 1 })
+                .populate('category')
+                .populate('sub')
                 .exec()
             return res.json(products)
         }
@@ -99,6 +109,8 @@ exports.productsFilter = async (req, res) => {
           
             const products = await Product.find({ lider: true, active: true })
                 .sort({ brand: 1 })
+                .populate('category')
+                .populate('sub')
                 .exec()
             return res.json(products)
         }
@@ -106,12 +118,16 @@ exports.productsFilter = async (req, res) => {
         if (filterBrand) {
             const products = await Product.find({ brandSlug: filterBrand, active: true })
                 .sort({ name: 1 })
+                .populate('category')
+                .populate('sub')
                 .exec()
             return res.json(products)
         }
 
         const products = await Product.find({ active: true })
             .sort({ brand: 1 })
+            .populate('category')
+            .populate('sub')
             .exec()
         return res.json(products)
     } catch (err) {

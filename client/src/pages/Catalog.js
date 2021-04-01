@@ -33,7 +33,7 @@ const Catalog = ({ match, history }) => {
   const [filterProducts, setFilterProducts] = useState([])
   const [brands, setBrands] = useState([])
   const [loading, setLoading] = useState(false);
-  console.log('filterproducts', filterProducts)
+  // console.log('filterproducts', filterProducts)
   // filter 
   const [ok, setOk] = useState(false)
   const [price, setPrice] = useState([0, 0])
@@ -49,17 +49,17 @@ const Catalog = ({ match, history }) => {
 
   const { filter } = useSelector(state => ({ ...state }))
   const dispatch = useDispatch()
-  console.log('brands', brands)
-  console.log('-----------------------------------------------')
-  console.log('redux price', price)
-  console.log('redux sort', sort)
-  console.log('redux inStock', inStock)
-  console.log('redux promotion', promotion)
-  console.log('redux sale', sale)
-  console.log('redux lider', lider)
-  console.log('redux changerPrice', changePrice)
-  console.log('redux brand', brandFilter)
-  console.log('-----------------------------------------------')
+  // console.log('brands', brands)
+  // console.log('-----------------------------------------------')
+  // console.log('redux price', price)
+  // console.log('redux sort', sort)
+  // console.log('redux inStock', inStock)
+  // console.log('redux promotion', promotion)
+  // console.log('redux sale', sale)
+  // console.log('redux lider', lider)
+  // console.log('redux changerPrice', changePrice)
+  // console.log('redux brand', brandFilter)
+  // console.log('-----------------------------------------------')
   // console.log('products', products)
   // console.log('match', match)
   // console.log('history', history)
@@ -98,7 +98,7 @@ const Catalog = ({ match, history }) => {
                 setProducts(res.data);
                 setFilterProducts(res.data);
                 getBrandPictures().then(res => {
-                  console.log(res.data)
+                  // console.log(res.data)
                   setBrands(res.data)
                   setLoading(false);
                 })
@@ -112,7 +112,7 @@ const Catalog = ({ match, history }) => {
           setLoading(false);
         });
     } else if (sub) {
-      console.log("sub");
+      // console.log("sub");
       let catObject;
       let subArray;
       setProducts([]);
@@ -131,7 +131,7 @@ const Catalog = ({ match, history }) => {
               setProducts(res.data);
               setFilterProducts(res.data);
               getBrandPictures().then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 setBrands(res.data)
                 setLoading(false);
               })
@@ -143,7 +143,7 @@ const Catalog = ({ match, history }) => {
           setLoading(false);
         });
     } else if (category) {
-      console.log("category");
+      // console.log("category");
       setProducts([]);
       getCategory(category)
         .then((res) => {
@@ -151,7 +151,7 @@ const Catalog = ({ match, history }) => {
             setProducts(res.data);
             setFilterProducts(res.data);
             getBrandPictures().then(res => {
-              console.log(res.data)
+              // console.log(res.data)
               setBrands(res.data)
               setLoading(false);
             })
@@ -162,13 +162,13 @@ const Catalog = ({ match, history }) => {
           setLoading(false);
         });
     } else if (filterBrand) {
-      console.log("weHere");
+      // console.log("weHere");
       getProductsFilter(null, null, null, null, filterBrand)
         .then((res) => {
           setProducts(res.data);
           setFilterProducts(res.data);
           getBrandPictures().then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             setBrands(res.data)
             setLoading(false);
           })
@@ -178,13 +178,13 @@ const Catalog = ({ match, history }) => {
           setLoading(false);
         });
     } else if (!brand && !sub && !category && !filterBrand) {
-      console.log("catalog");
+      // console.log("catalog");
       getProductsFilter()
         .then((res) => {
           setProducts(res.data);
           setFilterProducts(res.data);
           getBrandPictures().then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             setBrands(res.data)
             setLoading(false);
           })
@@ -211,7 +211,7 @@ const Catalog = ({ match, history }) => {
     let newProducts = [...products]
 
     if (price[0] != 0 || price[1] != 0) {
-      console.log('we here')
+      // console.log('we here')
       newProducts = newProducts.filter(p => {
         // console.log(p)
         return (p.coast > price[0]) && (p.coast < price[1])
@@ -341,13 +341,9 @@ const Catalog = ({ match, history }) => {
                     <option value="allBrand" style={{ fontSize: "0.8rem" }} className="text-center">выберите Brand</option>
                     {brands.map(b => {
                       return (
-                        <option value={b.slug} selected={b.slug===brandFilter} style={{ fontSize: "0.8rem" }} className="text-center">{b.name}</option>
+                        <option key={b._id} value={b.slug} selected={b.slug===brandFilter} style={{ fontSize: "0.8rem" }} className="text-center">{b.name}</option>
                       )
                     })}
-                    {/* <option value="upCoast" style={{ fontSize: "0.8rem" }}>по возрастанию цены</option>
-                    <option value="downCoats" style={{ fontSize: "0.8rem" }}>по убыванию цены</option>
-                    <option value="upAlfa" style={{ fontSize: "0.8rem" }}>по алфавиту A-Z</option>
-                    <option value="downAlfa" style={{ fontSize: "0.8rem" }}>по алфавиту Z-A</option> */}
                   </select>
                 </div>
               </SubMenu>
@@ -474,7 +470,7 @@ const Catalog = ({ match, history }) => {
               style={{ padding: "10px 0 0 0" }}
             >
               {filterProducts.map((p) => {
-                return <ProductCard product={p} />;
+                return <ProductCard key={p._id} product={p} />;
               })}
             </div>
           )}
