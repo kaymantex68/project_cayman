@@ -9,6 +9,10 @@ import { removeSlide } from "../../../functions/slider";
 import { CloseCircleOutlined, SubnodeOutlined  } from "@ant-design/icons";
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
+import PrintKP from '../../../components/printKP/PrintKP'
+
+import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+
 import classes from './Cart.module.css'
 // import './Cart.css'
 const Cart = () => {
