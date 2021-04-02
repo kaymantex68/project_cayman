@@ -59,7 +59,7 @@ const PrintKP = () => {
           <br />
           <hr />
           <div className="float-right" style={{ fontSize: "1rem", fontWeight: "bold", marginBottom: "10px" }}>Cтоимость оборудования: {cart.reduce((a, b) => (a + b.coast * +b.count), 0)} руб.</div>
-          <table className="table table-bordered table-sm pt-3 " >
+          <table className="table  table-sm pt-3 " >
             <thead >
               <tr className="text-center">
                 <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>№</td>
@@ -138,7 +138,7 @@ const PrintKP = () => {
           </table>
           {/* work */}
           <div className="float-right" style={{ fontSize: "1rem", fontWeight: "bold", marginBottom: "10px" }}>стоимость работ: {Object.keys(works).reduce((a, key) => (a + works[key].coast * +works[key].count), 0)} руб.</div>
-          <table className="table table-bordered table-sm" >
+          <table className="table  table-sm" >
             <thead >
               <tr className="text-center">
                 <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>№</td>
