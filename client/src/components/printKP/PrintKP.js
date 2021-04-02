@@ -62,14 +62,14 @@ const PrintKP = () => {
           <table className="table table-bordered table-sm pt-3 " >
             <thead >
               <tr className="text-center">
-                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>№</td>
-                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Изображение</td>
-                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Наименование</td>
-                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Бренд</td>
-                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Описание</td>
-                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Кол-во</td>
-                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Цена</td>
-                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Сумма</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>№</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black" }}>Изображение</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>Наименование</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>Бренд</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>Описание</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>Кол-во</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>Цена</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>Сумма</td>
               </tr>
             </thead>
             <tbody className="text-center">
@@ -81,9 +81,9 @@ const PrintKP = () => {
                 return (
                   <tr>
                     {/* index */}
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{index + 1}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>{index + 1}</td>
                     {/* image */}
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>
                       <img
                         style={{
                           maxWidth: "90px",
@@ -95,11 +95,11 @@ const PrintKP = () => {
                       />
                     </td>
                     {/* name */}
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{product.name}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>{product.name}</td>
                     {/* brand */}
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{product.brand}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>{product.brand}</td>
                     {/* description */}
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>
                       <div>
                         <p
                           style={{
@@ -126,11 +126,11 @@ const PrintKP = () => {
                       </div>
                     </td>
                     {/* count */}
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{product.count}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>{product.count}</td>
                     {/* coast */}
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{product.coast}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>{product.coast}</td>
                     {/* summ */}
-                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{+product.count * +product.coast}</td>
+                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" , border:"1px solid black" }}>{+product.count * +product.coast}</td>
                   </tr>
                 )
               })}
@@ -138,14 +138,14 @@ const PrintKP = () => {
           </table>
           {/* work */}
           <div className="float-right" style={{ fontSize: "1rem", fontWeight: "bold", marginBottom: "10px" }}>стоимость работ: {Object.keys(works).reduce((a, key) => (a + works[key].coast * +works[key].count), 0)} руб.</div>
-          <table className="table table-bordered table-sm">
+          <table className="table table-bordered table-sm" >
             <thead >
               <tr className="text-center">
-                <th scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>№</th>
-                <th scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Вид работ</th>
-                <th scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Кол-во</th>
-                <th scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Цена</th>
-                <th scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>Сумма</th>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>№</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>Вид работ</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>Кол-во</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>Цена</td>
+                <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>Сумма</td>
               </tr>
             </thead>
             <tbody className="text-center">
@@ -154,15 +154,15 @@ const PrintKP = () => {
                   return (
                     <tr>
                       {/* number */}
-                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{index + 1}</td>
+                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black" }}>{index + 1}</td>
                       {/* work */}
-                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{works[key].name}</td>
+                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>{works[key].name}</td>
                       {/* count */}
-                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{works[key].count}</td>
+                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>{works[key].count}</td>
                       {/* coast */}
-                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{works[key].coast}</td>
+                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>{works[key].coast}</td>
                       {/* sum */}
-                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{+works[key].count * +works[key].coast}</td>
+                      <td scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", border:"1px solid black"  }}>{+works[key].count * +works[key].coast}</td>
                     </tr>
                   )
                 })
