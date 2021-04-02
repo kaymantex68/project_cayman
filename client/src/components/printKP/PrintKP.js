@@ -33,12 +33,33 @@ const PrintKP = () => {
   return (
     <div сlassName="container" >
       <div className="container pt-2">
-      <div className="btn btn-danger pt-2" onClick={handlePrint}>Распечатать</div>
+        <div className="btn btn-danger pt-2" onClick={handlePrint}>Распечатать</div>
       </div>
-      <div className="container" pageStyle={{padding:"30px"}} ref={componentRef}>
+      {/* TO DO PRINTING ... */}
+      <div className="container" pageStyle={{ padding: "30px" }} ref={componentRef}>
         <div className="p-3">
-          <div className="btn btn-success float-right">стоимость оборудования: {cart.reduce((a, b) => (a + b.coast * +b.count), 0)} руб.</div>
-          <table className="table table-bordered table-sm pt-3">
+          <div>
+            <img style={{ width: "200px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.svg`} />
+            <br/>
+            <hr className="float-left" style={{width:"300px"}}/>
+            <br/>
+          </div>
+          <div style={{padding:"0px", marging:"0px", paddingLeft:"10px", fontSize:"0.8rem", marginTop:"20px"}}>
+            <div style={{padding:"0px", marging:"0px"}}>392027 Тамбовская обл., г.Тамбов,</div>
+            <div style={{padding:"0px", marging:"0px"}}>Агапкина 25А, Системы безопасности Кайман.</div>
+            <div style={{padding:"0px", marging:"0px"}}>Режим работы: пн-вс 9:00-18:00 (без выходных)</div>
+            <div style={{padding:"0px", marging:"0px"}}>Наши контакты:</div>
+            <div style={{padding:"0px", marging:"0px"}}>Тел: 8 (4752) 42-47-27</div>
+            <div style={{padding:"0px", marging:"0px"}}>Тел: +7 920 233-34-34</div>
+            <div style={{padding:"0px", marging:"0px"}}>Mail: mail@kaymantex.ru</div>
+          </div>
+          <br />
+          <div className="text-center container" style={{ fontSize: "1rem", fontWeight: "bold" }}>Коммерческое предложение № {Date.now()} от {new Date().toLocaleString()}</div>
+          <div className="float-right" style={{ fontSize: "1rem", fontWeight: "bold", marginBottom: "10px" }}>ИТОГО: {Object.keys(works).reduce((a, key) => (a + works[key].coast * +works[key].count), 0) + cart.reduce((a, b) => (a + b.coast * +b.count), 0)} руб.</div>
+          <br />
+          <hr />
+          <div className="float-right" style={{ fontSize: "1rem", fontWeight: "bold", marginBottom: "10px" }}>Cтоимость оборудования: {cart.reduce((a, b) => (a + b.coast * +b.count), 0)} руб.</div>
+          <table className="table table-bordered table-sm pt-3 " >
             <thead >
               <tr className="text-center">
                 <td scope="col" style={{ fontWeight: "bold", fontSize: "0.9rem", verticalAlign: "middle" }}>№</td>
@@ -116,7 +137,7 @@ const PrintKP = () => {
             </tbody>
           </table>
           {/* work */}
-          <div className="btn btn-success float-right">стоимость работ: {Object.keys(works).reduce((a,key)=>(a+works[key].coast*+works[key].count),0)} руб.</div>
+          <div className="float-right" style={{ fontSize: "1rem", fontWeight: "bold", marginBottom: "10px" }}>стоимость работ: {Object.keys(works).reduce((a, key) => (a + works[key].coast * +works[key].count), 0)} руб.</div>
           <table className="table table-bordered table-sm">
             <thead >
               <tr className="text-center">
