@@ -82,6 +82,7 @@ const Optimization = lazy(() => import('./pages/admin/optimization/Optimization'
 
 const SideDrawer = lazy(()=> import('./components/drawer/SideDrawer'))
 const DescriptionProduct = lazy(()=>import('./components/descriptionProduct/DescriptionProduct'))
+const PrinKP = lazy(()=>import('./components/printKP/PrintKP'))
 //User
 
 const Cart = lazy(()=>import('./pages/user/cart/Cart'))
@@ -163,6 +164,7 @@ const App = () => {
             <UserRoute exact path='/user/dashboard' component={UserDashboard} />
             <UserRoute exact path='/user/password' component={Password} />
             <UserRoute exact path='/user/cart' component={Cart} />
+            <UserRoute exact path='/user/print' component={PrinKP} />
 
             <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
             <AdminRoute exact path='/admin/category' component={CreateCategory} />

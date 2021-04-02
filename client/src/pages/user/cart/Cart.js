@@ -8,6 +8,7 @@ import { addToCart } from "../../../functions/cart";
 import { removeSlide } from "../../../functions/slider";
 import { CloseCircleOutlined, SubnodeOutlined  } from "@ant-design/icons";
 import { toast } from 'react-toastify'
+import { Link } from 'react-router-dom'
 import classes from './Cart.module.css'
 // import './Cart.css'
 const Cart = () => {
@@ -212,12 +213,12 @@ const Cart = () => {
       <br/>
         <div className="mt-2 container">
           
-          
-          
+         <Link className="float-left  btn text-primary" to="/user/print">распечатать КП</Link> 
+          <br/>
         </div>
         
         <hr />
-        <div className="container">
+        <div className="container" >
         
         <div onClick={handleClear} className="btn btn-outline-danger float-left">
             очистить корзину
