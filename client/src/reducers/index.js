@@ -5,7 +5,7 @@ import { drawerReducer } from './drawerReducer'
 import { sideMenuReducer } from './sideMenuReducer'
 import { workReducer } from './workReducer'
 import { filterReducer } from './filterReducer'
-
+import {userInfoReducer} from './userInfoReducer'
 const rootReducer = combineReducers({
     user: userReducer,
     cart: cartReducer,
@@ -13,6 +13,7 @@ const rootReducer = combineReducers({
     sideMenu: sideMenuReducer,
     work: workReducer,
     filter: filterReducer,
+    userInfo: userInfoReducer,
 })
 
 export default rootReducer

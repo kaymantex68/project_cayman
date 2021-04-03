@@ -73,6 +73,8 @@ const UpdateProduct = lazy(() => import('./pages/admin/product/UpdateProduct'))
 const ProductCopy = lazy(() => import('./pages/admin/product/CopyProduct'))
 const UserDashboard = lazy(() => import('./pages/user/UserDashboard'))
 const Password = lazy(() => import('./pages/user/Password'))
+const Users= lazy(()=>import('./pages/admin/users/Users'))
+const UserDescription = lazy(()=> import ('./pages/admin/userDescription/UserDescription'))
 
 const AdminNavigation = lazy(() => import('./components/nav/AdminNavigation'))
 const BrandCreate = lazy(() => import('./pages/admin/brand/BrandCreate'))
@@ -109,7 +111,8 @@ const App = () => {
                 email: user.email,
                 token: idTokenResult.token,
                 role: res.data.role,
-                _id: res.data._id
+                _id: res.data._id,
+                discount: res.data.discounts
               }
             })
           }).catch(err => {
@@ -184,6 +187,8 @@ const App = () => {
             <AdminRoute exact path='/admin/diler' component={Diler} />
             <AdminRoute exact path='/admin/work' component={CreateWork} />
             <AdminRoute exact path='/admin/work/:slug' component={UpdateWork} />
+            <AdminRoute exact path='/admin/users' component={Users} />
+            <AdminRoute exact path='/admin/user/:_id' component={UserDescription} />
 
             <Route exact path="/catalog" component={Catalog} />
             <Route exact path="/catalog/brand/:filterBrand" component={Catalog} />

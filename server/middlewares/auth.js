@@ -5,12 +5,17 @@ const User = require('../models/user')
 // first we check validate user 
 exports.authCheck = async (req, res, next) => {
     try {
-        
+        console.log('we here')
         const firebaseUser = await admin.auth().verifyIdToken(req.headers.authtoken)
+        console.log('-----------------------------------')
+        console.log(firebaseUser)
+        console.log('-----------------------------------')
         req.user = firebaseUser
     }
     catch (err) {
         res.status(401).send("Ошибка записи или неверный token! Перезагрузите страницу!" )
+        console.log('error middleware--------------------->\n', err)
+        console.log('--------------------------------------')
     }
     next()
 }

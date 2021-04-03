@@ -4,8 +4,9 @@
 } */
 
 .cardContainer{
+  position: relative;
     width: 240px;
-    height: 390px;
+    height: 410px;
     margin: 10px;
     border-radius: 10px;
     border: 0px solid rgba(128, 128, 128, 0.10);
@@ -31,8 +32,11 @@
   }
 
   .buttonAddToCart{
+    position: absolute;
+    bottom: 0%;
+
         width:100%; 
-        height:200px; 
+        height:50px; 
         padding: 0 0 5px 0;
         margin:5px 0 0 0;
         display:flex;
@@ -44,6 +48,7 @@
   }
 
   .buttonAddToCart:hover{
+   
     color: white;
     background-color: #3c475bcc;
     transition: 0.3s;

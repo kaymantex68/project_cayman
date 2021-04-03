@@ -17,7 +17,8 @@ const ProductCard = ({ product }) => {
   const { user, cart } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
-  // console.log("cart", cart);
+  // console.log("user discount", user.discount);
+  // console.log(user.discount[product.brandSlug]["discount"])
 
   const handleAddToCart = async (e, product) => {
     // e.preventDefault();
@@ -49,7 +50,7 @@ const ProductCard = ({ product }) => {
   if (product.name.length > 20 && product.name.length <= 26) {
     fontSize = "0.8rem";
   }
-  if (product.name.length > 26) { 
+  if (product.name.length > 26) {
     fontSize = "0.7rem";
   }
   let pathImage = "";
@@ -58,7 +59,7 @@ const ProductCard = ({ product }) => {
   else pathImage = "/images/product/default.png";
   return (
     <div className={classes.cardContainer}>
-      
+
       <Link to={`/catalog/${product.category.slug}/${product.sub.slug}/${product.brandSlug}/${product.slug}`}>
         <div>
           <div
@@ -207,7 +208,18 @@ const ProductCard = ({ product }) => {
                   <div>
                     <span
                       style={{ fontSize: "1rem" }}
-                    >{`${product.coast} руб.`}</span>
+                    >{`${product.coast} руб.`}
+                    </span>
+                    <br/>
+                    {(!!user && !!user.token && !!user.discount && !!user.discount[product.brandSlug] && !!(user.discount[product.brandSlug]["discount"]!=0) && user.discount[product.brandSlug]["active"]===true)
+                      ? <span style={{
+                        color: "#3C475B",
+                        fontSize: "0.9rem",
+                        fontWeight:"normal"
+                      }}>
+                        Ваша цена: <span style={{color: "red", fontSize:"1rem", fontWeight:"bold"}}>{Math.round((product.coast*((100-user.discount[product.brandSlug]["discount"])/100))) }</span> руб.
+                        </span>
+                      : null}
                   </div>
                 )}
                 {product.coast && product.oldCoast > 0 && (
@@ -222,6 +234,7 @@ const ProductCard = ({ product }) => {
                     <span
                       style={{ fontSize: "1.1rem" }}
                     >{`  ${product.coast}  руб.`}</span>
+                    
                   </div>
                 )}
               </span>

@@ -9,13 +9,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { createOrUpdateUser} from '../../functions/auth'
-
+import {getUser} from '../../functions/user'
 
 
 
 
 const Login = ({ history }) => {
-    const [email, setEmail] = useState('andrey.s.h.68@yandex.ru')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
@@ -23,6 +23,7 @@ const Login = ({ history }) => {
 
     useEffect(() => {
         if (user && user.token) {
+            console.log('user info', user)
             history.push("/")
         }
     }, [user, history])
@@ -60,7 +61,8 @@ const Login = ({ history }) => {
                             email: user.email,
                             token: idTokenResult.token,
                             role: res.data.role,
-                            _id: res.data._id
+                            _id: res.data._id,
+                            discount: res.data.discounts
                         }
                     })
                     setLoading(false)
@@ -94,7 +96,8 @@ const Login = ({ history }) => {
                                 email: user.email,
                                 token: idTokenResult.token,
                                 role: res.data.role,
-                                _id: res.data._id
+                                _id: res.data._id,
+                                discount: res.data.discounts
                             }
                         })
                         setLoading(false)

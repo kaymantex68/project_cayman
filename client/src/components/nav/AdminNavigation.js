@@ -59,12 +59,14 @@ const AdminNavigation = (props) => {
                     <Menu.Item key="hist" style={{ color: 'white' }} icon={<HomeOutlined />}>
                         <Link to="/admin/dashboard" style={{ color: 'white' }}>Личный кабинет</Link>
                     </Menu.Item>
-                    <SubMenu key="sub1" icon={<SolutionOutlined />} title="Пользователь">
-                        <Menu.Item key="1">
-                            <Link to="/userInformation">Личный профиль</Link>
-                        </Menu.Item>
+                    <SubMenu key="sub1" icon={<SolutionOutlined />} title="Настройки Администратор">
                         <Menu.Item key="2">
                             <Link to="/user/password">Пароль</Link>
+                        </Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="users" icon={<UserOutlined />} title="Пользователи">
+                        <Menu.Item key="3">
+                            <Link to="/admin/users">Статистика</Link>
                         </Menu.Item>
                     </SubMenu>
                     <SubMenu key="category" icon={<PieChartOutlined />} title="Структура каталога">
