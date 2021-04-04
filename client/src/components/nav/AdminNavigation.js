@@ -14,6 +14,7 @@ import {
     ClearOutlined,
     ColumnWidthOutlined,
     RobotOutlined,
+    PercentageOutlined
 
 } from "@ant-design/icons";
 import {useSelector, useDispatch} from 'react-redux'
@@ -52,8 +53,9 @@ const AdminNavigation = (props) => {
                 style={{ overflow:"hidden" }}
             >
                 <div className=" p-3"  >
-                    <Link to="/"><img style={{ width: "210px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.png`} /></Link>
+                    <Link to="/"><img style={{width: "210px"}} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.png`} /></Link>
                 </div>
+               
 
                 <Menu theme="dark" style={{ color: 'white' }} defaultSelectedKeys={["1"]} mode="inline" >
                     <Menu.Item key="hist" style={{ color: 'white' }} icon={<HomeOutlined />}>
@@ -67,6 +69,11 @@ const AdminNavigation = (props) => {
                     <SubMenu key="users" icon={<UserOutlined />} title="Пользователи">
                         <Menu.Item key="3">
                             <Link to="/admin/users">Статистика</Link>
+                        </Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="groupDiscounts" icon={<PercentageOutlined />} title="Скидочные группы">
+                        <Menu.Item key="4">
+                            <Link to="/admin/groupDiscounts">Скидки</Link>
                         </Menu.Item>
                     </SubMenu>
                     <SubMenu key="category" icon={<PieChartOutlined />} title="Структура каталога">

@@ -148,6 +148,7 @@ const Cart = () => {
     setSumWork(Object.keys(newWork).reduce((a, key) => a + (newWork[key].coast * newWork[key].count), 0));
     setWorkTable({ ...workTable, [key]: temp })
     addToWork({ ...workTable, [key]: temp }, user.token).then(res => {
+      toast.success('Работа добавлена')
       console.log(res.data)
     })
     
@@ -163,6 +164,7 @@ const Cart = () => {
     });
     setWorkTable({ ...workTable })
     addToWork({ ...workTable }, user.token).then(res => {
+      toast.success('Работа изменена')
       console.log(res.data)
     })
     setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
@@ -178,6 +180,7 @@ const Cart = () => {
     delete change[key];
     setWorkTable(change)
     addToWork(change, user.token).then(res => {
+      toast.success('Работа удалена')
       console.log(res.data)
     })
     setSumWork(Object.keys(change).reduce((a, key) => a + (change[key].coast * change[key].count), 0));
@@ -191,6 +194,7 @@ const Cart = () => {
         payload: {},
       });
       setWorkTable({});
+      toast.success('Список работ очищен')
     });
     setSumWork(0);
     setLoading(false);

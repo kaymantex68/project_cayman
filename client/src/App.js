@@ -65,7 +65,7 @@ const UpdateSlide = lazy(()=> import('./pages/admin/slider/UpdateSlide'))
 const CreateWork = lazy(()=>import('./pages/admin/work/CreateWork'))
 const UpdateWork = lazy(()=>import('./pages/admin/work/UpdateWork'))
 const Diler = lazy(()=>import('./pages/admin/diler/Diler'))
-
+const GroupDiscounts = lazy(()=>import('./pages/admin/groupDiscounts/GroupDiscounts'))
 const BrandLogoCreate = lazy(() => import('./pages/admin/brandLogo/BrandLogoCreate'))
 const NewProduct = lazy(() => import('./pages/admin/product/NewProduct'))
 const Products = lazy(() => import('./pages/admin/product/Products'))
@@ -189,7 +189,10 @@ const App = () => {
             <AdminRoute exact path='/admin/work/:slug' component={UpdateWork} />
             <AdminRoute exact path='/admin/users' component={Users} />
             <AdminRoute exact path='/admin/user/:_id' component={UserDescription} />
+            <AdminRoute exact path='/admin/groupDiscounts' component={GroupDiscounts} />
 
+
+            
             <Route exact path="/catalog" component={Catalog} />
             <Route exact path="/catalog/brand/:filterBrand" component={Catalog} />
             <Route exact path="/catalog/:category" component={Catalog} />

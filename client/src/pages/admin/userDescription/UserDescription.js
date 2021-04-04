@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getSubs } from '../../../functions/sub'
 import Loading from '../../../components/form/LoadingIcon'
-import { LoadingOutlined, PercentageOutlined } from "@ant-design/icons";
+import { LoadingOutlined, PercentageOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
 import { getBrands } from '../../../functions/brand'
@@ -102,6 +102,15 @@ const UserDescription = ({ match, history }) => {
                             })}
                         </div>
                     </SubMenu>
+                    <hr/>
+                    <SubMenu
+                        key="2"
+                        title={
+                            <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
+                                <ShoppingCartOutlined />  Корзина </span>
+                        }
+                        className="container"
+                    ></SubMenu>
                 </Menu>
             </div>
         )
