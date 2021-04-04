@@ -20,7 +20,7 @@ ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
       <ToastContainer
-        autoClose={4000}
+        autoClose={3000}
       />
       <App />
     </Provider>

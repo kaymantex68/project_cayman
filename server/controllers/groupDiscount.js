@@ -27,6 +27,7 @@ exports.read = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
+        console.log('update--------------------', req.body)
         const { name, discounts, active } = req.body
         const result = await GroupDiscount.findOneAndUpdate(
             { slug: req.params.slug },

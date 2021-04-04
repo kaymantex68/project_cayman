@@ -41,11 +41,11 @@ const UserDescription = ({ match, history }) => {
         })
     }, [])
 
-    console.log('user discount', discount)
+    // console.log('user discount', discount)
 
     const handleDiscount = async (e, b) => {
-        console.log('brand', b.slug)
-        console.log(e.target.value)
+        // console.log('brand', b.slug)
+        // console.log(e.target.value)
         const newDiscount = { ...discount }
         newDiscount[b.slug] = {
             discount: e.target.value,
@@ -53,13 +53,13 @@ const UserDescription = ({ match, history }) => {
         }
         setDiscount({ ...newDiscount })
         await addToDiscounts(match.params._id, newDiscount, user.token).then(res => {
-            toast.success('Скидка обновлена')
-            console.log(res.data)
+            toast.success('Персональная скидка обновлена')
+            // console.log(res.data)
         })
     }
 
 
-    console.log('brands', brands)
+    // console.log('brands', brands)
     const userForm = () => {
         return (
             <div style={{ color: "black" }}>
@@ -82,11 +82,11 @@ const UserDescription = ({ match, history }) => {
                         <div className="mt-3">
                             {brands.map(b => {
                                 let slug=b.slug
-                                if (discount && discount[slug]) console.log(slug,' ',discount[slug]["discount"])
+                                // if (discount && discount[slug]) console.log(slug,' ',discount[slug]["discount"])
                                 
                                 return (
                                     <>
-                                        <div className="ml-4" style={{ display: "flex", alignItems: "center" }}>
+                                        <div className="ml-4" style={{ display: "flex", alignItems: "center" }} key={b._id}>
                                             <span style={{ backgroundColor: "yellow", fontSize: "1rem", flex: "2", fontWeight: "bold", minWidth: "200px" }}>{b.name}</span>
                                             <input
                                                 className="ml-2 form-control text-center"
@@ -107,7 +107,7 @@ const UserDescription = ({ match, history }) => {
                         key="2"
                         title={
                             <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-                                <ShoppingCartOutlined />  Корзина </span>
+                                <PercentageOutlined />  Корзина </span>
                         }
                         className="container"
                     ></SubMenu>

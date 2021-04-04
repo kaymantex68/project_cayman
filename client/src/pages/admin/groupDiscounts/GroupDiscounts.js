@@ -26,6 +26,9 @@ const GroupDiscount = () => {
     const [loading, setLoading] = useState(false)
     const [groupDiscounts, setGroupDiscounts] = useState([])
     const [brands, setBrands]=useState([])
+
+    const {user}=useSelector(state=>({...state}))
+
     useEffect(() => {
         setLoading(true)
         getGroupDiscounts().then(res => {
@@ -39,7 +42,32 @@ const GroupDiscount = () => {
         })
     }, [])
 
-    console.log('group Discounts', groupDiscounts)
+    // console.log('group Discounts', groupDiscounts)
+
+    const handleDiscount=(e,gd,b)=>{
+        let discount= e.target.value
+        if (discount<0) discount=0
+        // console.log('gd', gd.slug)
+        // console.log('discount', e.target.value)
+        // console.log('brand', b.slug)
+
+        let newGroupDiscount = groupDiscounts.map(g=>{ 
+            if (g._id===gd._id) {
+                g.discounts[b.slug]=+e.target.value 
+                return g
+            }
+            return g
+        })
+
+        // console.log('new', newGroupDiscount)
+        setGroupDiscounts(newGroupDiscount)
+        let update= newGroupDiscount.find(d=>{
+            return(d._id===gd._id)
+        })
+        updateGroupDiscount(gd.slug, update, user.token).then(res=>{
+            toast.success(`скидочная группа "${gd.name}" обновлена`)
+        })
+    }
 
     const ReturnGroupDiscounts = () => {
         return (
@@ -49,9 +77,9 @@ const GroupDiscount = () => {
                         return (
                             <>
                                 <SubMenu
-                                    key={index}
+                                    key={`${index}_${gd._id}`}
                                     title={
-                                        <span style={{ fontSize: "1rem", }}>
+                                        <span style={{ fontSize: "0.9rem", fontWeight:"bold" }}>
                                             <PercentageOutlined />  {gd.name}
                                         </span>
                                     }
@@ -59,9 +87,9 @@ const GroupDiscount = () => {
                                 >
                                     <div className="mt-3">
                                         {brands.map(b => {
-                                            console.log('gd',gd.discounts[b.slug])
+                                            // console.log('gd',gd.discounts[b.slug])
                                             return (
-                                                <>
+                                                <div key={b._id}>
                                                     <div className="ml-4" style={{ display: "flex", alignItems: "center" }}>
                                                         <span style={{ backgroundColor: "yellow", fontSize: "1rem", flex: "2", fontWeight: "bold", minWidth: "200px" }}>{b.name}</span>
                                                         <input
@@ -69,10 +97,10 @@ const GroupDiscount = () => {
                                                             type="number"
                                                             value={gd && gd.discounts[b.slug] ? gd.discounts[b.slug] : 0}
                                                             style={{ flex: "6" }}
-                                                            // onChange={(e) => handleDiscount(e, b)}
+                                                            onChange={(e) => handleDiscount(e, gd, b)}
                                                         />
                                                     </div>
-                                               </>
+                                               </div>
                                             )
                                         })}
                                     </div>
