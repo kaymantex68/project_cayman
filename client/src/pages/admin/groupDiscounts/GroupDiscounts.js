@@ -59,7 +59,7 @@ const GroupDiscount = () => {
                                 >
                                     <div className="mt-3">
                                         {brands.map(b => {
-                                            
+                                            console.log('gd',gd.discounts[b.slug])
                                             return (
                                                 <>
                                                     <div className="ml-4" style={{ display: "flex", alignItems: "center" }}>
@@ -67,7 +67,7 @@ const GroupDiscount = () => {
                                                         <input
                                                             className="ml-2 form-control text-center"
                                                             type="number"
-                                                            // value={discount && discount[slug] ? discount[slug]["discount"] : 0}
+                                                            value={gd && gd.discounts[b.slug] ? gd.discounts[b.slug] : 0}
                                                             style={{ flex: "6" }}
                                                             // onChange={(e) => handleDiscount(e, b)}
                                                         />
