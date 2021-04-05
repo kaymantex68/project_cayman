@@ -34,6 +34,10 @@ const Header = () => {
       type: "ADD_TO_CART",
       payload: [],
     });
+    dispatch({
+      type: "SET_DISCOUNT",
+      payload: false,
+  });
     history.push("/");
   };
 

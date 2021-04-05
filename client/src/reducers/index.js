@@ -5,7 +5,9 @@ import { drawerReducer } from './drawerReducer'
 import { sideMenuReducer } from './sideMenuReducer'
 import { workReducer } from './workReducer'
 import { filterReducer } from './filterReducer'
-import {userInfoReducer} from './userInfoReducer'
+import { userInfoReducer } from './userInfoReducer'
+import { setDiscountReducer } from './setDiscountReducer'
+
 const rootReducer = combineReducers({
     user: userReducer,
     cart: cartReducer,
@@ -14,6 +16,7 @@ const rootReducer = combineReducers({
     work: workReducer,
     filter: filterReducer,
     userInfo: userInfoReducer,
+    globalDiscount: setDiscountReducer,
 })
 
 export default rootReducer

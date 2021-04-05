@@ -11,9 +11,10 @@ import {
     VideoCameraOutlined,
     VideoCameraAddOutlined,
     ShoppingCartOutlined,
+    PercentageOutlined
 
 } from "@ant-design/icons";
-import {useSelector, useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -22,21 +23,27 @@ const { SubMenu } = Menu;
 const AdminNavigation = (props) => {
     const [collapsed, setCollapsed] = useState(true);
 
-    const {sideMenu}= useSelector(state=>({...state}))
-    const dispatch= useDispatch()
+    const { sideMenu, globalDiscount } = useSelector(state => ({ ...state }))
+    const dispatch = useDispatch()
 
-    useEffect(()=>{
+    useEffect(() => {
         setCollapsed(sideMenu)
-    },[])
+    }, [])
 
     const onCollapse = () => {
         dispatch({
             type: "SET_VISIBLE_SIDEMENU",
             payload: !collapsed,
-          });
+        });
         setCollapsed(!collapsed);
     };
-   
+
+    const handleDiscount=()=>{
+        dispatch({
+            type: "SET_DISCOUNT",
+            payload: !globalDiscount,
+        });
+    }
 
 
     return (
@@ -46,7 +53,7 @@ const AdminNavigation = (props) => {
                 collapsible
                 collapsed={collapsed}
                 onCollapse={onCollapse}
-                style={{ overflow:"hidden" }}
+                style={{ overflow: "hidden" }}
             >
                 <div className=" p-3"  >
                     <img style={{ width: "210px" }} src={`${process.env.REACT_APP_IMAGES_LOGO}/logo.png`} />
@@ -68,9 +75,17 @@ const AdminNavigation = (props) => {
                         <Menu.Item key="1">
                             <Link to="/user/cart">Корзина</Link>
                         </Menu.Item>
-                        {/* <Menu.Item key="2">
-                            <Link to="/user/specification">Спецификация</Link>
-                        </Menu.Item> */}
+                    </SubMenu>
+                    <br />
+                    <hr style={{ border: "1px solid white" }} />
+                    <SubMenu key="discount" icon={<PercentageOutlined />} title="Скидка">
+                        <Menu.Item key="12">
+                            <div className="switch" style={{display:"flex", alignItems:"center"}}>
+                                <span className="ml-3 mr-3">Скидка</span>
+                                <input checked={globalDiscount} type="checkbox" onChange={handleDiscount} />
+                            </div>
+                        </Menu.Item>
+
                     </SubMenu>
                 </Menu>
 

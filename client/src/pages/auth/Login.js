@@ -31,13 +31,16 @@ const Login = ({ history }) => {
     // redirect depending on user role
     const roleBasedRedirect = (res) => {
         if (res.data.role === 'admin') {
-            history.push("/admin/dashboard")
+            history.push("/");
+            // history.push("/admin/dashboard")
         }
         if (res.data.role === 'subscriber') {
-            history.push('/user/dashboard')
+            history.push("/");
+            // history.push('/user/dashboard')
         }
         if (res.data.role === 'manager') {
-            history.push('/manager/dashboard')
+            history.push("/");
+            // history.push('/manager/dashboard')
         }
     }
 

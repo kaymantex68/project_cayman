@@ -29,7 +29,7 @@ const Cart = () => {
   const [sum, setSum] = useState(0);
   const [sumWork, setSumWork] = useState(0)
   const [coast, setCoast]=useState(0)
-  const { user } = useSelector((state) => ({ ...state }));
+  const { user, globalDiscount} = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   const resetSum = () => {
@@ -234,7 +234,7 @@ const Cart = () => {
         <div className="float-right btn text-primary">{`Итого (материалы): ${sum} руб.`}</div>
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
-              <tr>
+              <tr className="text-center">
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>№</th>
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Изображение</th>
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Наименование</th>
@@ -242,6 +242,7 @@ const Cart = () => {
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Описание</th>
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Кол-во</th>
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Цена</th>
+                {globalDiscount && <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", width:"100px" }}>Цена со скидкой</th>}
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Сумма</th>
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Удалить</th>
               </tr>
@@ -306,6 +307,7 @@ const Cart = () => {
                       />
                     </td>
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast} p.</td>
+                    {/* {globalDiscount && <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{Math.round((p.coast*((100-user["discount"][p.brandSlug]["discount"])/100))) } p.</td>} */}
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast * p.count} р.</td>
                     <td style={{ verticalAlign: "middle" }}>
                       <CloseCircleOutlined

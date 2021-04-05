@@ -14,7 +14,7 @@ const StyleInStock = {
 };
 
 const ProductCard = ({ product }) => {
-  const { user, cart } = useSelector((state) => ({ ...state }));
+  const { user, cart, globalDiscount } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   // console.log("user discount", user.discount);
@@ -211,13 +211,13 @@ const ProductCard = ({ product }) => {
                     >{`${product.coast} руб.`}
                     </span>
                     <br/>
-                    {(!!user && !!user.token && !!user.discount && !!user.discount[product.brandSlug] && !!(user.discount[product.brandSlug]["discount"]!=0) && user.discount[product.brandSlug]["active"]===true)
+                    {(!!user && !!user.token && !!user.discount && !!user.discount[product.brandSlug] && !!(user.discount[product.brandSlug]["discount"]!=0 && globalDiscount) && user.discount[product.brandSlug]["active"]===true)
                       ? <span style={{
                         color: "#3C475B",
                         fontSize: "0.9rem",
                         fontWeight:"normal"
                       }}>
-                        Ваша цена: <span style={{color: "red", fontSize:"1rem", fontWeight:"bold"}}>{Math.round((product.coast*((100-user.discount[product.brandSlug]["discount"])/100))) }</span> руб.
+                        Ваша цена: <span style={{color: "red", fontSize:"1rem", fontWeight:"bold"}}>{Math.round((product.coast*((100-user.discount[product.brandSlug]["discount"])/100)))}</span> руб.
                         </span>
                       : null}
                   </div>
@@ -234,7 +234,16 @@ const ProductCard = ({ product }) => {
                     <span
                       style={{ fontSize: "1.1rem" }}
                     >{`  ${product.coast}  руб.`}</span>
-                    
+                    <br/>
+                    {(!!user && !!user.token && !!user.discount && !!user.discount[product.brandSlug] && !!(user.discount[product.brandSlug]["discount"]!=0 && globalDiscount) && user.discount[product.brandSlug]["active"]===true) && 
+                    <span style={{
+                      color: "#3C475B",
+                      fontSize: "0.9rem",
+                      fontWeight:"bold"
+                    }}>
+                      Уточните цену
+                      </span>
+                      }
                   </div>
                 )}
               </span>
