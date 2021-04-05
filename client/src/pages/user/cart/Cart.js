@@ -45,8 +45,10 @@ const Cart = () => {
   useState(async () => {
     try{
     setLoading(true);
+    
     await readCart(user.token).then((res) => {
       //get all id of products first, and then find all fresh products by id from Products collection
+      // console.log('1')
       let updateCart = []
       res.data.cart.map(p => (updateCart.push(p._id)))
       // nes we will add new products to Cart with setCart
@@ -54,23 +56,21 @@ const Cart = () => {
       setSum(res.data.cart.reduce((a, p) => a + p.count * p.coast, 0));
     })
     await getWorks().then(res => {
+      // console.log('2')
       setWorks(res.data)
     })
     await readWorks(user.token).then(res => {
+      // console.log('3')
       setWorkTable(res.data.work)
       setSumWork(Object.keys(res.data.work).reduce((a, key) => a + (res.data.work[key].coast * res.data.work[key].count), 0));
     })
+    // console.log('4')
     setLoading(false);
     } catch(err){
-         setLoading(false);
+      setLoading(false);
       if (err.response.status === 401) toast.error(err.response.data);
       window.location.reload()
     }
-    // .catch(err => {
-    //   setLoading(false);
-    //   if (err.response.status === 401) toast.error(err.response.data);
-    //   window.location.reload()
-    // });
   }, []);
 
 
@@ -259,10 +259,10 @@ const Cart = () => {
               </tr>
             </thead>
             <tbody className="text-center">
-              {console.log('-----------------------')}
+              {/* {console.log('-----------------------')} */}
               {cart.map((p, index) => {
 
-                console.log(p)
+                // console.log(p)
                 let pathImage;
                 if (p.images.length > 0)
                   pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${p.images[0]}`;
