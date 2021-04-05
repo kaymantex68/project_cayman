@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../../components/form/LoadingIcon";
 import { addToCart } from "../../../functions/cart";
 import { removeSlide } from "../../../functions/slider";
-import { CloseCircleOutlined, SubnodeOutlined  } from "@ant-design/icons";
+import { CloseCircleOutlined, SubnodeOutlined } from "@ant-design/icons";
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import PrintKP from '../../../components/printKP/PrintKP'
@@ -28,8 +28,8 @@ const Cart = () => {
   const [loading, setLoading] = useState(false);
   const [sum, setSum] = useState(0);
   const [sumWork, setSumWork] = useState(0)
-  const [coast, setCoast]=useState(0)
-  const { user, globalDiscount} = useSelector((state) => ({ ...state }));
+  const [coast, setCoast] = useState(0)
+  const { user, globalDiscount } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   const resetSum = () => {
@@ -38,28 +38,39 @@ const Cart = () => {
     setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
   };
 
-  useMemo(()=>{
-    setCoast(sum+sumWork)
-  },[sum, sumWork])
+  useMemo(() => {
+    setCoast(sum + sumWork)
+  }, [sum, sumWork])
   // console.log('work', sumWork)
-  useState(() => {
+  useState(async () => {
+    try{
     setLoading(true);
-    readCart(user.token).then((res) => {
+    await readCart(user.token).then((res) => {
+      //get all id of products first, and then find all fresh products by id from Products collection
+      let updateCart = []
+      res.data.cart.map(p => (updateCart.push(p._id)))
+      // nes we will add new products to Cart with setCart
       setCart(res.data.cart);
       setSum(res.data.cart.reduce((a, p) => a + p.count * p.coast, 0));
-      getWorks().then(res => {
-        setWorks(res.data)
-        readWorks(user.token).then(res => {
-          setWorkTable(res.data.work)
-          setSumWork(Object.keys(res.data.work).reduce((a, key) =>  a + (res.data.work[key].coast * res.data.work[key].count), 0));
-        })
-        setLoading(false);
-      })
-    }).catch(err => {
-      setLoading(false);
+    })
+    await getWorks().then(res => {
+      setWorks(res.data)
+    })
+    await readWorks(user.token).then(res => {
+      setWorkTable(res.data.work)
+      setSumWork(Object.keys(res.data.work).reduce((a, key) => a + (res.data.work[key].coast * res.data.work[key].count), 0));
+    })
+    setLoading(false);
+    } catch(err){
+         setLoading(false);
       if (err.response.status === 401) toast.error(err.response.data);
       window.location.reload()
-    });
+    }
+    // .catch(err => {
+    //   setLoading(false);
+    //   if (err.response.status === 401) toast.error(err.response.data);
+    //   window.location.reload()
+    // });
   }, []);
 
 
@@ -144,14 +155,14 @@ const Cart = () => {
       type: "ADD_TO_WORK",
       payload: { ...workTable, [key]: temp },
     });
-    let newWork={...workTable,[key]: temp}
+    let newWork = { ...workTable, [key]: temp }
     setSumWork(Object.keys(newWork).reduce((a, key) => a + (newWork[key].coast * newWork[key].count), 0));
     setWorkTable({ ...workTable, [key]: temp })
     addToWork({ ...workTable, [key]: temp }, user.token).then(res => {
       toast.success('Работа добавлена')
       console.log(res.data)
     })
-    
+
   }
   // add count
   const handleChangeCountWork = (e, key) => {
@@ -171,9 +182,9 @@ const Cart = () => {
   }
   // console.log(works)
 
-  
 
-  
+
+
   const handleDeleteWork = (e, key) => {
     console.log(key)
     let change = { ...workTable }
@@ -217,21 +228,21 @@ const Cart = () => {
   const ReturnCart = () => {
     return (
       <>
-      <div className="float-right    btn text-primary">{`Итого: ${coast} руб.`}</div>
-      <br/>
+        <div className="float-right    btn text-primary">{`Итого: ${coast} руб.`}</div>
+        <br />
         <div className="mt-2 container">
-          
-         <Link className="float-left  btn text-primary" to="/user/print">распечатать КП</Link> 
-          <br/>
+
+          <Link className="float-left  btn text-primary" to="/user/print">распечатать КП</Link>
+          <br />
         </div>
-        
+
         <hr />
         <div className="container" >
-        
-        <div onClick={handleClear} className="btn btn-outline-danger float-left">
+
+          <div onClick={handleClear} className="btn btn-outline-danger float-left">
             очистить корзину
           </div>
-        <div className="float-right btn text-primary">{`Итого (материалы): ${sum} руб.`}</div>
+          <div className="float-right btn text-primary">{`Итого (материалы): ${sum} руб.`}</div>
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr className="text-center">
@@ -242,13 +253,16 @@ const Cart = () => {
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Описание</th>
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Кол-во</th>
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Цена</th>
-                {globalDiscount && <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", width:"100px" }}>Цена со скидкой</th>}
+                {globalDiscount && <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", width: "100px" }}>Цена со скидкой</th>}
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Сумма</th>
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Удалить</th>
               </tr>
             </thead>
             <tbody className="text-center">
+              {console.log('-----------------------')}
               {cart.map((p, index) => {
+
+                console.log(p)
                 let pathImage;
                 if (p.images.length > 0)
                   pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${p.images[0]}`;
@@ -297,17 +311,28 @@ const Cart = () => {
                         >{`${p.params[2][0]} ${p.params[2][1]}`}</p>
                       </div>
                     </td>
-                    <td className="text-center" style={{ fontSize: "0.9rem", verticalAlign: "middle", maxWidth:"80px" }}>
+                    <td className="text-center" style={{ fontSize: "0.9rem", verticalAlign: "middle", maxWidth: "80px" }}>
                       <input
                         type="number"
                         className="form-control text-center"
-                        style={{ fontSize:"0.9rem" }}
+                        style={{ fontSize: "0.9rem" }}
                         onChange={(e) => handleChangeCount(e, p)}
                         value={p.count}
                       />
                     </td>
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast} p.</td>
-                    {/* {globalDiscount && <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{Math.round((p.coast*((100-user["discount"][p.brandSlug]["discount"])/100))) } p.</td>} */}
+                    {
+                      (globalDiscount
+                        && user["discount"][p.brandSlug]["discount"])
+                      && <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+
+                        {!p.promotion
+                          ? `${Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)))} p.`
+                          : "-"}
+
+                      </td>
+
+                    }
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast * p.count} р.</td>
                     <td style={{ verticalAlign: "middle" }}>
                       <CloseCircleOutlined
@@ -322,14 +347,14 @@ const Cart = () => {
           </table>
         </div>
         {/* <hr /> */}
-              <br/>
+        <br />
         {/* table work */}
 
         <div className="container">
-        <div onClick={handleClearWork} className="btn btn-outline-danger float-left">
+          <div onClick={handleClearWork} className="btn btn-outline-danger float-left">
             очистить работы
           </div>
-        <div className="float-right btn text-primary">{`Итого (работы): ${sumWork} руб.`}</div>
+          <div className="float-right btn text-primary">{`Итого (работы): ${sumWork} руб.`}</div>
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr>
@@ -348,17 +373,17 @@ const Cart = () => {
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{index + 1}</td>
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{inputWork(key, workTable[key].name)}</td>
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle", maxWidth: "80px" }}>
-                      
+
                       <input
                         type="number"
                         className="form-control text-center"
 
                         size="sm"
-                        style={{ fontSize: "0.9rem"  }}
+                        style={{ fontSize: "0.9rem" }}
                         onChange={(e) => handleChangeCountWork(e, key)}
                         value={workTable[key].count}
                       />
-                      
+
                     </td>
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }} >
                       {workTable[key].coast ? `${workTable[key].coast} р.` : null}
@@ -378,8 +403,8 @@ const Cart = () => {
             </tbody>
           </table>
           {/* <hr /> */}
-          <div className={classes.btnAdd} style={{display:"flex", alignItems:"center"}} onClick={handleAddWorkRow}><span>+ добавить работу</span></div>
-          <br/>
+          <div className={classes.btnAdd} style={{ display: "flex", alignItems: "center" }} onClick={handleAddWorkRow}><span>+ добавить работу</span></div>
+          <br />
         </div>
       </>
     );
