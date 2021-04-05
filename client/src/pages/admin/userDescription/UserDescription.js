@@ -87,7 +87,7 @@ const UserDescription = ({ match, history }) => {
                     setBrands(res.data)
                     getGroupDiscounts().then(res => {
                         setGroupDiscounts(res.data)
-                        toast.success(`Информация о пользователе "${match.params._id}" загружена`)
+                        toast.success(`Активация скидки изменена`)
                         setLoading(false)
                     })
                 })
@@ -154,14 +154,17 @@ const UserDescription = ({ match, history }) => {
                                                 className="ml-2 form-control text-center"
                                                 type="number"
                                                 value={discount && discount[slug] ? discount[slug]["discount"] : 0}
-                                                style={{ flex: "6" }}
+                                                style={{ flex: "6"}}
                                                 onChange={(e) => handleDiscount(e, b)}
                                             />
-                                            <CheckSquareOutlined
+                                            {discount && discount[slug] 
+                                            ?<CheckSquareOutlined
                                                 disabled={true}
                                                 className={discount && discount[slug] && discount[slug].active  ? "text-success ml-2" : "text-danger ml-2"}
                                                 onClick={(e) => handleActive(e, b)}
                                             />
+                                        : <CheckSquareOutlined className="ml-2"/>
+                                        }
                                         </div>
 
                                         {/* <hr /> */}
