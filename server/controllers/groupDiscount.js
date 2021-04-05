@@ -4,6 +4,7 @@ const slugify = require('slugify')
 exports.create = async (req, res) => {
     try {
         const { name, discounts } = req.body
+        console.log('new--------------', req.body)
         const groupDiscount = await new GroupDiscount({ name, slug: slugify(name), discounts }).save()
         res.json(groupDiscount)
     } catch (err) {
@@ -22,7 +23,7 @@ exports.list = async (req, res) => {
 
 exports.read = async (req, res) => {
     const groupDiscount = await GroupDiscount.findOne({ slug: req.params.slug }).exec()
-    res.json({ groupDiscount })
+    res.json(groupDiscount)
 }
 
 exports.update = async (req, res) => {

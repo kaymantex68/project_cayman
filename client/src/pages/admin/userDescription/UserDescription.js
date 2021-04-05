@@ -17,6 +17,7 @@ import { getUser } from '../../../functions/user'
 import { getBrandPictures } from '../../../functions/uploadImages'
 import { addToDiscounts, getUserDiscounts } from '../../../functions/discounts'
 import classes from './UserDescription.module.css'
+import { getGroupDiscounts } from '../../../functions/groupDiscount'
 
 const { TextArea } = Input;
 const { SubMenu, ItemGroup } = Menu;
@@ -26,7 +27,11 @@ const UserDescription = ({ match, history }) => {
     const [customer, setCustomer] = useState({})
     const [brands, setBrands] = useState([])
     const [discount, setDiscount] = useState({})
+    const [groupDiscounts, setGroupDiscounts] = useState([])
+    const [groupDiscount, setGroupDiscount] = useState(null)
     const { user } = useSelector(state => ({ ...state }))
+
+    console.log('group discount', groupDiscount)
 
     useEffect(() => {
         setLoading(true)
@@ -35,13 +40,17 @@ const UserDescription = ({ match, history }) => {
             setDiscount(res.data.discounts)
             getBrandPictures().then(res => {
                 setBrands(res.data)
-                toast.success(`Информация о пользователе "${match.params._id}" загружена`)
-                setLoading(false)
+                getGroupDiscounts().then(res => {
+                    setGroupDiscounts(res.data)
+                    toast.success(`Информация о пользователе "${match.params._id}" загружена`)
+                    setLoading(false)
+                })
             })
         })
     }, [])
 
-    // console.log('user discount', discount)
+    console.log('discount', discount)
+
 
     const handleDiscount = async (e, b) => {
         // console.log('brand', b.slug)
@@ -58,6 +67,48 @@ const UserDescription = ({ match, history }) => {
         })
     }
 
+    const handleActive = async (e, b) => {
+        e.preventDefault()
+        // console.log('brand', b.slug)
+        // console.log(e.target.value)
+        const newDiscount = { ...discount }
+        newDiscount[b.slug] = {
+            ...newDiscount[b.slug],
+            active: !newDiscount[b.slug].active
+        }
+        console.log('new', newDiscount)
+        setDiscount({ ...newDiscount })
+        await addToDiscounts(match.params._id, newDiscount, user.token).then(res => {
+            
+            getUser(match.params._id, user.token).then(res => {
+                setCustomer(res.data)
+                setDiscount(res.data.discounts)
+                getBrandPictures().then(res => {
+                    setBrands(res.data)
+                    getGroupDiscounts().then(res => {
+                        setGroupDiscounts(res.data)
+                        toast.success(`Информация о пользователе "${match.params._id}" загружена`)
+                        setLoading(false)
+                    })
+                })
+            })
+            // console.log(res.data)
+        })
+    }
+
+    const handleSet = async (groupDiscount) => {
+        if (window.confirm(`Изменить общую скидку?`) && groupDiscount) {
+            let setupDiscount = groupDiscounts.find(d => {
+                return (d._id === groupDiscount)
+            }).discounts
+            setDiscount({ ...setupDiscount })
+            await addToDiscounts(match.params._id, setupDiscount, user.token).then(res => {
+                toast.success('Персональная скидка обновлена')
+                // console.log(res.data)
+            })
+            // console.log('group', setupDiscount)
+        }
+    }
 
     // console.log('brands', brands)
     const userForm = () => {
@@ -79,30 +130,48 @@ const UserDescription = ({ match, history }) => {
                         }
                         className="container"
                     >
+                        <div className="mt-3 container" style={{ display: "flex", alignItems: "center" }}>
+                            <select className="form-control" style={{ width: "80%", fontSize: "0.9rem" }} onChange={(e) => { setGroupDiscount(e.target.value) }}>
+                                <option value="all" style={{ fontSize: "0.8rem" }} className="text-center">выберите скидочную группу</option>
+                                {groupDiscounts.map(gd => (
+                                    <option value={gd._id} style={{ fontSize: "0.8rem" }} className="text-center">{gd.name}</option>
+                                ))}
+                            </select>
+                            <div className="btn ml-3" onClick={(e) => handleSet(groupDiscount)}>применить</div>
+                        </div>
+
                         <div className="mt-3">
                             {brands.map(b => {
-                                let slug=b.slug
+                                let slug = b.slug
                                 // if (discount && discount[slug]) console.log(slug,' ',discount[slug]["discount"])
-                                
+
                                 return (
                                     <>
+
                                         <div className="ml-4" style={{ display: "flex", alignItems: "center" }} key={b._id}>
                                             <span style={{ backgroundColor: "yellow", fontSize: "1rem", flex: "2", fontWeight: "bold", minWidth: "200px" }}>{b.name}</span>
                                             <input
                                                 className="ml-2 form-control text-center"
                                                 type="number"
-                                                value={discount && discount[slug]? discount[slug]["discount"] : 0}
+                                                value={discount && discount[slug] ? discount[slug]["discount"] : 0}
                                                 style={{ flex: "6" }}
                                                 onChange={(e) => handleDiscount(e, b)}
                                             />
+                                            <CheckSquareOutlined
+                                                disabled={true}
+                                                className={discount && discount[slug] && discount[slug].active  ? "text-success ml-2" : "text-danger ml-2"}
+                                                onClick={(e) => handleActive(e, b)}
+                                            />
                                         </div>
+
                                         {/* <hr /> */}
+
                                     </>
                                 )
                             })}
                         </div>
                     </SubMenu>
-                    <hr/>
+                    <hr />
                     <SubMenu
                         key="2"
                         title={
