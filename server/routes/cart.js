@@ -6,11 +6,14 @@ const router = express.Router()
 const { authCheck, adminCheck } = require('../middlewares/auth')
 
 // import controllers
-const { add,list  } = require('../controllers/cart')
+const { add, list, listMany } = require('../controllers/cart')
 
 
 
 router.post("/cart", authCheck, add)
 router.post("/cartItems", authCheck, list)
+router.post("/cartItemsMany",
+    // authCheck, 
+    listMany)
 
-module.exports=router
+module.exports = router

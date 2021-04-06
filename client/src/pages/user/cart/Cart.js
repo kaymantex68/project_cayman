@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import UserNavigation from "../../../components/nav/UserNavigation";
-import { readCart } from "../../../functions/cart";
+import { readCart, readProducts } from "../../../functions/cart";
 import { getWorks, addToWork, readWorks } from '../../../functions/work'
 import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../../components/form/LoadingIcon";
@@ -38,35 +38,46 @@ const Cart = () => {
     setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
   };
 
+  console.log('cart', cart)
+
   useMemo(() => {
     setCoast(sum + sumWork)
   }, [sum, sumWork])
   // console.log('work', sumWork)
   useState(async () => {
-    try{
-    setLoading(true);
-    
-    await readCart(user.token).then((res) => {
-      //get all id of products first, and then find all fresh products by id from Products collection
-      // console.log('1')
-      let updateCart = []
-      res.data.cart.map(p => (updateCart.push(p._id)))
-      // nes we will add new products to Cart with setCart
-      setCart(res.data.cart);
-      setSum(res.data.cart.reduce((a, p) => a + p.count * p.coast, 0));
-    })
-    await getWorks().then(res => {
-      // console.log('2')
-      setWorks(res.data)
-    })
-    await readWorks(user.token).then(res => {
-      // console.log('3')
-      setWorkTable(res.data.work)
-      setSumWork(Object.keys(res.data.work).reduce((a, key) => a + (res.data.work[key].coast * res.data.work[key].count), 0));
-    })
-    // console.log('4')
-    setLoading(false);
-    } catch(err){
+    try {
+      setLoading(true);
+
+      await readCart(user.token).then((res) => {
+        //get all id of products first, and then find all fresh products by id from Products collection
+        let updateCart = []
+        let oldCart = [...res.data.cart]
+        oldCart.map(p => (updateCart.push(p._id)))
+        updateCart.reverse()
+        readProducts(updateCart, user.token).then(res => {
+          let newCart = res.data.cart
+          for (let i = 0; i < res.data.cart.length; i++) {
+
+            newCart[i].count = oldCart[i].count
+          }
+
+          setCart(newCart.reverse());
+          setSum(newCart.reduce((a, p) => a + p.count * p.coast, 0));
+        })
+        // nes we will add new products to Cart with setCart
+      })
+      await getWorks().then(res => {
+        // console.log('2')
+        setWorks(res.data)
+      })
+      await readWorks(user.token).then(res => {
+        // console.log('3')
+        setWorkTable(res.data.work)
+        setSumWork(Object.keys(res.data.work).reduce((a, key) => a + (res.data.work[key].coast * res.data.work[key].count), 0));
+      })
+      // console.log('4')
+      setLoading(false);
+    } catch (err) {
       setLoading(false);
       if (err.response.status === 401) toast.error(err.response.data);
       window.location.reload()
@@ -322,15 +333,18 @@ const Cart = () => {
                     </td>
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast} p.</td>
                     {
-                      (globalDiscount
-                        && user["discount"][p.brandSlug]["discount"])
-                      && <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+                      globalDiscount
 
-                        {!p.promotion
-                          ? `${Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)))} p.`
-                          : "-"}
+                        && <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
 
-                      </td>
+                          {
+                            globalDiscount
+                              && user["discount"] && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] && !p.promotion
+                              ? <><span style={{color:"red"}}>{`${Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)))}`}</span><span> p.</span></>
+                              : "-"
+                          }
+
+                        </td>
 
                     }
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast * p.count} р.</td>
