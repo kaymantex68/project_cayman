@@ -32,9 +32,9 @@ app.use(cors());
 
 
 
-app.get('/api', (req, res) => {
-    res.send('we here')
-})
+// app.get('/api', (req, res) => {
+//     res.send('we here')
+// })
 // connect routers
 readdirSync('./routes').map((route)=>app.use(`/api`,require(`./routes/${route}`)))
 
