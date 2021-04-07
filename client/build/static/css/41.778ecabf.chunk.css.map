@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/components/printKP/PrintKP.module.css"],"names":[],"mappings":"AAAA,+BACI,gBACJ","file":"41.778ecabf.chunk.css","sourcesContent":[".printContainer{\n    min-height: 750px;\n}"]}
