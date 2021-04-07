@@ -27,6 +27,7 @@ const Cart = () => {
 
   const [loading, setLoading] = useState(false);
   const [sum, setSum] = useState(0);
+  const [sumDiscount, setSumDiscount] = useState(0)
   const [sumWork, setSumWork] = useState(0)
   const [coast, setCoast] = useState(0)
   const { user, globalDiscount } = useSelector((state) => ({ ...state }));
@@ -36,13 +37,21 @@ const Cart = () => {
     console.log('reset sum')
     setSum(cart.reduce((a, p) => a + p.count * p.coast, 0));
     setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
+    setSumDiscount(cart.reduce((a, p) => {
+      if (!p.promotion) {
+        return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
+      } else {
+        return a + p.count * p.coast
+      }
+    }, 0));
   };
 
-  console.log('cart', cart)
+  console.log('sumDiscount', sumDiscount)
 
   useMemo(() => {
     setCoast(sum + sumWork)
-  }, [sum, sumWork])
+  }, [sum, sumWork, globalDiscount])
+
   // console.log('work', sumWork)
   useState(async () => {
     try {
@@ -63,7 +72,17 @@ const Cart = () => {
 
           setCart(newCart.reverse());
           setSum(newCart.reduce((a, p) => a + p.count * p.coast, 0));
+         
+            setSumDiscount(newCart.reduce((a, p) => {
+              if (!p.promotion) {
+                return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
+              } else {
+                return a + p.count * p.coast
+              }
+            }, 0));
+         
         })
+
         // nes we will add new products to Cart with setCart
       })
       await getWorks().then(res => {
@@ -253,7 +272,9 @@ const Cart = () => {
           <div onClick={handleClear} className="btn btn-outline-danger float-left">
             очистить корзину
           </div>
+          {globalDiscount && <div className="float-right btn text-danger">{`Итого (материалы со скидкой): ${sumDiscount} руб.`}</div>}
           <div className="float-right btn text-primary">{`Итого (материалы): ${sum} руб.`}</div>
+
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr className="text-center">
@@ -266,13 +287,13 @@ const Cart = () => {
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Цена</th>
                 {globalDiscount && <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", width: "100px" }}>Цена со скидкой</th>}
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Сумма</th>
+                {globalDiscount && <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle", width: "100px" }}>Сумма со скидкой</th>}
                 <th scope="col" style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>Удалить</th>
               </tr>
             </thead>
             <tbody className="text-center">
               {/* {console.log('-----------------------')} */}
               {cart.map((p, index) => {
-
                 // console.log(p)
                 let pathImage;
                 if (p.images.length > 0)
@@ -335,19 +356,34 @@ const Cart = () => {
                     {
                       globalDiscount
 
-                        && <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+                      && <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
 
-                          {
-                            globalDiscount
-                              && user["discount"] && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] && !p.promotion
-                              ? <><span style={{color:"red"}}>{`${Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)))}`}</span><span> p.</span></>
-                              : "-"
-                          }
+                        {
+                          globalDiscount
+                            && user["discount"] && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] && !p.promotion
+                            ? <><span style={{ color: "red" }}>{`${Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)))}`}</span><span> p.</span></>
+                            : "-"
+                        }
 
-                        </td>
+                      </td>
 
                     }
                     <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast * p.count} р.</td>
+                    {
+                      globalDiscount
+
+                      && <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+
+                        {
+                          globalDiscount
+                            && user["discount"] && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] && !p.promotion
+                            ? <><span style={{ color: "red" }}>{`${Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)}`}</span><span> p.</span></>
+                            : <span>{p.coast * p.count} р.</span>
+                        }
+
+                      </td>
+
+                    }
                     <td style={{ verticalAlign: "middle" }}>
                       <CloseCircleOutlined
                         className="text-danger"
