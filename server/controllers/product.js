@@ -202,6 +202,9 @@ exports.upload = async (req, res) => {
         console.log('brand', brand, 'slug', slug)
         let fileName = `${brand}-${slug}-${Date.now()}.${req.files.image.mimetype.split('/')[1]}`
         // uploading file
+        console.log('image path--------------------------- start')
+        console.log(`${process.env.URI_PRODUCT_PICTURE}/${fileName}`)
+        console.log('image path--------------------------- end')
         await fs.writeFile(
             `${process.env.URI_PRODUCT_PICTURE}/${fileName}`,
             req.files.image.data,
