@@ -1,7 +1,7 @@
 const slugify = require("slugify");
 const fs = require("fs");
 const path = require("path");
-const Diler = require("../models/Diler");
+const Diler = require("../models/diler");
 const ProductPicture = require("../models/productPicture");
 require("dotenv").config();
 //-------------------------------------------------------- save brand picture start
