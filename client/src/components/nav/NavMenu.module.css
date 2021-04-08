@@ -4,6 +4,7 @@
     height: 70px;
     justify-content: center;
     border-bottom:1px solid rgba(128, 128, 128, 0.1);
+    /* background-color: lightslategrey; */
 }
 
 .container{

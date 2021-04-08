@@ -77,7 +77,7 @@ const AdminNavigation = (props) => {
                         </Menu.Item>
                     </SubMenu>
                     <br />
-                    <hr style={{ border: "1px solid white" }} />
+                    {/* <hr style={{ border: "1px solid white" }} /> */}
                     <SubMenu key="discount" icon={<PercentageOutlined />} title="Скидка">
                         <Menu.Item key="12">
                             <div className="switch" style={{display:"flex", alignItems:"center"}}>

@@ -38,7 +38,7 @@ const Cart = () => {
     setSum(cart.reduce((a, p) => a + p.count * p.coast, 0));
     setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
     setSumDiscount(cart.reduce((a, p) => {
-      if (!p.promotion) {
+      if (!p.promotion && user.discount) {
         return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
       } else {
         return a + p.count * p.coast
@@ -74,7 +74,7 @@ const Cart = () => {
           setSum(newCart.reduce((a, p) => a + p.count * p.coast, 0));
          
             setSumDiscount(newCart.reduce((a, p) => {
-              if (!p.promotion) {
+              if (!p.promotion && user.discount) {
                 return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
               } else {
                 return a + p.count * p.coast
@@ -114,6 +114,7 @@ const Cart = () => {
       setCart([]);
     });
     setSum(0);
+    setSumDiscount(0)
     setLoading(false);
   };
 

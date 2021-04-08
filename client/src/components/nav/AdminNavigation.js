@@ -121,9 +121,9 @@ const AdminNavigation = (props) => {
                 style={{ padding: 0, backgroundColor: "white" }}>
                 <Header
                     className="site-layout-background pl-2"
-                    style={{ padding: 0, backgroundColor: "white", display: "flex", justifyContent: "center" }}
+                    style={{ padding: 0, backgroundColor: "lightslategrey", display: "flex", justifyContent: "center" }}
                 >
-                    {props.name ? <span style={{ fontSize: "1rem", color: "black" }}>{props.name}</span> : null}
+                    {props.name ? <span style={{ fontSize: "1rem", color: "white" }}>{props.name}</span> : null}
                 </Header>
                 <Content style={{ margin: "0 0px" }} className="p-2">
                     {props.children ? props.children : null}

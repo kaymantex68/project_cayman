@@ -45,7 +45,7 @@ const Users = () => {
 
 
     return (
-        <AdminNavigation name="Dashboard" children={loading ? <Loading /> : ReturnPanel()} />
+        <AdminNavigation name="Пользователи/Статистика" children={loading ? <Loading /> : ReturnPanel()} />
     )
 }
 

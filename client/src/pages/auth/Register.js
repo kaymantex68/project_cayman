@@ -4,7 +4,7 @@ import { auth } from '../../firebase'
 import {useSelector} from 'react-redux'
 
 const Register = ({history}) => {
-    const [email, setEmail] = useState('andrey.s.h.68@yandex.ru')
+    const [email, setEmail] = useState('')
     const {user} = useSelector(state => ({...state}))
 
     useEffect(()=>{
