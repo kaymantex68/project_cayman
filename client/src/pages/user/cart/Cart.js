@@ -19,6 +19,7 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
   const [works, setWorks] = useState([])
   const [workTable, setWorkTable] = useState({})
+  const [delta, setDelta]=useState(0)
   // const [singlWorkTable, setSingleWorkTable] = useState({
   //   name: null,
   //   coast: null,
@@ -50,7 +51,8 @@ const Cart = () => {
 
   useMemo(() => {
     setCoast(sum + sumWork)
-  }, [sum, sumWork, globalDiscount])
+    setDelta(sum-sumDiscount)
+  }, [sum, sumWork, globalDiscount,sumDiscount, delta])
 
   // console.log('work', sumWork)
   useState(async () => {
@@ -115,6 +117,7 @@ const Cart = () => {
     });
     setSum(0);
     setSumDiscount(0)
+    setDelta(0)
     setLoading(false);
   };
 
@@ -259,7 +262,6 @@ const Cart = () => {
   const ReturnCart = () => {
     return (
       <>
-        <div className="float-right    btn text-primary">{`Итого: ${coast} руб.`}</div>
         <br />
         <div className="mt-2 container">
 
@@ -273,9 +275,24 @@ const Cart = () => {
           <div onClick={handleClear} className="btn btn-outline-danger float-left">
             очистить корзину
           </div>
-          {globalDiscount && <div className="float-right btn text-danger">{`Итого (материалы со скидкой): ${sumDiscount} руб.`}</div>}
-          <div className="float-right btn text-primary">{`Итого (материалы): ${sum} руб.`}</div>
-
+        <br/>
+        
+        <div className="float-right  text-dark " style={{fontSize:"1rem"}}>{`Итого: ${coast} руб.`}</div>
+        
+        <br/>
+        <hr/>
+       
+         
+  
+          <p className="text-primary" style={{ fontSize:"1rem", float: "right"}}>{`Итого (материалы): ${sum} руб.`}</p>
+          <br/>
+          <br/>
+          {globalDiscount && <p   style={{color:"red", fontSize:"1rem", float: "right"}}>{`Итого (материалы со скидкой): ${sumDiscount} руб.`}</p>}
+         
+          
+          <br/>
+          <hr/>
+          {globalDiscount && <p style={{color:"red", fontSize:"1rem", float: "right"}}>{`Ваша дельта: ${delta} руб.`}</p>}
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr className="text-center">
