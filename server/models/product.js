@@ -68,6 +68,10 @@ const productSchema = new mongoose.Schema({
     defaultImage: {
         type: String,
     }, 
+    count:{
+        type: Number,
+        default: 0,
+    },
     images: {
         type: Array,
     },

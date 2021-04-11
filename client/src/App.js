@@ -91,6 +91,10 @@ const PrinKP = lazy(()=>import('./components/printKP/PrintKP'))
 const Cart = lazy(()=>import('./pages/user/cart/Cart'))
 
 
+//accounting
+const Accounting = lazy(()=>import ('./pages/admin/accounting/Accounting'))
+
+
 
 const App = () => {
   const dispatch = useDispatch()
@@ -192,6 +196,7 @@ const App = () => {
             <AdminRoute exact path='/admin/user/:_id' component={UserDescription} />
             <AdminRoute exact path='/admin/groupDiscounts' component={GroupDiscounts} />
             <AdminRoute exact path='/admin/groupDiscount/:slug' component={GroupDiscountUpdate} />
+            <AdminRoute exact path='/admin/accounting' component={Accounting} />
 
 
             
