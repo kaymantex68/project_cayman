@@ -1,0 +1,30 @@
+version: "2.4"
+    
+services:
+    webhost: 
+        image: docker/frontend
+        container_name: webhost
+        volumes:
+            - C:\Users\Brandon\Desktop\project-site\images:/usr/share/nginx/html/images
+            # - C:\Users\Brandon\Desktop\project-site\client\nginx:/etc/nginx/conf.d
+        depends_on: 
+            - api
+        ports: 
+            - 80:80
+        networks: 
+            - net
+
+    api: 
+        image: docker/backend
+        container_name: api
+        volumes: 
+            - C:\Users\Brandon\Desktop\project-site\images:/usr/scr/app/images
+        ports: 
+            - 8000:8000
+        networks: 
+            - net    
+
+networks: 
+    net:
+        driver: bridge
+    
