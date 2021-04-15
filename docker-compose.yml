@@ -6,7 +6,7 @@ services:
         container_name: webhost
         volumes:
             - C:\Users\Brandon\Desktop\project-site\images:/usr/share/nginx/html/images
-            # - C:\Users\Brandon\Desktop\project-site\client\nginx:/etc/nginx/conf.d
+            - C:\Users\Brandon\Desktop\project-site\nginx:/etc/nginx/conf.d
         depends_on: 
             - api
         ports: 
