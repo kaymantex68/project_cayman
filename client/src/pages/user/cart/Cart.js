@@ -201,6 +201,13 @@ const Cart = () => {
         if (err.response.status === 400) toast.error(err.response.data);
       });
     setSum(change.reduce((a, p) => a + p.count * p.coast, 0));
+    setSumDiscount(change.reduce((a, p) => {
+      if (!p.promotion && user.discount && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"]) {
+        return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
+      } else {
+        return a + p.count * p.coast
+      }
+    }, 0));
     // setLoading(false);
   };
 
