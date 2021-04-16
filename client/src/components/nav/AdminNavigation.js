@@ -14,7 +14,8 @@ import {
     ClearOutlined,
     ColumnWidthOutlined,
     RobotOutlined,
-    PercentageOutlined
+    PercentageOutlined,
+    ContactsOutlined
 
 } from "@ant-design/icons";
 import {useSelector, useDispatch} from 'react-redux'
@@ -109,6 +110,11 @@ const AdminNavigation = (props) => {
                     <SubMenu key="diler" icon={<RobotOutlined />} title="Дилер">
                         <Menu.Item key="diler1" style={{ color: 'white' }} >
                             <Link to="/admin/diler">Дилер</Link>
+                        </Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="contacts" icon={<ContactsOutlined />} title="Контакты">
+                        <Menu.Item key="contacts1" style={{ color: 'white' }} >
+                            <Link to="/admin/contacts">Контакты</Link>
                         </Menu.Item>
                     </SubMenu>
                 </Menu>

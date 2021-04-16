@@ -80,6 +80,7 @@ const UserDescription = lazy(()=> import ('./pages/admin/userDescription/UserDes
 const AdminNavigation = lazy(() => import('./components/nav/AdminNavigation'))
 const BrandCreate = lazy(() => import('./pages/admin/brand/BrandCreate'))
 const BrandUpdate = lazy(() => import('./pages/admin/brand/BrandUpdate'))
+const ContactsCreate = lazy(()=>import('./pages/admin/contacts/ContactsCreate'))
 
 const Optimization = lazy(() => import('./pages/admin/optimization/Optimization'))
 
@@ -93,6 +94,9 @@ const Cart = lazy(()=>import('./pages/user/cart/Cart'))
 
 //accounting
 const Accounting = lazy(()=>import ('./pages/admin/accounting/Accounting'))
+
+//contacts
+const Contacts = lazy(()=>import('./components/contacts/Contacts'))
 
 
 
@@ -196,8 +200,8 @@ const App = () => {
             <AdminRoute exact path='/admin/user/:_id' component={UserDescription} />
             <AdminRoute exact path='/admin/groupDiscounts' component={GroupDiscounts} />
             <AdminRoute exact path='/admin/groupDiscount/:slug' component={GroupDiscountUpdate} />
-            <AdminRoute exact path='/admin/accounting' component={Accounting} />
-
+            <AdminRoute exact path='/admin/accounting' component={Accounting} /> 
+            <AdminRoute exact path='/admin/contacts' component={ContactsCreate} />
 
             
             <Route exact path="/catalog" component={Catalog} />
@@ -206,6 +210,8 @@ const App = () => {
             <Route exact path="/catalog/:category/:sub" component={Catalog} />
             <Route exact path="/catalog/:category/:sub/:brand" component={Catalog} />  
             <Route exact path="/catalog/:category/:sub/:brand/:name" component={DescriptionProduct} />  
+
+            <Route exact path="/contacts" component={Contacts} />
             
           </Switch>
         </div>

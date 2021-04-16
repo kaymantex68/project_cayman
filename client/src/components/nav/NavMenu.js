@@ -128,7 +128,7 @@ const NavMenu = () => {
                             })}
                         </SubMenu>
                         <Menu.Item>
-                            Контакты
+                            <Link to='/contacts'>Контакты</Link>
                 </Menu.Item>
                     </Menu>
                 </div>

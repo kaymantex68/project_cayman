@@ -1,0 +1,25 @@
+.contactsContainer{
+    width: 100%;
+    min-height: 700px;
+}
+
+.infoContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 300px;
+    /* background-color: cadetblue; */
+}
+
+.info{
+    width: 90%;
+    height: 90%;
+    /* background-color: darkblue; */
+}
+
+.mapContainer{
+    width: 100%;
+    height: 450px;
+    /* background-color: coral; */
+}
