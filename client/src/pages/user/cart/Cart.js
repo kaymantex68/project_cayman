@@ -10,7 +10,7 @@ import { CloseCircleOutlined, SubnodeOutlined } from "@ant-design/icons";
 import { toast } from 'react-toastify'
 import { Link } from 'react-router-dom'
 import PrintKP from '../../../components/printKP/PrintKP'
-
+import { createOrder } from '../../../functions/orderBook'
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 import classes from './Cart.module.css'
@@ -19,7 +19,7 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
   const [works, setWorks] = useState([])
   const [workTable, setWorkTable] = useState({})
-  const [delta, setDelta]=useState(0)
+  const [delta, setDelta] = useState(0)
   // const [singlWorkTable, setSingleWorkTable] = useState({
   //   name: null,
   //   coast: null,
@@ -51,8 +51,8 @@ const Cart = () => {
 
   useMemo(() => {
     setCoast(sum + sumWork)
-    setDelta(sum-sumDiscount)
-  }, [sum, sumWork, globalDiscount,sumDiscount, delta])
+    setDelta(sum - sumDiscount)
+  }, [sum, sumWork, globalDiscount, sumDiscount, delta])
 
   // console.log('work', sumWork)
   useState(async () => {
@@ -74,15 +74,15 @@ const Cart = () => {
 
           setCart(newCart.reverse());
           setSum(newCart.reduce((a, p) => a + p.count * p.coast, 0));
-         
-            setSumDiscount(newCart.reduce((a, p) => {
-              if (!p.promotion && user.discount) {
-                return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
-              } else {
-                return a + p.count * p.coast
-              }
-            }, 0));
-         
+
+          setSumDiscount(newCart.reduce((a, p) => {
+            if (!p.promotion && user.discount && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"]) {
+              return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
+            } else {
+              return a + p.count * p.coast
+            }
+          }, 0));
+
         })
 
         // nes we will add new products to Cart with setCart
@@ -120,6 +120,41 @@ const Cart = () => {
     setDelta(0)
     setLoading(false);
   };
+
+  const handleOrder = async () => {
+    console.log('order ------------------------------- start')
+    //order
+    const order = [...cart]
+    order.map(p => {
+      if (user["discount"] && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] && !p.promotion) {
+        p.percentDiscount = user["discount"][p.brandSlug]["discount"]
+        p.coastDiscount = Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)))
+      }
+      return p
+    })
+    // order ID
+    const orderId = `${user.email}-${Date.now()}`
+    // status
+    const status= [{bay:user.email,status:"0"}]
+    // orderBy
+    const orderBy=user._id
+    // statusIndex
+    const statusIndex=0
+    // sum
+    // sumDiscount
+
+    await createOrder({orderId,products: order, status, statusIndex, orderBy, sum, sumDiscount}, user).then(res=>{
+      toast.success('Заявка отправлена')
+    })
+
+    console.log('orderId', orderId)
+    console.log('status', status)
+    console.log('orderBy', orderBy)
+    console.log('order', order)
+    console.log('sum', sum)
+    console.log('sum discount', sumDiscount)
+    console.log('order ------------------------------- start')
+  }
 
   const handleChangeCount = async (e, product) => {
     // setLoading(true)
@@ -275,24 +310,27 @@ const Cart = () => {
           <div onClick={handleClear} className="btn btn-outline-danger float-left">
             очистить корзину
           </div>
-        <br/>
-        
-        <div className="float-right  text-dark " style={{fontSize:"1rem"}}>{`Итого: ${coast} руб.`}</div>
-        
-        <br/>
-        <hr/>
-       
-         
-  
-          <p className="text-primary" style={{ fontSize:"1rem", float: "right"}}>{`Итого (материалы): ${sum} руб.`}</p>
-          <br/>
-          <br/>
-          {globalDiscount && <p   style={{color:"red", fontSize:"1rem", float: "right"}}>{`Итого (материалы со скидкой): ${sumDiscount} руб.`}</p>}
-         
-          
-          <br/>
-          <hr/>
-          {globalDiscount && <p style={{color:"red", fontSize:"1rem", float: "right"}}>{`Ваша дельта: ${delta} руб.`}</p>}
+          <div onClick={handleOrder} className="btn btn-outline-success float-left ml-1">
+            оформить заказ
+          </div>
+          <br />
+
+          <div className="float-right  text-dark " style={{ fontSize: "1rem" }}>{`Итого: ${coast} руб.`}</div>
+
+          <br />
+          <hr />
+
+
+
+          <p className="text-primary" style={{ fontSize: "1rem", float: "right" }}>{`Итого (материалы): ${sum} руб.`}</p>
+          <br />
+          <br />
+          {globalDiscount && <p style={{ color: "red", fontSize: "1rem", float: "right" }}>{`Итого (материалы со скидкой): ${sumDiscount} руб.`}</p>}
+
+
+          <br />
+          <hr />
+          {globalDiscount && <p style={{ color: "red", fontSize: "1rem", float: "right" }}>{`Ваша дельта: ${delta} руб.`}</p>}
           <table className="table table-bordered table-sm">
             <thead className="thead-dark">
               <tr className="text-center">
