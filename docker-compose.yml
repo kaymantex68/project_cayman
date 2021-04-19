@@ -4,9 +4,18 @@ services:
     webhost: 
         image: docker/frontend
         container_name: webhost
+        # environment: 
+        #     - REACT_APP_REGISTER_REDIRECT_URL='http://192.168.1.35/register/complete'
+        #     - REACT_APP_FORGOT_PASSWORD_REDIRECT='http://192.168.1.35/login'
+        #     - REACT_APP_API='http://192.168.1.35:8000/api'
+        #     - REACT_APP_IMAGES_BRAND='/images/brand'
+        #     - REACT_APP_IMAGES_PRODUCTS='/images/product'
+        #     - REACT_APP_IMAGES_SLIDER='/images/slider'
+        #     - REACT_APP_IMAGES_LOGO='/images/logo'
+        #     - REACT_APP_IMAGES_DILER='/images/diler'
         volumes:
-            - C:\Users\Brandon\Desktop\project-site\images:/usr/share/nginx/html/images
-            - C:\Users\Brandon\Desktop\project-site\nginx:/etc/nginx/conf.d
+            - ./images/:/usr/share/nginx/html/images
+            - ./nginx/:/etc/nginx/conf.d
         depends_on: 
             - api
         ports: 
@@ -17,8 +26,15 @@ services:
     api: 
         image: docker/backend
         container_name: api
+        environment: 
+        #     - DATABASE='mongodb+srv://Brandon:311774@cluster0.7t3kp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+        #     - PORT=8000
+            - URI_BRAND_PICTURE=/usr/scr/app/images/brand
+            - URI_PRODUCT_PICTURE=/usr/scr/app/images/product
+            - URI_SLIDER_PICTURE=/usr/scr/app/images/slider
+            - URI_DILER_PICTURE=/usr/scr/app/images/diler
         volumes: 
-            - C:\Users\Brandon\Desktop\project-site\images:/usr/scr/app/images
+            - ./images/:/usr/scr/app/images
         ports: 
             - 8000:8000
         networks: 
