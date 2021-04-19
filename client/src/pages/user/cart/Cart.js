@@ -39,7 +39,7 @@ const Cart = () => {
     setSum(cart.reduce((a, p) => a + p.count * p.coast, 0));
     setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
     setSumDiscount(cart.reduce((a, p) => {
-      if (!p.promotion && user.discount) {
+      if (!p.promotion && user.discount && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] ) {
         return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
       } else {
         return a + p.count * p.coast
@@ -143,7 +143,7 @@ const Cart = () => {
     // sum
     // sumDiscount
 
-    await createOrder({orderId,products: order, status, statusIndex, orderBy, sum, sumDiscount}, user).then(res=>{
+    await createOrder({orderId,products: order, status, statusIndex, orderBy, sum, sumDiscount}, user, user.token).then(res=>{
       toast.success('Заявка отправлена')
     })
 
