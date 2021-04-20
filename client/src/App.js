@@ -85,6 +85,7 @@ const ContactsCreate = lazy(()=>import('./pages/admin/contacts/ContactsCreate'))
 const Optimization = lazy(() => import('./pages/admin/optimization/Optimization'))
 
 const SideDrawer = lazy(()=> import('./components/drawer/SideDrawer'))
+const ModalOrder = lazy(()=>import('./components/modal/ModalOrder'))
 const DescriptionProduct = lazy(()=>import('./components/descriptionProduct/DescriptionProduct'))
 const PrinKP = lazy(()=>import('./components/printKP/PrintKP'))
 //User
@@ -162,6 +163,7 @@ const App = () => {
         <div>
           <Header />
           <SideDrawer/>
+          <ModalOrder/>
         </div>
         {/* <div>
           <NavMenu />

@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom'
 import PrintKP from '../../../components/printKP/PrintKP'
 import { createOrder } from '../../../functions/orderBook'
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import { Modal, Button } from 'antd';
+
 
 import classes from './Cart.module.css'
 // import './Cart.css'
@@ -31,7 +33,10 @@ const Cart = () => {
   const [sumDiscount, setSumDiscount] = useState(0)
   const [sumWork, setSumWork] = useState(0)
   const [coast, setCoast] = useState(0)
-  const { user, globalDiscount } = useSelector((state) => ({ ...state }));
+
+
+
+  const { user, globalDiscount, infoOrder } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   const resetSum = () => {
@@ -39,7 +44,7 @@ const Cart = () => {
     setSum(cart.reduce((a, p) => a + p.count * p.coast, 0));
     setSumWork(Object.keys(workTable).reduce((a, key) => a + (workTable[key].coast * workTable[key].count), 0));
     setSumDiscount(cart.reduce((a, p) => {
-      if (!p.promotion && user.discount && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] ) {
+      if (!p.promotion && user.discount && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"]) {
         return a + Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)) * p.count)
       } else {
         return a + p.count * p.coast
@@ -122,39 +127,56 @@ const Cart = () => {
   };
 
   const handleOrder = async () => {
-    console.log('order ------------------------------- start')
-    //order
-    const order = [...cart]
-    order.map(p => {
-      if (user["discount"] && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] && !p.promotion) {
-        p.percentDiscount = user["discount"][p.brandSlug]["discount"]
-        p.coastDiscount = Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)))
-      }
-      return p
-    })
-    // order ID
-    const orderId = `${user.email}-${Date.now()}`
-    // status
-    const status= [{bay:user.email,status:"0"}]
-    // orderBy
-    const orderBy=user._id
-    // statusIndex
-    const statusIndex=0
-    // sum
-    // sumDiscount
-
-    await createOrder({orderId,products: order, status, statusIndex, orderBy, sum, sumDiscount}, user, user.token).then(res=>{
-      toast.success('Заявка отправлена')
+    dispatch({
+      type: "SET_VISIBLE_MODAL",
+      payload: true
     })
 
-    console.log('orderId', orderId)
-    console.log('status', status)
-    console.log('orderBy', orderBy)
-    console.log('order', order)
-    console.log('sum', sum)
-    console.log('sum discount', sumDiscount)
-    console.log('order ------------------------------- start')
+
+    // console.log('orderId', orderId)
+    // console.log('status', status)
+    // console.log('orderBy', orderBy)
+    // console.log('order', order)
+    // console.log('sum', sum)
+    // console.log('sum discount', sumDiscount)
+    // console.log('order ------------------------------- start')
+
   }
+
+  useMemo( async () => {
+    if (infoOrder !== null) {
+      // console.log('infoOrder', infoOrder)
+      //order
+      const order = [...cart]
+      order.map(p => {
+        if (user["discount"] && user["discount"][p.brandSlug] && user["discount"][p.brandSlug]["discount"] && !p.promotion) {
+          p.percentDiscount = user["discount"][p.brandSlug]["discount"]
+          p.coastDiscount = Math.round((p.coast * ((100 - user["discount"][p.brandSlug]["discount"]) / 100)))
+        }
+        return p
+      })
+      // order ID
+      const orderId = `${user.email}-${Date.now()}`
+      // status
+      const status = [{ bay: user.email, status: "0" }]
+      // orderBy
+      const orderBy = user._id
+      // statusIndex
+      const statusIndex = 0
+      // sum
+      // sumDiscount
+      const info={...infoOrder}
+
+
+      await createOrder({ orderId, products: order, status, statusIndex, orderBy, sum, sumDiscount, info }, user, user.token).then(res => {
+        toast.success('Заявка отправлена')
+      })
+    }
+  }, [infoOrder])
+
+
+
+
 
   const handleChangeCount = async (e, product) => {
     // setLoading(true)
@@ -304,6 +326,7 @@ const Cart = () => {
   const ReturnCart = () => {
     return (
       <>
+
         <br />
         <div className="mt-2 container">
 

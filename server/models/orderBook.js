@@ -25,6 +25,9 @@ const orderBookSchema= new mongoose.Schema({
     sumDiscount: {
         type: Number,
     },
+    info:{
+        type: Object
+    }
 }, { timestamps: true })
 
 module.exports= new mongoose.model("OrderBook", orderBookSchema)

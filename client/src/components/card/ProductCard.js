@@ -3,7 +3,7 @@ import classes from "./ProductCard.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import { addToCart } from "../../functions/cart";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 const StyleInStock = {
   fontSize: "0.8rem",
   margin: "0px",
@@ -16,13 +16,14 @@ const StyleInStock = {
 const ProductCard = ({ product }) => {
   const { user, cart, globalDiscount } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
-
-  // console.log("user discount", user.discount);
-  // console.log(user.discount[product.brandSlug]["discount"])
+  const history= useHistory()
+ 
 
   const handleAddToCart = async (e, product) => {
-    // e.preventDefault();
-    // console.log("add to cart product:", product.name);
+    
+    if(!user) {
+      return history.push('/register')
+    }
 
     let uniqCart = [];
     uniqCart = [...cart];

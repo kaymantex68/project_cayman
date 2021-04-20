@@ -4,9 +4,9 @@ const slugify = require('slugify')
 exports.create = async (req, res) => {
     try {
         
-        const { orderId, products, status, statusIndex, orderBy, seller, sum, sumDiscount } = req.body.order
+        const { orderId, products, status, statusIndex, orderBy, seller, sum, sumDiscount, info } = req.body.order
         // console.log(req.body.order)
-        const order = await new OrderBook({ orderId, products, status, statusIndex, orderBy, seller,sum, sumDiscount  }).save()
+        const order = await new OrderBook({ orderId, products, status, statusIndex, orderBy, seller,sum, sumDiscount, info  }).save()
         res.json(order)
     } catch (err) {
         console.log('Ошибка создания ордера --------->', err)
@@ -23,10 +23,10 @@ exports.list = async (req, res) =>{
 
 exports.update = async (req, res) => {
     try {
-        const { orderId, products, status, statusIndex, orderBy, seller, sum, sumDiscount } = req.body.order
+        const { orderId, products, status, statusIndex, orderBy, seller, sum, sumDiscount, info } = req.body.order
         const result = await OrderBook.findOneAndUpdate(
             { _id: req.params._id },
-            { orderId, products, status, statusIndex, orderBy, seller, sum, sumDiscount },
+            { orderId, products, status, statusIndex, orderBy, seller, sum, sumDiscount, info },
             { new: true })
         res.json(result)
     } catch (err) {

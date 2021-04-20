@@ -7,6 +7,8 @@ import { workReducer } from './workReducer'
 import { filterReducer } from './filterReducer'
 import { userInfoReducer } from './userInfoReducer'
 import { setDiscountReducer } from './setDiscountReducer'
+import { modalReducer } from './modalReducer'
+import { infoOrderReducer } from './infoOrderReducer'
 
 const rootReducer = combineReducers({
     user: userReducer,
@@ -17,6 +19,8 @@ const rootReducer = combineReducers({
     filter: filterReducer,
     userInfo: userInfoReducer,
     globalDiscount: setDiscountReducer,
+    modal: modalReducer,
+    infoOrder: infoOrderReducer
 })
 
 export default rootReducer

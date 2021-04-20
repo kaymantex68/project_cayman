@@ -20,7 +20,7 @@ const AdminDashboard = () => {
     const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(false)
     const [orders, setOrders] = useState([])
-    const [status, setStatus]= useState(0)
+    const [status, setStatus] = useState(0)
 
     const { user } = useSelector(state => ({ ...state }))
 
@@ -114,18 +114,18 @@ const AdminDashboard = () => {
         </div>
     )
 
-    const completeOrder = ()=>(
+    const completeOrder = () => (
         <div >
-        <Menu mode="inline" defaultOpenKeys={[]}>
-            {orders.filter(o => o.statusIndex >=20  && o.statusIndex < 30).map(o => {
-                return (
-                    <>
-                        {orderMenu(o)}
-                    </>
-                )
-            })}
-        </Menu>
-    </div>
+            <Menu mode="inline" defaultOpenKeys={[]}>
+                {orders.filter(o => o.statusIndex >= 20 && o.statusIndex < 30).map(o => {
+                    return (
+                        <>
+                            {orderMenu(o)}
+                        </>
+                    )
+                })}
+            </Menu>
+        </div>
     )
 
     const orderMenu = (o) => (
@@ -143,6 +143,15 @@ const AdminDashboard = () => {
                 className="container"
             >
                 <div>
+                    {Object.keys(o.info).map((key, index) => {
+                        return (
+                            <div className="mb-3 mt-3">
+                                <span style={{marginRight:"10px"}}>{`${key}:` }</span>
+                                <span>{`${o.info[key]}`}</span>
+                            </div>
+                        )
+                    })}
+                    <hr/>
                     <div className="mb-3 mt-3">{`сумма без скидки: ${o.sum} руб`}</div>
 
                     <div className="mb-3">{`сумма со скидкой: ${o.sumDiscount} руб.`}</div>
@@ -162,13 +171,13 @@ const AdminDashboard = () => {
                         </button>
                             <select name="status" className="form-control float-right"
                                 style={{ maxWidth: "300px" }}
-                            onChange={(e) => setStatus(e.target.value)}
+                                onChange={(e) => setStatus(e.target.value)}
                             >
-                                <option value={0} selected={o.statusIndex===0}>новый заказ</option>
-                                <option value={1} selected={o.statusIndex===1}>в обработке</option>
-                                <option value={2} selected={o.statusIndex===2}>на сборке</option>
-                                <option value={3} selected={o.statusIndex===3}>отправлен</option>
-                                <option value={20} selected={o.statusIndex===20}>завершен</option>
+                                <option value={0} selected={o.statusIndex === 0}>новый заказ</option>
+                                <option value={1} selected={o.statusIndex === 1}>в обработке</option>
+                                <option value={2} selected={o.statusIndex === 2}>на сборке</option>
+                                <option value={3} selected={o.statusIndex === 3}>отправлен</option>
+                                <option value={20} selected={o.statusIndex === 20}>завершен</option>
                             </select>
                         </div>
                     </div>
