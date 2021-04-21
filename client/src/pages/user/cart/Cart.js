@@ -76,8 +76,8 @@ const Cart = () => {
 
             newCart[i].count = oldCart[i].count
           }
-
-          setCart(newCart.reverse());
+          setCart(newCart);
+          // setCart(newCart.reverse());
           setSum(newCart.reduce((a, p) => a + p.count * p.coast, 0));
 
           setSumDiscount(newCart.reduce((a, p) => {
@@ -112,6 +112,7 @@ const Cart = () => {
 
 
   const handleClear = async () => {
+    if (window.confirm(`Очистить корзину?`)) {
     setLoading(true);
     await addToCart([], user.token).then((res) => {
       dispatch({
@@ -124,6 +125,7 @@ const Cart = () => {
     setSumDiscount(0)
     setDelta(0)
     setLoading(false);
+  }
   };
 
   const handleOrder = async () => {
@@ -328,14 +330,14 @@ const Cart = () => {
       <>
 
         <br />
-        <div className="mt-2 container">
+        <div className="mt-2 container-fluid">
 
           <Link className="float-left  btn text-primary" to="/user/print">распечатать КП</Link>
           <br />
         </div>
 
         <hr />
-        <div className="container" >
+        <div className="container-fluid" >
 
           <div onClick={handleClear} className="btn btn-outline-danger float-left">
             очистить корзину
@@ -486,7 +488,7 @@ const Cart = () => {
         <br />
         {/* table work */}
 
-        <div className="container">
+        <div className="container-fluid">
           <div onClick={handleClearWork} className="btn btn-outline-danger float-left">
             очистить работы
           </div>
