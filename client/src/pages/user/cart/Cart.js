@@ -113,19 +113,19 @@ const Cart = () => {
 
   const handleClear = async () => {
     if (window.confirm(`Очистить корзину?`)) {
-    setLoading(true);
-    await addToCart([], user.token).then((res) => {
-      dispatch({
-        type: "ADD_TO_CART",
-        payload: [],
+      setLoading(true);
+      await addToCart([], user.token).then((res) => {
+        dispatch({
+          type: "ADD_TO_CART",
+          payload: [],
+        });
+        setCart([]);
       });
-      setCart([]);
-    });
-    setSum(0);
-    setSumDiscount(0)
-    setDelta(0)
-    setLoading(false);
-  }
+      setSum(0);
+      setSumDiscount(0)
+      setDelta(0)
+      setLoading(false);
+    }
   };
 
   const handleOrder = async () => {
@@ -145,7 +145,7 @@ const Cart = () => {
 
   }
 
-  useMemo( async () => {
+  useMemo(async () => {
     if (infoOrder !== null) {
       // console.log('infoOrder', infoOrder)
       //order
@@ -167,7 +167,7 @@ const Cart = () => {
       const statusIndex = 0
       // sum
       // sumDiscount
-      const info={...infoOrder}
+      const info = { ...infoOrder }
 
 
       await createOrder({ orderId, products: order, status, statusIndex, orderBy, sum, sumDiscount, info }, user, user.token).then(res => {
@@ -298,17 +298,19 @@ const Cart = () => {
   }
 
   const handleClearWork = async () => {
-    setLoading(true);
-    await addToWork({}, user.token).then((res) => {
-      dispatch({
-        type: "ADD_TO_WORK",
-        payload: {},
+    if (window.confirm(`Очистить работы?`)) {
+      setLoading(true);
+      await addToWork({}, user.token).then((res) => {
+        dispatch({
+          type: "ADD_TO_WORK",
+          payload: {},
+        });
+        setWorkTable({});
+        toast.success('Список работ очищен')
       });
-      setWorkTable({});
-      toast.success('Список работ очищен')
-    });
-    setSumWork(0);
-    setLoading(false);
+      setSumWork(0);
+      setLoading(false);
+    }
   };
 
 
