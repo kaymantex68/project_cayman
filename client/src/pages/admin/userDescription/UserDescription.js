@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { getSubs } from '../../../functions/sub'
 import Loading from '../../../components/form/LoadingIcon'
-import { LoadingOutlined, PercentageOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { CodepenOutlined, LoadingOutlined, PercentageOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { EditOutlined, DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
 import { getBrands } from '../../../functions/brand'
@@ -29,9 +29,12 @@ const UserDescription = ({ match, history }) => {
     const [discount, setDiscount] = useState({})
     const [groupDiscounts, setGroupDiscounts] = useState([])
     const [groupDiscount, setGroupDiscount] = useState(null)
+
+
     const { user } = useSelector(state => ({ ...state }))
 
-    console.log('group discount', groupDiscount)
+
+
 
     useEffect(() => {
         setLoading(true)
@@ -49,8 +52,8 @@ const UserDescription = ({ match, history }) => {
         })
     }, [])
 
-    console.log('discount', discount)
 
+    console.log('customer----------->',customer)
 
     const handleDiscount = async (e, b) => {
         // console.log('brand', b.slug)
@@ -79,7 +82,7 @@ const UserDescription = ({ match, history }) => {
         console.log('new', newDiscount)
         setDiscount({ ...newDiscount })
         await addToDiscounts(match.params._id, newDiscount, user.token).then(res => {
-            
+
             getUser(match.params._id, user.token).then(res => {
                 setCustomer(res.data)
                 setDiscount(res.data.discounts)
@@ -111,6 +114,57 @@ const UserDescription = ({ match, history }) => {
     }
 
     // console.log('brands', brands)
+
+
+    const cartForm = () => (
+        <div>
+            <table className="table table-bordered container">
+                <thead className="thead-dark">
+                    <tr className="text-center">
+                        <th scope="col" style={{ width: "50px" }}>№</th>
+                        <th scope="col" style={{ width: "150px" }}>Изображение</th>
+                        <th scope="col" style={{ width: "300px" }}>Наименование</th>
+                        <th scope="col" style={{ width: "200px" }}>Brand</th>
+                        <th scope="col" style={{ width: "200px" }}>Кол-во</th>
+                        <th scope="col" style={{ width: "200px" }}>Цена (розница)</th>
+                    </tr>
+                </thead>
+                <tbody className="text-center">
+                    {
+                        customer && customer.cart && customer.cart.map((p, index) => {
+                            let pathImage;
+                            if (p.images.length > 0)
+                                pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${p.images[0]}`;
+                            else pathImage = "/images/product/default.png";
+                            return (
+                                <tr key={p._id} >
+                                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{index + 1}</td>
+                                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>
+                                        <img
+                                            style={{
+                                                maxWidth: "90px",
+                                                maxHeight: "70px",
+                                                // border: "1px solid black",
+                                            }}
+                                            alt="picture"
+                                            src={pathImage}
+                                        />
+                                    </td>
+                                    <td className="text-center" style={{ fontSize: "0.9rem", verticalAlign: "middle", maxWidth: "80px", wordBreak: "break-all" }}>{p.name}</td>
+                                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.brand}</td>
+                                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.count}</td>
+                                    <td style={{ fontSize: "0.9rem", verticalAlign: "middle" }}>{p.coast}</td>
+                                </tr>
+                            )
+                        })
+                    }
+                </tbody>
+            </table>
+        </div>
+    )
+
+
+
     const userForm = () => {
         return (
             <div style={{ color: "black" }}>
@@ -154,17 +208,17 @@ const UserDescription = ({ match, history }) => {
                                                 className="ml-2 form-control text-center"
                                                 type="number"
                                                 value={discount && discount[slug] ? discount[slug]["discount"] : 0}
-                                                style={{ flex: "6"}}
+                                                style={{ flex: "6" }}
                                                 onChange={(e) => handleDiscount(e, b)}
                                             />
-                                            {discount && discount[slug] 
-                                            ?<CheckSquareOutlined
-                                                disabled={true}
-                                                className={discount && discount[slug] && discount[slug].active  ? "text-success ml-2" : "text-danger ml-2"}
-                                                onClick={(e) => handleActive(e, b)}
-                                            />
-                                        : <CheckSquareOutlined className="ml-2"/>
-                                        }
+                                            {discount && discount[slug]
+                                                ? <CheckSquareOutlined
+                                                    disabled={true}
+                                                    className={discount && discount[slug] && discount[slug].active ? "text-success ml-2" : "text-danger ml-2"}
+                                                    onClick={(e) => handleActive(e, b)}
+                                                />
+                                                : <CheckSquareOutlined className="ml-2" />
+                                            }
                                         </div>
 
                                         {/* <hr /> */}
@@ -182,7 +236,9 @@ const UserDescription = ({ match, history }) => {
                                 <PercentageOutlined />  Корзина </span>
                         }
                         className="container"
-                    ></SubMenu>
+                    >
+                        {cartForm()}
+                    </SubMenu>
                 </Menu>
             </div>
         )

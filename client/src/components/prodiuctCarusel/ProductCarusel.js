@@ -29,9 +29,9 @@ function useWindowSize() {
     if (window.innerWidth < 1500 && window.innerWidth > 1300) { return 5 }
     if (window.innerWidth < 1300 && window.innerWidth > 1000) { return 4 }
     if (window.innerWidth < 1000 && window.innerWidth > 850) { return 3 }
-    if (window.innerWidth < 850 ) { return 2 }
+    if (window.innerWidth < 850 && window.innerWidth > 400 ) { return 2 } 
     // if (window.innerWidth < 850 && window.innerWidth > 700) { return 2 }
-    // if (window.innerWidth < 700) { return 2 }
+    if (window.innerWidth < 400) { return 1 }
     // return size;
 }
 
