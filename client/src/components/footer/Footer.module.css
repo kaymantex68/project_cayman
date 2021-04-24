@@ -25,7 +25,9 @@
     /* border: 1px solid red; */
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    justify-content: center;
+    /* background-color: brown; */
 }
 
 
@@ -96,3 +98,31 @@
     color: white;
     align-items: center;
 }
+
+
+
+@media (max-width: 500px){
+   
+    .containerService{
+        display: none;
+    }
+
+    .containerInfo{
+        display: none;
+    }
+
+    .containerContacs{
+        display: none;
+    }
+
+    .social{
+        display: none;
+    }
+    .creditCard{
+        display: none;
+    }
+
+    .any{
+        display: none;
+    }
+} 

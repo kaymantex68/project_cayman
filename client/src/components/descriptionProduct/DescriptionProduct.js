@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import NavMenu from '../nav/NavMenu'
 import Footer from '../footer/Footer'
 import { getProduct } from '../../functions/product'
@@ -24,6 +25,8 @@ const DescriptionProduct = ({ match }) => {
 
     const { user, cart, globalDiscount } = useSelector(state => ({ ...state }))
     const dispatch = useDispatch()
+
+    console.log('match', match )
 
     useEffect(() => {
         getProduct(match.params.name).then(res => {
@@ -140,6 +143,7 @@ const DescriptionProduct = ({ match }) => {
                             : null}
                     <hr />
                     <div className="btn btn-outline float-right" onClick={(e) => { handleAddToCart(e, product) }}>В корзину</div>
+                    {user && user.role === "admin" && <div className="btn  float-left"><Link to={`/admin/product/${match.params.name}`}>Редактировать</Link></div>}
                     <div>
                         <table className="table table-hover table-sm table-striped">
                             <thead className="thead-dark text-center">

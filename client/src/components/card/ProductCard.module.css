@@ -54,3 +54,13 @@
     transition: 0.3s;
     cursor: pointer;
   }
+
+  .editSymbol{
+    font-size: 0.9rem;
+    transition: 0.3s;
+  }
+
+  .editSymbol:hover{
+    font-size: 1.1rem;
+    transition: 0.3s;
+  }

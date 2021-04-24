@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import { addToCart } from "../../functions/cart";
 import { Link, useHistory } from "react-router-dom";
+import {EditOutlined} from "@ant-design/icons"
 const StyleInStock = {
   fontSize: "0.8rem",
   margin: "0px",
@@ -60,7 +61,7 @@ const ProductCard = ({ product }) => {
   else pathImage = "/images/product/default.png";
   return (
     <div className={classes.cardContainer}>
-
+    
       <Link to={`/catalog/${product.category.slug}/${product.sub.slug}/${product.brandSlug}/${product.slug}`}>
         <div>
           <div
@@ -73,6 +74,7 @@ const ProductCard = ({ product }) => {
               position: "relative",
             }}
           >
+            
             {/* picture */}
             <img
               style={{
@@ -254,6 +256,8 @@ const ProductCard = ({ product }) => {
         {/* <br/> */}
         {/* button */}
       </Link>
+        {/* edit cart */}
+        {user && user.role==="admin" && <div style={{ textDecoration:"none", display:"flex", justifyContent:"center", alignItems:"center", width:"50px", height:"30px", position:"absolute",top:"0", left:"0", backgroundColor:"#3c475b4f", color:"white"}}><Link to={`/admin/product/${product.slug}`} style={{color:"white"}}><EditOutlined className={classes.editSymbol}/></Link></div>}
       <div
         onClick={(e) => handleAddToCart(e, product)}
         className={classes.buttonAddToCart}

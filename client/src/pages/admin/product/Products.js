@@ -185,7 +185,7 @@ const Products = () => {
                         <Tooltip title="под заказ"><CloseCircleOutlined key="outStock" className={p.inStock===0? "text-danger": null} onClick={(e)=>handleInStock(p,0)}/></Tooltip>,
                     ]}
                 >
-                    <span>Наличие товара</span>
+                    <div>цена: <span style={{fontWeight:"bold", fontSize:"1.2rem"}}>{p.coast && p.coast}</span> руб.</div>
                 </Card>
 
             </div>
