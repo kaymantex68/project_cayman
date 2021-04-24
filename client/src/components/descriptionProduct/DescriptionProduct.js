@@ -31,11 +31,12 @@ const DescriptionProduct = ({ match }) => {
     useEffect(() => {
         getProduct(match.params.name).then(res => {
             setProduct(res.data)
+            const images= res.data.images.reverse()
             const slides = [];
             let pathImage;
             if (res.data.images.length > 0) {
                 for (let i = 0; i < res.data.images.length; i += 1) {
-                    pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${res.data.images[i]}`;
+                    pathImage = `${process.env.REACT_APP_IMAGES_PRODUCTS}/${images[i]}`;
                     slides.push(
                         <SwiperSlide key={`descriptionProduct-${i}`} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                             <img
